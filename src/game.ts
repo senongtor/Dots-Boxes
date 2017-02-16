@@ -195,8 +195,9 @@ module game {
     if (!isHumanTurn()) return;
     let nextMove: IMove = null;
     try {
+      //TODO Hardcoded the continueMove flag.
       nextMove = gameLogic.createMove(
-          state, row, col, currentUpdateUI.turnIndex);
+          state, row, col, Direction.Up, currentUpdateUI.turnIndex, false);
     } catch (e) {
       log.info(["Cell is already full in position:", row, col]);
       return;
@@ -206,7 +207,7 @@ module game {
   }
 
   export function shouldShowImage(row: number, col: number): boolean {
-    return state.board[row][col] !== "" || isProposal(row, col);
+    return state.board[row][col].owner !== -1 || isProposal(row, col);
   }
 
   function isPiece(row: number, col: number, turnIndex: number, pieceKind: string): boolean {
