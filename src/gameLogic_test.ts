@@ -1,4 +1,4 @@
-describe("In TicTacToe", function() {
+describe("In Dots and Boxes", function() {
   let X_TURN = 0;
   let O_TURN = 1;
   let NO_ONE_TURN = -1;
@@ -17,7 +17,7 @@ describe("In TicTacToe", function() {
     // We expect an exception to be thrown :)
     let didThrowException = false;
     try {
-      gameLogic.createMove(stateBeforeMove, row, col, turnIndexBeforeMove);
+      gameLogic.createMove(stateBeforeMove, row, col, turnIndexBeforeMove,Direction.Up);
     } catch (e) {
       didThrowException = true;
     }
@@ -31,107 +31,112 @@ describe("In TicTacToe", function() {
       boardBeforeMove: Board,
       row: number,
       col: number,
+      dir: Direction,
       boardAfterMove: Board,
       turnIndexAfterMove: number,
       endMatchScores: number[]): void {
     let expectedMove:IMove = {
         turnIndex: turnIndexAfterMove,
         endMatchScores: endMatchScores,
-        state: {board: boardAfterMove, delta: {row: row, col: col}}
+        state: {board: boardAfterMove, delta: {row: row, col: col, direction:dir}}
       };
     let stateBeforeMove: IState = boardBeforeMove ? {board: boardBeforeMove, delta: null} : null;
-    let move: IMove = gameLogic.createMove(stateBeforeMove, row, col, turnIndexBeforeMove);
+    let move: IMove = gameLogic.createMove(stateBeforeMove, row, col, dir, turnIndexBeforeMove);
     expect(angular.equals(move, expectedMove)).toBe(true);
   }
-
+  let b: Board = [];
+  for (let i = 0; i < gameLogic.ROWS; i++) {
+            b[i] = [];
+            for (let j = 0; j < gameLogic.COLS; j++) {
+                b[i][j]=new Grid();
+            }
+        }
   it("Initial move", function() {
     let move: IMove = gameLogic.createInitialMove();
     let expectedMove:IMove = {
         turnIndex: X_TURN,
         endMatchScores: NO_ONE_WINS,
         state: {board: 
-          [['', '', ''],
-          ['', '', ''],
-          ['', '', '']], delta: null}
+          b, delta: null}
       };
     expect(angular.equals(move, expectedMove)).toBe(true);
   });
   
-  it("placing X in 0x0 from initial state", function() {
-    expectMove(X_TURN, null, 0, 0,
-      [['X', '', ''],
-       ['', '', ''],
-       ['', '', '']], O_TURN, NO_ONE_WINS);
-  });
+  // it("placing X in 0x0 from initial state", function() {
+  //   expectMove(X_TURN, null, 0, 0,
+  //     [['X', '', ''],
+  //      ['', '', ''],
+  //      ['', '', '']], O_TURN, NO_ONE_WINS);
+  // });
 
-  it("placing O in 0x1 after X placed X in 0x0", function() {
-    expectMove(O_TURN,
-      [['X', '', ''],
-       ['', '', ''],
-       ['', '', '']], 0, 1,
-      [['X', 'O', ''],
-       ['', '', ''],
-       ['', '', '']], X_TURN, NO_ONE_WINS);
-  });
+  // it("placing O in 0x1 after X placed X in 0x0", function() {
+  //   expectMove(O_TURN,
+  //     [['X', '', ''],
+  //      ['', '', ''],
+  //      ['', '', '']], 0, 1,
+  //     [['X', 'O', ''],
+  //      ['', '', ''],
+  //      ['', '', '']], X_TURN, NO_ONE_WINS);
+  // });
 
-  it("placing an O in a non-empty position is illegal", function() {
-    expectException(O_TURN,
-      [['X', '', ''],
-       ['', '', ''],
-       ['', '', '']], 0, 0);
-  });
+  // it("placing an O in a non-empty position is illegal", function() {
+  //   expectException(O_TURN,
+  //     [['X', '', ''],
+  //      ['', '', ''],
+  //      ['', '', '']], 0, 0);
+  // });
 
-  it("cannot move after the game is over", function() {
-    expectException(O_TURN,
-      [['X', 'O', ''],
-       ['X', 'O', ''],
-       ['X', '', '']], 2, 1);
-  });
+  // it("cannot move after the game is over", function() {
+  //   expectException(O_TURN,
+  //     [['X', 'O', ''],
+  //      ['X', 'O', ''],
+  //      ['X', '', '']], 2, 1);
+  // });
 
-  it("placing O in 2x1", function() {
-    expectMove(O_TURN,
-      [['O', 'X', ''],
-       ['X', 'O', ''],
-       ['X', '', '']], 2, 1,
-      [['O', 'X', ''],
-       ['X', 'O', ''],
-       ['X', 'O', '']], X_TURN, NO_ONE_WINS);
-  });
+  // it("placing O in 2x1", function() {
+  //   expectMove(O_TURN,
+  //     [['O', 'X', ''],
+  //      ['X', 'O', ''],
+  //      ['X', '', '']], 2, 1,
+  //     [['O', 'X', ''],
+  //      ['X', 'O', ''],
+  //      ['X', 'O', '']], X_TURN, NO_ONE_WINS);
+  // });
 
-  it("X wins by placing X in 2x0", function() {
-    expectMove(X_TURN,
-      [['X', 'O', ''],
-       ['X', 'O', ''],
-       ['', '', '']], 2, 0,
-      [['X', 'O', ''],
-       ['X', 'O', ''],
-       ['X', '', '']], NO_ONE_TURN, X_WIN_SCORES);
-  });
+  // it("X wins by placing X in 2x0", function() {
+  //   expectMove(X_TURN,
+  //     [['X', 'O', ''],
+  //      ['X', 'O', ''],
+  //      ['', '', '']], 2, 0,
+  //     [['X', 'O', ''],
+  //      ['X', 'O', ''],
+  //      ['X', '', '']], NO_ONE_TURN, X_WIN_SCORES);
+  // });
 
-  it("O wins by placing O in 1x1", function() {
-    expectMove(O_TURN,
-      [['X', 'X', 'O'],
-       ['X', '', ''],
-       ['O', '', '']], 1, 1,
-      [['X', 'X', 'O'],
-       ['X', 'O', ''],
-       ['O', '', '']], NO_ONE_TURN, O_WIN_SCORES);
-  });
+  // it("O wins by placing O in 1x1", function() {
+  //   expectMove(O_TURN,
+  //     [['X', 'X', 'O'],
+  //      ['X', '', ''],
+  //      ['O', '', '']], 1, 1,
+  //     [['X', 'X', 'O'],
+  //      ['X', 'O', ''],
+  //      ['O', '', '']], NO_ONE_TURN, O_WIN_SCORES);
+  // });
 
-  it("the game ties when there are no more empty cells", function() {
-    expectMove(X_TURN,
-      [['X', 'O', 'X'],
-       ['X', 'O', 'O'],
-       ['O', 'X', '']], 2, 2,
-      [['X', 'O', 'X'],
-       ['X', 'O', 'O'],
-       ['O', 'X', 'X']], NO_ONE_TURN, TIE_SCORES);
-  });
+  // it("the game ties when there are no more empty cells", function() {
+  //   expectMove(X_TURN,
+  //     [['X', 'O', 'X'],
+  //      ['X', 'O', 'O'],
+  //      ['O', 'X', '']], 2, 2,
+  //     [['X', 'O', 'X'],
+  //      ['X', 'O', 'O'],
+  //      ['O', 'X', 'X']], NO_ONE_TURN, TIE_SCORES);
+  // });
 
-  it("placing X outside the board (in 0x3) is illegal", function() {
-    expectException(X_TURN,
-      [['', '', ''],
-       ['', '', ''],
-       ['', '', '']], 0, 3);
-  });
+  // it("placing X outside the board (in 0x3) is illegal", function() {
+  //   expectException(X_TURN,
+  //     [['', '', ''],
+  //      ['', '', ''],
+  //      ['', '', '']], 0, 3);
+  // });
 });

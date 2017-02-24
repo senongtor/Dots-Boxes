@@ -190,14 +190,13 @@ module game {
       currentUpdateUI.yourPlayerIndex === currentUpdateUI.turnIndex; // it's my turn
   }
 
-  export function cellClicked(row: number, col: number): void {
+  export function cellClicked(row: number, col: number ,dir: Direction): void {
     log.info("Clicked on cell:", row, col);
     if (!isHumanTurn()) return;
     let nextMove: IMove = null;
     try {
-      //TODO Hardcoded the continueMove flag.
       nextMove = gameLogic.createMove(
-          state, row, col, Direction.Up, currentUpdateUI.turnIndex, false);
+          state, row, col, dir, currentUpdateUI.turnIndex);
     } catch (e) {
       log.info(["Cell is already full in position:", row, col]);
       return;
@@ -210,17 +209,17 @@ module game {
     return state.board[row][col].owner !== -1 || isProposal(row, col);
   }
 
-  function isPiece(row: number, col: number, turnIndex: number, pieceKind: string): boolean {
-    return state.board[row][col] === pieceKind || (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
-  }
+  // function isPiece(row: number, col: number, turnIndex: number, pieceKind: string): boolean {
+  //   return state.board[row][col].piece === pieceKind || (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
+  // }
   
-  export function isPieceX(row: number, col: number): boolean {
-    return isPiece(row, col, 0, 'X');
-  }
+  // export function isPieceX(row: number, col: number): boolean {
+  //   return isPiece(row, col, 0, 'X');
+  // }
 
-  export function isPieceO(row: number, col: number): boolean {
-    return isPiece(row, col, 1, 'O');
-  }
+  // export function isPieceO(row: number, col: number): boolean {
+  //   return isPiece(row, col, 1, 'O');
+  // }
 
   export function shouldSlowlyAppear(row: number, col: number): boolean {
     return state.delta &&

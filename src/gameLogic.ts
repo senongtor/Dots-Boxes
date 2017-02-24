@@ -7,18 +7,20 @@ enum Direction {
     Left,
     Right
 }
-
+type IProposalData = BoardDelta;
 interface BoardDelta {
   row: number;
   col: number;
   direction: Direction;
 }
+
 /**
  * Grid that will model the region 
  */
 class Grid{
     directions: { [id: number] : boolean; } = {};
     owner: number;
+    piece: string;
     constructor(){
         this.directions[Direction.Up]=false;
         this.directions[Direction.Down]=false;
@@ -33,7 +35,6 @@ type Board = Grid[][];
 interface IState {
   board: Board;
   delta: BoardDelta;
-  continueMove: boolean;
 }
 
 import gameService = gamingPlatform.gameService;
@@ -44,59 +45,54 @@ import log = gamingPlatform.log;
 import dragAndDropService = gamingPlatform.dragAndDropService;
 
 module gameLogic {
-      
-      export function getInitialBoard(len: number): Board {
+      export const ROWS = 5;
+      export const COLS = 4;
+      export function getInitialBoard(): Board {
         let board: Board = [];
-        for (let i = 0; i < len; i++) {
+        for (let i = 0; i < ROWS; i++) {
             board[i] = [];
-            for (let j = 0; j < len; j++) {
+            for (let j = 0; j < COLS; j++) {
                 board[i][j]=new Grid();
             }
         }
         return board;
       }
-      export function getInitialState(len: number): IState {
-        return {board: getInitialBoard(len), delta: null, continueMove: false};
+      export function getInitialState(): IState {
+        return {board: getInitialBoard(), delta: null};
       }
       /**
        * Create Move
        */
       export function createMove(
           stateBeforeMove: IState, row: number, col: number, d: Direction, 
-          turnIndexBeforeMove: number, continueMove: boolean, len?:number):IMove{
+          turnIndexBeforeMove: number):IMove{
         if (!stateBeforeMove) {
-            stateBeforeMove = getInitialState(len);
+            stateBeforeMove = getInitialState();
         }
         let board: Board = stateBeforeMove.board;
-        if(board[row][col].owner>0){
-            throw new Error("No further move can be created because this square is already occupied");
-        }
         if (isOver(board)) {
             throw new Error("Can only make a move if the game is not over!");
         }
-        let boardAfterMove = angular.copy(board);
-        let turnIndex: number;
+        if(board[row][col].owner>0){
+            throw new Error("No further move can be created because this square is already occupied");
+        }
         if(board[row][col].directions[d]){
             throw new Error("No further move can be created because this edge is already occupied");
         }
+        
+        let boardAfterMove = angular.copy(board);
+        let turnIndex: number;
+        
         boardAfterMove[row][col].directions[d] = true;
         //If all 4 edges of this grid is occupied, 
         //assign the current move player as the owner
         if(board[row][col].directions[Direction.Up]&&
         board[row][col].directions[Direction.Down]&&
         board[row][col].directions[Direction.Left]&&
-        board[row][col].directions[Direction.Right]){
-            //If I came from a moves from the opponent
-            if(!continueMove){
-                turnIndex=turnIndexBeforeMove^1;
-                continueMove=true;
-            }else{
-                turnIndex=turnIndexBeforeMove;
-            }
-            //If I came from a move which succeeded, I should keep the turnindex.
-            board[row][col].owner=turnIndex;
+        board[row][col].directions[Direction.Right]){  
+            board[row][col].owner=turnIndexBeforeMove;        
+            turnIndex=turnIndexBeforeMove;
         }else{
-            continueMove=false;
             turnIndex=turnIndexBeforeMove^1;
         }
         // let winner = getWinner(boardAfterMove);
@@ -116,13 +112,13 @@ module gameLogic {
         }
         
         let delta: BoardDelta = {row: row, col: col, direction: d};
-        let state: IState = {delta: delta, board: boardAfterMove};
+        let state: IState = {board: boardAfterMove, delta: delta};
         return {endMatchScores: endMatchScores, turnIndex: turnIndex, state: state};   
       }
       function getWinner(board: Board): number{       
         let count:number[];
-        for(let i=0;i<board.length;i++){
-            for(let j=0;j<board.length;j++){
+        for(let i=0;i<ROWS;i++){
+            for(let j=0;j<COLS;j++){
                 count[board[i][j].owner]++;
             }
         }
@@ -141,13 +137,23 @@ module gameLogic {
        * Check for game termination
        */
       function isOver(board: Board){
-        for (let i = 0; i < board.length; i++) {       
-            for (let j = 0; j < board.length; j++) {
+        for (let i = 0; i < ROWS; i++) {       
+            for (let j = 0; j < COLS; j++) {
                 if(board[i][j].owner==-1){
                     return false;
                 }
             }
         }
         return true;
+      }
+      export function createInitialMove(): IMove {
+        return {endMatchScores: null, turnIndex: 0, 
+        state: getInitialState()};  
+      }
+
+      export function forSimpleTestHtml() {
+        var move = gameLogic.createMove(null, 0, 0, Direction.Up, 
+          0);
+        log.log("move=", move);
       }
 }

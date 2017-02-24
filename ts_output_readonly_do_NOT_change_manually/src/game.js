@@ -175,13 +175,13 @@ var game;
             game.currentUpdateUI.turnIndex >= 0 &&
             game.currentUpdateUI.yourPlayerIndex === game.currentUpdateUI.turnIndex; // it's my turn
     }
-    function cellClicked(row, col) {
+    function cellClicked(row, col, dir) {
         log.info("Clicked on cell:", row, col);
         if (!isHumanTurn())
             return;
         var nextMove = null;
         try {
-            nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
+            nextMove = gameLogic.createMove(game.state, row, col, dir, game.currentUpdateUI.turnIndex);
         }
         catch (e) {
             log.info(["Cell is already full in position:", row, col]);
@@ -192,20 +192,18 @@ var game;
     }
     game.cellClicked = cellClicked;
     function shouldShowImage(row, col) {
-        return game.state.board[row][col] !== "" || isProposal(row, col);
+        return game.state.board[row][col].owner !== -1 || isProposal(row, col);
     }
     game.shouldShowImage = shouldShowImage;
-    function isPiece(row, col, turnIndex, pieceKind) {
-        return game.state.board[row][col] === pieceKind || (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
-    }
-    function isPieceX(row, col) {
-        return isPiece(row, col, 0, 'X');
-    }
-    game.isPieceX = isPieceX;
-    function isPieceO(row, col) {
-        return isPiece(row, col, 1, 'O');
-    }
-    game.isPieceO = isPieceO;
+    // function isPiece(row: number, col: number, turnIndex: number, pieceKind: string): boolean {
+    //   return state.board[row][col].piece === pieceKind || (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
+    // }
+    // export function isPieceX(row: number, col: number): boolean {
+    //   return isPiece(row, col, 0, 'X');
+    // }
+    // export function isPieceO(row: number, col: number): boolean {
+    //   return isPiece(row, col, 1, 'O');
+    // }
     function shouldSlowlyAppear(row, col) {
         return game.state.delta &&
             game.state.delta.row === row && game.state.delta.col === col;
