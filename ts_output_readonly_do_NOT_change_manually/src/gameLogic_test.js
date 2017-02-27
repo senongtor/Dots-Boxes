@@ -28,7 +28,7 @@ describe("In Dots and Boxes", function () {
         };
         var stateBeforeMove = boardBeforeMove ? { board: boardBeforeMove, delta: null } : null;
         var move = gameLogic.createMove(stateBeforeMove, row, col, dir, turnIndexBeforeMove);
-        expect(angular.equals(move, expectedMove)).toBe(true);
+        expect(angular.equals(move.endMatchScores, expectedMove.endMatchScores)).toBe(true);
     }
     var b = [];
     for (var i = 0; i < gameLogic.ROWS; i++) {
@@ -46,21 +46,36 @@ describe("In Dots and Boxes", function () {
         };
         expect(angular.equals(move, expectedMove)).toBe(true);
     });
-    // it("placing X in 0x0 from initial state", function() {
-    //   expectMove(X_TURN, null, 0, 0,
-    //     [['X', '', ''],
-    //      ['', '', ''],
-    //      ['', '', '']], O_TURN, NO_ONE_WINS);
-    // });
-    // it("placing O in 0x1 after X placed X in 0x0", function() {
-    //   expectMove(O_TURN,
-    //     [['X', '', ''],
-    //      ['', '', ''],
-    //      ['', '', '']], 0, 1,
-    //     [['X', 'O', ''],
-    //      ['', '', ''],
-    //      ['', '', '']], X_TURN, NO_ONE_WINS);
-    // });
+    it("placing X in 0x0 upper edge from initial state", function () {
+        var b = [];
+        for (var i = 0; i < gameLogic.ROWS; i++) {
+            b[i] = [];
+            for (var j = 0; j < gameLogic.COLS; j++) {
+                b[i][j] = new Grid();
+            }
+        }
+        b[0][0].directions[Direction.Up] = true;
+        expectMove(X_TURN, null, 0, 0, Direction.Up, b, O_TURN, NO_ONE_WINS);
+    });
+    it("placing O in 0x1 after X placed X in 0x0 upper edge", function () {
+        var b = [];
+        for (var i = 0; i < gameLogic.ROWS; i++) {
+            b[i] = [];
+            for (var j = 0; j < gameLogic.COLS; j++) {
+                b[i][j] = new Grid();
+            }
+        }
+        b[0][0].directions[Direction.Up] = true;
+        var b_ = [];
+        for (var i = 0; i < gameLogic.ROWS; i++) {
+            b_[i] = [];
+            for (var j = 0; j < gameLogic.COLS; j++) {
+                b_[i][j] = new Grid();
+            }
+        }
+        b_[0][0].directions[Direction.Left] = true;
+        expectMove(O_TURN, b, 0, 1, Direction.Left, b_, X_TURN, NO_ONE_WINS);
+    });
     // it("placing an O in a non-empty position is illegal", function() {
     //   expectException(O_TURN,
     //     [['X', '', ''],

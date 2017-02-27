@@ -53,6 +53,7 @@ module gameLogic {
             board[i] = [];
             for (let j = 0; j < COLS; j++) {
                 board[i][j]=new Grid();
+                board[i][j].owner=-1;
             }
         }
         return board;
@@ -109,6 +110,8 @@ module gameLogic {
             if(getWinner(board)==0){
                 endMatchScores=[1,0];
             }     
+        }else{
+            endMatchScores=null;
         }
         
         let delta: BoardDelta = {row: row, col: col, direction: d};

@@ -38,6 +38,7 @@ var gameLogic;
             board[i] = [];
             for (var j = 0; j < gameLogic.COLS; j++) {
                 board[i][j] = new Grid();
+                board[i][j].owner = -1;
             }
         }
         return board;
@@ -92,6 +93,9 @@ var gameLogic;
             if (getWinner(board) == 0) {
                 endMatchScores = [1, 0];
             }
+        }
+        else {
+            endMatchScores = null;
         }
         var delta = { row: row, col: col, direction: d };
         var state = { board: boardAfterMove, delta: delta };
