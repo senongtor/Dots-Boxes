@@ -32,23 +32,46 @@ body {
 }
 
 .r {
-  border-right: 4pt solid black;
+  border-right: 6pt outset lightgrey;
 }
 .b {
-  border-bottom: 4pt solid black;
+  border-bottom: 6pt outset lightgrey;
+}
+.l {
+  border-left: 6pt outset lightgrey;
+}
+.t {
+  border-top: 6pt outset lightgrey;
 }
 
-.isProposal1 {
-  transform: scale(0.6, 0.6);
-  opacity: 0.5;
+.f {
+  border-top: black;
+  border-left: black;
+  border-bottom: black;
+  border-right: black;
 }
-.isProposal2 {
-  transform: scale(0.8, 0.8);
-  opacity: 0.7;
+
+.p1 {
+  border-color: red;
+  border-right: black;
+  border-bottom: black;
+}
+
+.p2 {
+  border-color: blue;
 }
 
 .slowlyAppear {
   animation: slowlyAppear 0.5s linear;
+}
+
+.svg-gameBoard svg:hover #glow { // stroke works fine, filter doesn't work
+  stroke: white;
+  filter: url(#blur-filter);
+}
+
+.svg-path svg:hover #color {
+  stroke: white;
 }
 
 @keyframes slowlyAppear {
