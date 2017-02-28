@@ -65,16 +65,89 @@ body {
   animation: slowlyAppear 0.5s linear;
 }
 
-.svg-gameBoard svg:hover #glow { // stroke works fine, filter doesn't work
-  stroke: white;
-  filter: url(#blur-filter);
+.edge {
+  background: #9999FF; //light purple
+  border: 1px solid #959595;
+  /*-webkit-animation-name: highlight_last_move; Chrome, Safari, Opera */
+  /*-webkit-animation-duration: 1s; Chrome, Safari, Opera */
+  animation-name: highlight_last_move;
+  animation-duration: 0.01s;
 }
 
-.svg-path svg:hover #color {
-  stroke: white;
+.edge_new {
+  background: #FF6600; //dark orange
+  border: 1px solid #959595;
+  /*-webkit-animation-name: highlight_last_move; Chrome, Safari, Opera */
+  /*-webkit-animation-duration: 1s; Chrome, Safari, Opera */
+  animation-name: highlight_last_move_new;
+  animation-duration: 0.01s;
+}
+/*
+@keyframes highlight_last_move {
+    from {background-color: yellow;}
+    to {background-color: #9999FF;}
+}
+@keyframes highlight_last_move_new {
+    from {background-color: yellow;}
+    to {background-color: #FF6600;}
+}
+*/
+
+@asdf highlight_last_move {
+    from {background-color: yellow;}
+    to {background-color: #9999FF;}
 }
 
+@asdf highlight_last_move_new {
+    from {background-color: yellow;}
+    to {background-color: #FF6600;}
+}
+
+
+.cell_player0 {
+  background: #ff9933; //orange
+  border: 1px solid #959595;
+}
+
+.cell_player1 {
+  background: #0099ff; //blue
+  border: 1px solid #959595;
+}
+
+.corner {
+  background: #6666CC; //dark purple
+  border: 1px solid #959595;
+}
+
+.slowlyAppear {
+	-webkit-animation: slowlyAppear 0.01s linear;
+	-moz-animation: slowlyAppear 0.01s linear;
+	-ms-animation: slowlyAppear 0.01s linear;
+	-o-animation: slowlyAppear 0.01s linear;
+	animation: slowlyAppear 0.01s linear;
+}
+
+.line:hover{
+  fill:black;
+}
+
+@-webkit-keyframes slowlyAppear {
+  from {opacity: 0.1;}
+  to {opacity: 1;}
+}
+@-moz-keyframes slowlyAppear {
+  from {opacity: 0.1;}
+  to {opacity: 1;}
+}
+@-o-keyframes slowlyAppear {
+  from {opacity: 0.1;}
+  to {opacity: 1;}
+}
 @keyframes slowlyAppear {
   from {opacity: 0.1;}
   to {opacity: 1;}
+}
+
+td {
+  padding:0 5px 0 5px;
 }
