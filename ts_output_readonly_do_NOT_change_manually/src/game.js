@@ -180,7 +180,7 @@ var game;
             return;
         var nextMove = null;
         try {
-            nextMove = gameLogic.createMove(game.state, row, col, dir, game.currentUpdateUI.turnIndex);
+            nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
         }
         catch (e) {
             log.info(["Cell is already full in position:", row, col]);
@@ -191,11 +191,11 @@ var game;
     }
     game.cellClicked = cellClicked;
     function shouldShowImage(row, col) {
-        return game.state.board[row][col].owner != -1 || isProposal(row, col);
+        return game.state.board[row][col].shape == Shape.Box && game.state.board[row][col].owner != -1 || isProposal(row, col);
     }
     game.shouldShowImage = shouldShowImage;
     function isPiece(row, col, turnIndex, pieceKind) {
-        return game.state.board[row][col].piece === pieceKind || (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
+        return game.state.board[row][col].shape.toString() === pieceKind || (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
     }
     function isPieceX(row, col) {
         return isPiece(row, col, 0, 'X');

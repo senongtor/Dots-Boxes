@@ -129,7 +129,7 @@ describe('TicTacToe', function () {
         // in end-to-end tests.
         for (var row = 0; row < 3; row++) {
             for (var col = 0; col < 3; col++) {
-                expectPiece(row, col, board[row][col].piece);
+                expectPiece(row, col, board[row][col].owner.toString());
             }
         }
     }

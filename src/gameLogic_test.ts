@@ -17,7 +17,7 @@ describe("In Dots and Boxes", function() {
     // We expect an exception to be thrown :)
     let didThrowException = false;
     try {
-      gameLogic.createMove(stateBeforeMove, row, col, turnIndexBeforeMove,Direction.Up);
+      gameLogic.createMove(stateBeforeMove, row, col, turnIndexBeforeMove);
     } catch (e) {
       didThrowException = true;
     }
@@ -31,28 +31,22 @@ describe("In Dots and Boxes", function() {
       boardBeforeMove: Board,
       row: number,
       col: number,
-      dir: Direction,
       boardAfterMove: Board,
       turnIndexAfterMove: number,
       endMatchScores: number[]): void {
     let expectedMove:IMove = {
         turnIndex: turnIndexAfterMove,
         endMatchScores: endMatchScores,
-        state: {board: boardAfterMove, delta: {row: row, col: col, direction:dir}}
+        state: {board: boardAfterMove, delta: {row: row, col: col}}
       };
     let stateBeforeMove: IState = boardBeforeMove ? {board: boardBeforeMove, delta: null} : null;
-    let move: IMove = gameLogic.createMove(stateBeforeMove, row, col, dir, turnIndexBeforeMove);
+    let move: IMove = gameLogic.createMove(stateBeforeMove, row, col, turnIndexBeforeMove);
     
-    expect(angular.equals(move.endMatchScores, expectedMove.endMatchScores)).toBe(true);
+    expect(angular.equals(move, expectedMove)).toBe(true);
   }
-  let b: Board = [];
-  for (let i = 0; i < gameLogic.ROWS; i++) {
-            b[i] = [];
-            for (let j = 0; j < gameLogic.COLS; j++) {
-                b[i][j]=new Grid();
-            }
-        }
-  it("Initial move", function() {
+ 
+  it(": Initial move", function() {
+    let b=gameLogic.getInitialBoard();
     let move: IMove = gameLogic.createInitialMove();
     let expectedMove:IMove = {
         turnIndex: X_TURN,
@@ -63,38 +57,24 @@ describe("In Dots and Boxes", function() {
     expect(angular.equals(move, expectedMove)).toBe(true);
   });
   
-  it("placing X in 0x0 upper edge from initial state", function() {
-    let b: Board = [];
-    for (let i = 0; i < gameLogic.ROWS; i++) {
-            b[i] = [];
-            for (let j = 0; j < gameLogic.COLS; j++) {
-                b[i][j]=new Grid();
-            }
-    }
-    b[0][0].directions[Direction.Up]=true;
-    expectMove(X_TURN, null, 0, 0, Direction.Up,
+  it(": X placing line on 0x1 edge from initial state", function() {
+    let b=gameLogic.getInitialBoard();
+    b[0][1].owner=1;
+    b[1][1].occupies[Occupied.Up]=true;
+    expectMove(X_TURN, null, 0, 1,
       b, O_TURN, NO_ONE_WINS);
   });
 
-  it("placing O in 0x1 after X placed X in 0x0 upper edge", function() {
-    let b: Board = [];
-    for (let i = 0; i < gameLogic.ROWS; i++) {
-            b[i] = [];
-            for (let j = 0; j < gameLogic.COLS; j++) {
-                b[i][j]=new Grid();
-            }
-    }
-    b[0][0].directions[Direction.Up]=true;
-    let b_: Board = [];
-    for (let i = 0; i < gameLogic.ROWS; i++) {
-            b_[i] = [];
-            for (let j = 0; j < gameLogic.COLS; j++) {
-                b_[i][j]=new Grid();
-            }
-    }
-    b_[0][0].directions[Direction.Left]=true;
-    expectMove(O_TURN,
-      b, 0, 1, Direction.Left,
+  it(": O placing line on 1x0 after X placed line on 0x1 ", function() {
+    let b=gameLogic.getInitialBoard();
+    b[0][1].owner=1;
+    b[1][1].occupies[Occupied.Up]=true;
+    let b_=gameLogic.getInitialBoard();
+    b_[0][1].owner=1;
+    b_[1][1].occupies[Occupied.Up]=true;
+    b_[1][0].owner=1;
+    b_[1][1].occupies[Occupied.Left]=true;
+    expectMove(O_TURN, b, 1, 0, 
       b_, X_TURN, NO_ONE_WINS);
   });
 

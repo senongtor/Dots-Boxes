@@ -198,7 +198,7 @@ module game {
     let nextMove: IMove = null;
     try {
       nextMove = gameLogic.createMove(
-          state, row, col, dir, currentUpdateUI.turnIndex);
+          state, row, col, currentUpdateUI.turnIndex);
     } catch (e) {
       log.info(["Cell is already full in position:", row, col]);
       return;
@@ -208,11 +208,11 @@ module game {
   }
 
   export function shouldShowImage(row: number, col: number): boolean {
-    return state.board[row][col].owner!=-1 || isProposal(row, col);
+    return state.board[row][col].shape==Shape.Box && state.board[row][col].owner!=-1 || isProposal(row, col);
   }
 
   function isPiece(row: number, col: number, turnIndex: number, pieceKind: string): boolean {
-    return state.board[row][col].piece === pieceKind || (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
+    return state.board[row][col].shape.toString() === pieceKind || (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
   }
   
   export function isPieceX(row: number, col: number): boolean {

@@ -11,7 +11,7 @@ describe("In Dots and Boxes", function () {
         // We expect an exception to be thrown :)
         var didThrowException = false;
         try {
-            gameLogic.createMove(stateBeforeMove, row, col, turnIndexBeforeMove, Direction.Up);
+            gameLogic.createMove(stateBeforeMove, row, col, turnIndexBeforeMove);
         }
         catch (e) {
             didThrowException = true;
@@ -20,24 +20,18 @@ describe("In Dots and Boxes", function () {
             throw new Error("We expect an illegal move, but createMove didn't throw any exception!");
         }
     }
-    function expectMove(turnIndexBeforeMove, boardBeforeMove, row, col, dir, boardAfterMove, turnIndexAfterMove, endMatchScores) {
+    function expectMove(turnIndexBeforeMove, boardBeforeMove, row, col, boardAfterMove, turnIndexAfterMove, endMatchScores) {
         var expectedMove = {
             turnIndex: turnIndexAfterMove,
             endMatchScores: endMatchScores,
-            state: { board: boardAfterMove, delta: { row: row, col: col, direction: dir } }
+            state: { board: boardAfterMove, delta: { row: row, col: col } }
         };
         var stateBeforeMove = boardBeforeMove ? { board: boardBeforeMove, delta: null } : null;
-        var move = gameLogic.createMove(stateBeforeMove, row, col, dir, turnIndexBeforeMove);
-        expect(angular.equals(move.endMatchScores, expectedMove.endMatchScores)).toBe(true);
-    }
-    var b = [];
-    for (var i = 0; i < gameLogic.ROWS; i++) {
-        b[i] = [];
-        for (var j = 0; j < gameLogic.COLS; j++) {
-            b[i][j] = new Grid();
-        }
+        var move = gameLogic.createMove(stateBeforeMove, row, col, turnIndexBeforeMove);
+        expect(angular.equals(move, expectedMove)).toBe(true);
     }
     it("Initial move", function () {
+        var b = gameLogic.getInitialBoard();
         var move = gameLogic.createInitialMove();
         var expectedMove = {
             turnIndex: X_TURN,
@@ -46,35 +40,22 @@ describe("In Dots and Boxes", function () {
         };
         expect(angular.equals(move, expectedMove)).toBe(true);
     });
-    it("placing X in 0x0 upper edge from initial state", function () {
-        var b = [];
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            b[i] = [];
-            for (var j = 0; j < gameLogic.COLS; j++) {
-                b[i][j] = new Grid();
-            }
-        }
-        b[0][0].directions[Direction.Up] = true;
-        expectMove(X_TURN, null, 0, 0, Direction.Up, b, O_TURN, NO_ONE_WINS);
+    it("placing X in 0x1 edge from initial state", function () {
+        var b = gameLogic.getInitialBoard();
+        b[0][1].owner = 1;
+        b[1][1].occupies[Occupied.Up] = true;
+        expectMove(X_TURN, null, 0, 1, b, O_TURN, NO_ONE_WINS);
     });
-    it("placing O in 0x1 after X placed X in 0x0 upper edge", function () {
-        var b = [];
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            b[i] = [];
-            for (var j = 0; j < gameLogic.COLS; j++) {
-                b[i][j] = new Grid();
-            }
-        }
-        b[0][0].directions[Direction.Up] = true;
-        var b_ = [];
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            b_[i] = [];
-            for (var j = 0; j < gameLogic.COLS; j++) {
-                b_[i][j] = new Grid();
-            }
-        }
-        b_[0][0].directions[Direction.Left] = true;
-        expectMove(O_TURN, b, 0, 1, Direction.Left, b_, X_TURN, NO_ONE_WINS);
+    it("placing O in 1x0 after X placed X in 0x1 upper edge", function () {
+        var b = gameLogic.getInitialBoard();
+        b[0][1].owner = 1;
+        b[1][1].occupies[Occupied.Up] = true;
+        var b_ = gameLogic.getInitialBoard();
+        b_[0][1].owner = 1;
+        b_[1][1].occupies[Occupied.Up] = true;
+        b_[1][0].owner = 1;
+        b_[1][1].occupies[Occupied.Left] = true;
+        expectMove(O_TURN, b, 1, 0, b_, X_TURN, NO_ONE_WINS);
     });
     // it("placing an O in a non-empty position is illegal", function() {
     //   expectException(O_TURN,

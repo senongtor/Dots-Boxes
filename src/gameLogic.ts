@@ -2,31 +2,50 @@
  * 4 Direction for each grid
  */
 enum Direction {
+    Hor = 1,
+    Ver,
+}
+enum Shape { 
+    Dot = 1,
+    Box,
+    Line,
+}
+
+enum Occupied{
     Up = 1,
     Down,
     Left,
     Right
 }
+
 type IProposalData = BoardDelta;
 interface BoardDelta {
   row: number;
   col: number;
-  direction: Direction;
 }
 
 /**
  * Grid that will model the region 
  */
 class Grid{
-    directions: { [id: number] : boolean; } = {};
+    //This dict for mark the occupation of four surrounding edges
+    occupies: {[id:number]: boolean}={};
+    //This Enum is for distinguish box,dot and line grid
+    shape: Shape;
+    //To specify owner. Only for box there is a real owner assigned. For line
+    //just assign 1
     owner: number;
-    piece: string;
-    constructor(){
-        this.directions[Direction.Up]=false;
-        this.directions[Direction.Down]=false;
-        this.directions[Direction.Left]=false;
-        this.directions[Direction.Right]=false;
+    //This is only for line grid. It has two state, horizontal and vertical.
+    dir: Direction;
+    constructor(){       
+        // this.shape=Shape.Init;
+        // this.dir=Direction.Init;
+
         this.owner=-1;
+        this.occupies[Occupied.Down]=false;
+        this.occupies[Occupied.Up]=false;
+        this.occupies[Occupied.Left]=false;
+        this.occupies[Occupied.Right]=false;
     }
 }
 
@@ -45,15 +64,31 @@ import log = gamingPlatform.log;
 import dragAndDropService = gamingPlatform.dragAndDropService;
 
 module gameLogic {
-      export const ROWS = 5;
-      export const COLS = 4;
+      export const ROWS = 11;
+      export const COLS = 11;
       export function getInitialBoard(): Board {
         let board: Board = [];
         for (let i = 0; i < ROWS; i++) {
             board[i] = [];
             for (let j = 0; j < COLS; j++) {
                 board[i][j]=new Grid();
-                board[i][j].owner=-1;
+                //[][     ][][      ][]
+                if(i%2==0){
+                    if(j%2==0){
+                        board[i][j].shape=Shape.Dot;
+                    }else{
+                        board[i][j].shape=Shape.Line;
+                        board[i][j].dir=Direction.Hor;
+                    }
+                    //|[BOX]|[BOX ]                    
+                }else{
+                    if(j%2==0){
+                        board[i][j].shape=Shape.Line;
+                        board[i][j].dir=Direction.Ver;
+                    }else{
+                        board[i][j].shape=Shape.Box;
+                    }
+                }
             }
         }
         return board;
@@ -65,7 +100,7 @@ module gameLogic {
        * Create Move
        */
       export function createMove(
-          stateBeforeMove: IState, row: number, col: number, d: Direction, 
+          stateBeforeMove: IState, row: number, col: number,  
           turnIndexBeforeMove: number):IMove{
         if (!stateBeforeMove) {
             stateBeforeMove = getInitialState();
@@ -74,28 +109,65 @@ module gameLogic {
         if (isOver(board)) {
             throw new Error("Can only make a move if the game is not over!");
         }
-        if(board[row][col].owner>0){
-            throw new Error("No further move can be created because this square is already occupied");
+        //If the shape of this grid is not line, return
+        if(board[row][col].shape!=Shape.Line){
+            throw new Error("Cannot put it here man");
         }
-        if(board[row][col].directions[d]){
-            throw new Error("No further move can be created because this edge is already occupied");
+        if(board[row][col].owner>=0){
+            throw new Error("No further move can be created because this line is already occupied");
         }
-        
+         
         let boardAfterMove = angular.copy(board);
         let turnIndex: number;
-        
-        boardAfterMove[row][col].directions[d] = true;
-        //If all 4 edges of this grid is occupied, 
-        //assign the current move player as the owner
-        if(board[row][col].directions[Direction.Up]&&
-        board[row][col].directions[Direction.Down]&&
-        board[row][col].directions[Direction.Left]&&
-        board[row][col].directions[Direction.Right]){  
-            board[row][col].owner=turnIndexBeforeMove;        
-            turnIndex=turnIndexBeforeMove;
+        //Now this edge was owned, turn it to 1.
+        boardAfterMove[row][col].owner=1;
+
+        //If all 4 edges of any of the adjcent grid is occupied, 
+        //assign the current move player as the owner of that edge
+        //If the edge is horizontal, check left and right box     
+        if(boardAfterMove[row][col].dir==Direction.Hor){
+            if(row>0){
+                boardAfterMove[row-1][col].occupies[Occupied.Down]=true;
+                if(boxOccupied(boardAfterMove[row-1][col])){
+                    boardAfterMove[row-1][col].owner=turnIndexBeforeMove;
+                    turnIndex=turnIndexBeforeMove;
+                }else{
+                    turnIndex=turnIndexBeforeMove^1;
+                }
+            }
+            if(row<ROWS-1){
+                boardAfterMove[row+1][col].occupies[Occupied.Up]=true;
+                if(boxOccupied(boardAfterMove[row+1][col])){
+                    boardAfterMove[row+1][col].owner=turnIndexBeforeMove;
+                    turnIndex=turnIndexBeforeMove;
+                }else{
+                    turnIndex=turnIndexBeforeMove^1;
+                }
+            }
+        //For the vertical line placed for current player   
         }else{
-            turnIndex=turnIndexBeforeMove^1;
+            //If the line has left box.
+            if(col>0){
+                boardAfterMove[row][col-1].occupies[Occupied.Right]=true;
+                if(boxOccupied(boardAfterMove[row][col-1])){
+                    boardAfterMove[row][col-1].owner=turnIndexBeforeMove;
+                    turnIndex=turnIndexBeforeMove;
+                }else{
+                    turnIndex=turnIndexBeforeMove^1;
+                }
+            }
+            //If the line has right box.
+            if(col<COLS-1){
+                boardAfterMove[row][col+1].occupies[Occupied.Left]=true;
+                if(boxOccupied(boardAfterMove[row][col+1])){
+                    boardAfterMove[row][col+1].owner=turnIndexBeforeMove;
+                    turnIndex=turnIndexBeforeMove;
+                }else{
+                    turnIndex=turnIndexBeforeMove^1;
+                }
+            }
         }
+
         // let winner = getWinner(boardAfterMove);
         let endMatchScores: number[];
         
@@ -114,15 +186,29 @@ module gameLogic {
             endMatchScores=null;
         }
         
-        let delta: BoardDelta = {row: row, col: col, direction: d};
+        let delta: BoardDelta = {row: row, col: col};
         let state: IState = {board: boardAfterMove, delta: delta};
         return {endMatchScores: endMatchScores, turnIndex: turnIndex, state: state};   
       }
+      /**
+       * Check if the box is surrounded
+       */
+      function boxOccupied(grid:Grid): boolean{
+        return grid.occupies[Occupied.Down]&&
+        grid.occupies[Occupied.Up]&&
+        grid.occupies[Occupied.Left]&&
+        grid.occupies[Occupied.Right];
+      }
+      /**
+       * Find out who wins
+       */
       function getWinner(board: Board): number{       
         let count:number[];
         for(let i=0;i<ROWS;i++){
             for(let j=0;j<COLS;j++){
-                count[board[i][j].owner]++;
+                if(board[i][j].shape==Shape.Box){
+                    count[board[i][j].owner]++;
+                }            
             }
         }
         let maxCount=0;
@@ -142,6 +228,9 @@ module gameLogic {
       function isOver(board: Board){
         for (let i = 0; i < ROWS; i++) {       
             for (let j = 0; j < COLS; j++) {
+                if(board[i][j].shape!=Shape.Box){
+                    continue;
+                }
                 if(board[i][j].owner==-1){
                     return false;
                 }
@@ -155,7 +244,7 @@ module gameLogic {
       }
 
       export function forSimpleTestHtml() {
-        var move = gameLogic.createMove(null, 0, 0, Direction.Up, 
+        var move = gameLogic.createMove(null, 0, 1,  
           0);
         log.log("move=", move);
       }
