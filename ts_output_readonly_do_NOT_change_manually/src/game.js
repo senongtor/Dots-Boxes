@@ -14,6 +14,10 @@ var game;
     // For community games.
     game.proposals = null;
     game.yourPlayerInfo = null;
+    game.row = 11;
+    game.col = 11;
+    game.dimSet = false;
+    game.board = null;
     function init($rootScope_, $timeout_) {
         game.$rootScope = $rootScope_;
         game.$timeout = $timeout_;
@@ -130,6 +134,13 @@ var game;
         log.info("Computer move: ", move);
         makeMove(move);
     }
+    function setDim(row, col) {
+        row = row;
+        col = col;
+        game.dimSet = true;
+        game.board = gameLogic.getInitialBoardWP(row, col);
+    }
+    game.setDim = setDim;
     function makeMove(move) {
         if (game.didMakeMove) {
             return;
@@ -174,7 +185,7 @@ var game;
             game.currentUpdateUI.turnIndex >= 0 &&
             game.currentUpdateUI.yourPlayerIndex === game.currentUpdateUI.turnIndex; // it's my turn
     }
-    function cellClicked(row, col, dir) {
+    function cellClicked(row, col) {
         log.info("Clicked on cell:", row, col);
         if (!isHumanTurn())
             return;
@@ -191,20 +202,31 @@ var game;
     }
     game.cellClicked = cellClicked;
     function shouldShowImage(row, col) {
-        return game.state.board[row][col].shape == Shape.Box && game.state.board[row][col].owner != -1 || isProposal(row, col);
+        if (game.state.board[row][col].shape != Shape.Box) {
+            return false;
+        }
+        return game.state.board[row][col].owner >= 0 || isProposal(row, col);
     }
     game.shouldShowImage = shouldShowImage;
-    function isPiece(row, col, turnIndex, pieceKind) {
-        return game.state.board[row][col].shape.toString() === pieceKind || (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
+    function shouldColorVisitedEdge(row, col) {
+        if (game.state.board[row][col].shape != Shape.Line) {
+            return false;
+        }
+        return game.state.board[row][col].owner != -1 || isProposal(row, col);
     }
-    function isPieceX(row, col) {
-        return isPiece(row, col, 0, 'X');
+    game.shouldColorVisitedEdge = shouldColorVisitedEdge;
+    function isOccupied(row, col, turnIndex) {
+        return (game.state.board[row][col].shape == Shape.Box && game.state.board[row][col].owner == turnIndex) ||
+            (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);
     }
-    game.isPieceX = isPieceX;
-    function isPieceO(row, col) {
-        return isPiece(row, col, 1, 'O');
+    function isOccupiedBy0(row, col) {
+        return isOccupied(row, col, 0);
     }
-    game.isPieceO = isPieceO;
+    game.isOccupiedBy0 = isOccupiedBy0;
+    function isOccupiedBy1(row, col) {
+        return isOccupied(row, col, 1);
+    }
+    game.isOccupiedBy1 = isOccupiedBy1;
     function shouldSlowlyAppear(row, col) {
         return game.state.delta &&
             game.state.delta.row === row && game.state.delta.col === col;

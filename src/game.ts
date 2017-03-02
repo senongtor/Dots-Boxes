@@ -21,6 +21,11 @@ module game {
   export let proposals: number[][] = null;
   export let yourPlayerInfo: IPlayerInfo = null;
 
+  export let row = 11;
+  export let col = 11;
+  export let dimSet = false;
+  export let board: Board = null;
+
   export function init($rootScope_: angular.IScope, $timeout_: angular.ITimeoutService) {
     $rootScope = $rootScope_;
     $timeout = $timeout_;
@@ -139,6 +144,13 @@ module game {
     let move = aiService.findComputerMove(currentMove);
     log.info("Computer move: ", move);
     makeMove(move);
+
+  }
+  export function setDim(row: number, col: number) {
+    row = row;
+    col = col;
+    dimSet = true;
+    board = gameLogic.getInitialBoardWP(row,col);
   }
 
   function makeMove(move: IMove) {
@@ -163,7 +175,6 @@ module game {
       gameService.makeMove(move, myProposal);
     }
   }
-
   function isFirstMove() {
     return !currentUpdateUI.state;
   }
@@ -192,7 +203,7 @@ module game {
       currentUpdateUI.yourPlayerIndex === currentUpdateUI.turnIndex; // it's my turn
   }
 
-  export function cellClicked(row: number, col: number, dir: Direction): void {
+  export function cellClicked(row: number, col: number): void {
     log.info("Clicked on cell:", row, col);
     if (!isHumanTurn()) return;
     let nextMove: IMove = null;
@@ -208,19 +219,30 @@ module game {
   }
 
   export function shouldShowImage(row: number, col: number): boolean {
-    return state.board[row][col].shape==Shape.Box && state.board[row][col].owner!=-1 || isProposal(row, col);
+    if(state.board[row][col].shape!=Shape.Box){
+      return false;
+    }
+    return state.board[row][col].owner >=0 || isProposal(row, col);
   }
 
-  function isPiece(row: number, col: number, turnIndex: number, pieceKind: string): boolean {
-    return state.board[row][col].shape.toString() === pieceKind || (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
+  export function shouldColorVisitedEdge(row: number, col: number): boolean {
+    if(state.board[row][col].shape!=Shape.Line){
+      return false;
+    }
+    return  state.board[row][col].owner!=-1 || isProposal(row, col);
+  }
+
+  function isOccupied(row: number, col: number, turnIndex: number): boolean {
+    return (state.board[row][col].shape==Shape.Box && state.board[row][col].owner==turnIndex) || 
+    (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
   }
   
-  export function isPieceX(row: number, col: number): boolean {
-    return isPiece(row, col, 0, 'X');
+  export function isOccupiedBy0(row: number, col: number): boolean {
+    return isOccupied(row, col, 0);
   }
 
-  export function isPieceO(row: number, col: number): boolean {
-    return isPiece(row, col, 1, 'O');
+  export function isOccupiedBy1(row: number, col: number): boolean {
+    return isOccupied(row, col, 1);
   }
 
   export function shouldSlowlyAppear(row: number, col: number): boolean {

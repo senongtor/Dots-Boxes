@@ -22,6 +22,8 @@ type IProposalData = BoardDelta;
 interface BoardDelta {
   row: number;
   col: number;
+  //To inducate the occupied grid
+  
 }
 
 /**
@@ -29,7 +31,7 @@ interface BoardDelta {
  */
 class Grid{
     //This dict for mark the occupation of four surrounding edges
-    occupies: {[id:number]: boolean}={};
+    //occupies: {[id:number]: boolean}={};
     //This Enum is for distinguish box,dot and line grid
     shape: Shape;
     //To specify owner. Only for box there is a real owner assigned. For line
@@ -40,12 +42,11 @@ class Grid{
     constructor(){       
         // this.shape=Shape.Init;
         // this.dir=Direction.Init;
-
         this.owner=-1;
-        this.occupies[Occupied.Down]=false;
-        this.occupies[Occupied.Up]=false;
-        this.occupies[Occupied.Left]=false;
-        this.occupies[Occupied.Right]=false;
+        // this.occupies[Occupied.Down]=false;
+        // this.occupies[Occupied.Up]=false;
+        // this.occupies[Occupied.Left]=false;
+        // this.occupies[Occupied.Right]=false;
     }
 }
 
@@ -66,11 +67,14 @@ import dragAndDropService = gamingPlatform.dragAndDropService;
 module gameLogic {
       export const ROWS = 11;
       export const COLS = 11;
-      export function getInitialBoard(): Board {
+      /**
+       * Private method for initiating the board with the size we need
+       */
+      function createNewBoard(row: number, col: number): Board {
         let board: Board = [];
-        for (let i = 0; i < ROWS; i++) {
+        for (let i = 0; i < row; i++) {
             board[i] = [];
-            for (let j = 0; j < COLS; j++) {
+            for (let j = 0; j < col; j++) {
                 board[i][j]=new Grid();
                 //[][     ][][      ][]
                 if(i%2==0){
@@ -93,9 +97,17 @@ module gameLogic {
         }
         return board;
       }
+
+      export function getInitialBoardWP(row: number,col: number){
+        return createNewBoard(row,col);
+      }
+      export function getInitialBoard(): Board {
+        return createNewBoard(ROWS,COLS);
+      }
       export function getInitialState(): IState {
         return {board: getInitialBoard(), delta: null};
       }
+      
       /**
        * Create Move
        */
@@ -121,14 +133,14 @@ module gameLogic {
         let turnIndex: number;
         //Now this edge was owned, turn it to 1.
         boardAfterMove[row][col].owner=1;
-
+       
         //If all 4 edges of any of the adjcent grid is occupied, 
         //assign the current move player as the owner of that edge
         //If the edge is horizontal, check left and right box     
         if(boardAfterMove[row][col].dir==Direction.Hor){
             if(row>0){
-                boardAfterMove[row-1][col].occupies[Occupied.Down]=true;
-                if(boxOccupied(boardAfterMove[row-1][col])){
+                //boardAfterMove[row-1][col].occupies[Occupied.Down]=true;
+                if(boxOccupied(boardAfterMove,row-1,col)){
                     boardAfterMove[row-1][col].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
                 }else{
@@ -136,8 +148,8 @@ module gameLogic {
                 }
             }
             if(row<ROWS-1){
-                boardAfterMove[row+1][col].occupies[Occupied.Up]=true;
-                if(boxOccupied(boardAfterMove[row+1][col])){
+                //boardAfterMove[row+1][col].occupies[Occupied.Up]=true;
+                if(boxOccupied(boardAfterMove,row+1,col)){
                     boardAfterMove[row+1][col].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
                 }else{
@@ -148,8 +160,8 @@ module gameLogic {
         }else{
             //If the line has left box.
             if(col>0){
-                boardAfterMove[row][col-1].occupies[Occupied.Right]=true;
-                if(boxOccupied(boardAfterMove[row][col-1])){
+                //boardAfterMove[row][col-1].occupies[Occupied.Right]=true;
+                if(boxOccupied(boardAfterMove,row,col-1)){
                     boardAfterMove[row][col-1].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
                 }else{
@@ -158,8 +170,8 @@ module gameLogic {
             }
             //If the line has right box.
             if(col<COLS-1){
-                boardAfterMove[row][col+1].occupies[Occupied.Left]=true;
-                if(boxOccupied(boardAfterMove[row][col+1])){
+                //boardAfterMove[row][col+1].occupies[Occupied.Left]=true;
+                if(boxOccupied(boardAfterMove,row,col+1)){
                     boardAfterMove[row][col+1].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
                 }else{
@@ -193,11 +205,15 @@ module gameLogic {
       /**
        * Check if the box is surrounded
        */
-      function boxOccupied(grid:Grid): boolean{
-        return grid.occupies[Occupied.Down]&&
-        grid.occupies[Occupied.Up]&&
-        grid.occupies[Occupied.Left]&&
-        grid.occupies[Occupied.Right];
+      function boxOccupied(board: Board,row: number,col: number): boolean{
+          return board[row-1][col].owner >=0 &&
+          board[row+1][col].owner >=0 &&
+          board[row][col-1].owner >=0 &&
+          board[row][col+1].owner >=0
+        // return grid.occupies[Occupied.Down]&&
+        // grid.occupies[Occupied.Up]&&
+        // grid.occupies[Occupied.Left]&&
+        // grid.occupies[Occupied.Right];
       }
       /**
        * Find out who wins

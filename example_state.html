@@ -1,17 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="myApp">
 <head>
-<style>
-div {
-  border-collapse: collapse;
-  border: 1px solid;
-  border-spacing: 0;
-  spacing: 0;
-  padding: 0;
-  margin: 0;
-  font-size: 0px;
-}
-</style>
+
   <meta charset="utf-8">
   <title>DotsAndBoxes</title>
   <meta name="description" content="DotsAndBoxes game">
@@ -37,12 +27,14 @@ div {
       <div style="position:absolute; top:0; left:0%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64); "/>
+                    <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
-      <div style="position:absolute; top:0; left:6.25%; width:28%; height:6.25%;" >
+      <div style="position:absolute; top:0; left:6.25%; width:25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
                   <rect class='line' width="100%" height="100%" style="fill:rgb(255,255,255)"/>
@@ -52,8 +44,10 @@ div {
       <div style="position:absolute; top:0; left:31.25%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
@@ -67,8 +61,10 @@ div {
       <div style="position:absolute; top:0; left:62.5%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
@@ -82,8 +78,10 @@ div {
       <div style="position:absolute; top:0; left:93.75%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
@@ -98,7 +96,7 @@ div {
       <div style="position:absolute; top:6.25%; left:6.25%; width:25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(255,255,255)"/>
+                  <rect class='box' width="100%" height="100%" style="fill:rgb(255,255,255)"/>
               </svg>
           </div>
       </div>
@@ -112,7 +110,7 @@ div {
       <div style="position:absolute; top:6.25%; left:37.5%; width:25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(255,255,255)"/>
+                  <rect class='box' width="100%" height="100%" style="fill:rgb(255,255,255)"/>
               </svg>
           </div>
       </div>
@@ -126,7 +124,7 @@ div {
       <div style="position:absolute; top:6.25%; left:68.75%; width:25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(255,255,255)"/>
+                  <rect class='box' width="100%" height="100%" style="fill:rgb(255,255,255)"/>
               </svg>
           </div>
       </div>
@@ -142,8 +140,10 @@ div {
       <div style="position:absolute; top:31.25%; left:0%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
@@ -157,8 +157,10 @@ div {
       <div style="position:absolute; top:31.25%; left:31.25%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
@@ -172,8 +174,10 @@ div {
       <div style="position:absolute; top:31.25%; left:62.5%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
@@ -187,8 +191,10 @@ div {
       <div style="position:absolute; top:31.25%; left:93.75%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
@@ -204,42 +210,42 @@ div {
       <div style="position:absolute; top:37.5%; left:6.25%; width:25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect class='line' width="100%" height="100%" style="fill:rgb(0,0,255)"/>
+                  <rect class='box' width="100%" height="100%" style="fill:rgb(0,0,255)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:37.5%; left:31.25%; width:6.25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(255,0,0)"/>
+                  <rect class='line' width="100%" height="100%" style="fill:rgb(255,0,0)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:37.5%; left:37.5%; width:25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(0,0,255)"/>
+                  <rect class='box' width="100%" height="100%" style="fill:rgb(0,0,255)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:37.5%; left:62.5%; width:6.25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(255,0,0)"/>
+                  <rect class='line' width="100%" height="100%" style="fill:rgb(255,0,0)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:37.5%; left:68.75%; width:25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(255,0,0)"/>
+                  <rect class='box' width="100%" height="100%" style="fill:rgb(255,0,0)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:37.5%; left:93.75%; width:6.25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(255,0,0)"/>
+                  <rect class='line' width="100%" height="100%" style="fill:rgb(255,0,0)"/>
               </svg>
           </div>
       </div>
@@ -248,53 +254,61 @@ div {
       <div style="position:absolute; top:62.5%; left:0%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:62.5%; left:6.25%; width:25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(0,0,255)"/>
+                  <rect class='line' width="100%" height="100%" style="fill:rgb(0,0,255)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:62.5%; left:31.25%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:62.5%; left:37.5%; width:25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(255,0,0)"/>
+                  <rect class='line' width="100%" height="100%" style="fill:rgb(255,0,0)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:62.5%; left:62.5%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:62.5%; left:68.75%; width:25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(0,0,255)"/>
+                  <rect class='line' width="100%" height="100%" style="fill:rgb(0,0,255)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:62.5%; left:93.75%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
@@ -303,49 +317,49 @@ div {
       <div style="position:absolute; top:68.75%; left:0%; width:6.25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(255,0,0)"/>
+                  <rect class='line' width="100%" height="100%" style="fill:rgb(255,0,0)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:68.75%; left:6.25%; width:25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(0,0,255)"/>
+                  <rect class='box' width="100%" height="100%" style="fill:rgb(0,0,255)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:68.75%; left:31.25%; width:6.25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(255,0,0)"/>
+                  <rect class='line' width="100%" height="100%" style="fill:rgb(255,0,0)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:68.75%; left:37.5%; width:25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(255,0,0)"/>
+                  <rect class='box' width="100%" height="100%" style="fill:rgb(255,0,0)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:68.75%; left:62.5%; width:6.25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(255,0,0)"/>
+                  <rect class='line' width="100%" height="100%" style="fill:rgb(255,0,0)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:68.75%; left:68.75%; width:25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(255,255,255)"/>
+                  <rect class='box' width="100%" height="100%" style="fill:rgb(255,255,255)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:68.75%; left:93.75%; width:6.25%; height:25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(255,255,255)"/>
+                  <rect class='line' width="100%" height="100%" style="fill:rgb(255,255,255)"/>
               </svg>
           </div>
       </div>
@@ -354,57 +368,63 @@ div {
       <div style="position:absolute; top:93.75%; left:0%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:93.75%; left:6.25%; width:25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(0,0,255)"/>
+                  <rect class='line' width="100%" height="100%" style="fill:rgb(0,0,255)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:93.75%; left:31.25%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:93.75%; left:37.5%; width:25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(0,0,255)"/>
+                  <rect class='line'width="100%" height="100%" style="fill:rgb(0,0,255)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:93.75%; left:62.5%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:93.75%; left:68.75%; width:25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(0,0,255)"/>
+                  <rect class='line'width="100%" height="100%" style="fill:rgb(0,0,255)"/>
               </svg>
           </div>
       </div>
       <div style="position:absolute; top:93.75%; left:93.75%; width:6.25%; height:6.25%;" >
           <div style="width:100%; height: 100%">
               <svg width="100%" height="100%">
-                  <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
-                  <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  <g class='dot'>
+                    <rect width="100%" height="100%" style="fill:rgb(64,64,64)"/>
+                    <circle cx="50%" cy="50%" r="50%" stroke="black" stroke-width="0" fill="black" />
+                  </g>
               </svg>
           </div>
       </div>
-
-
 </body>
 </html>

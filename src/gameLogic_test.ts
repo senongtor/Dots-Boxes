@@ -60,7 +60,7 @@ describe("In Dots and Boxes", function() {
   it(": X placing line on 0x1 edge from initial state", function() {
     let b=gameLogic.getInitialBoard();
     b[0][1].owner=1;
-    b[1][1].occupies[Occupied.Up]=true;
+    // b[1][1].occupies[Occupied.Up]=true;
     expectMove(X_TURN, null, 0, 1,
       b, O_TURN, NO_ONE_WINS);
   });
@@ -68,22 +68,25 @@ describe("In Dots and Boxes", function() {
   it(": O placing line on 1x0 after X placed line on 0x1 ", function() {
     let b=gameLogic.getInitialBoard();
     b[0][1].owner=1;
-    b[1][1].occupies[Occupied.Up]=true;
+    //b[1][1].occupies[Occupied.Up]=true;
     let b_=gameLogic.getInitialBoard();
     b_[0][1].owner=1;
-    b_[1][1].occupies[Occupied.Up]=true;
+    //b_[1][1].occupies[Occupied.Up]=true;
     b_[1][0].owner=1;
-    b_[1][1].occupies[Occupied.Left]=true;
+    //b_[1][1].occupies[Occupied.Left]=true;
     expectMove(O_TURN, b, 1, 0, 
       b_, X_TURN, NO_ONE_WINS);
   });
 
-  // it("placing an O in a non-empty position is illegal", function() {
-  //   expectException(O_TURN,
-  //     [['X', '', ''],
-  //      ['', '', ''],
-  //      ['', '', '']], 0, 0);
-  // });
+  it("placing an O in a non-empty position is illegal", function() {
+    let b=gameLogic.getInitialBoard();
+    b[0][1].owner=1;
+    //b[1][1].occupies[Occupied.Up]=true;
+    expectMove(X_TURN, null, 0, 1,
+      b, O_TURN, NO_ONE_WINS);
+    expectException(O_TURN,
+      b, 0, 0);
+  });
 
   // it("cannot move after the game is over", function() {
   //   expectException(O_TURN,

@@ -26,13 +26,11 @@ var Grid = (function () {
     function Grid() {
         // this.shape=Shape.Init;
         // this.dir=Direction.Init;
-        //This dict for mark the occupation of four surrounding edges
-        this.occupies = {};
         this.owner = -1;
-        this.occupies[Occupied.Down] = false;
-        this.occupies[Occupied.Up] = false;
-        this.occupies[Occupied.Left] = false;
-        this.occupies[Occupied.Right] = false;
+        // this.occupies[Occupied.Down]=false;
+        // this.occupies[Occupied.Up]=false;
+        // this.occupies[Occupied.Left]=false;
+        // this.occupies[Occupied.Right]=false;
     }
     return Grid;
 }());
@@ -46,11 +44,14 @@ var gameLogic;
 (function (gameLogic) {
     gameLogic.ROWS = 11;
     gameLogic.COLS = 11;
-    function getInitialBoard() {
+    /**
+     * Private method for initiating the board with the size we need
+     */
+    function createNewBoard(row, col) {
         var board = [];
-        for (var i = 0; i < gameLogic.ROWS; i++) {
+        for (var i = 0; i < row; i++) {
             board[i] = [];
-            for (var j = 0; j < gameLogic.COLS; j++) {
+            for (var j = 0; j < col; j++) {
                 board[i][j] = new Grid();
                 //[][     ][][      ][]
                 if (i % 2 == 0) {
@@ -75,6 +76,13 @@ var gameLogic;
             }
         }
         return board;
+    }
+    function getInitialBoardWP(row, col) {
+        return createNewBoard(row, col);
+    }
+    gameLogic.getInitialBoardWP = getInitialBoardWP;
+    function getInitialBoard() {
+        return createNewBoard(gameLogic.ROWS, gameLogic.COLS);
     }
     gameLogic.getInitialBoard = getInitialBoard;
     function getInitialState() {
@@ -108,8 +116,8 @@ var gameLogic;
         //If the edge is horizontal, check left and right box     
         if (boardAfterMove[row][col].dir == Direction.Hor) {
             if (row > 0) {
-                boardAfterMove[row - 1][col].occupies[Occupied.Down] = true;
-                if (boxOccupied(boardAfterMove[row - 1][col])) {
+                //boardAfterMove[row-1][col].occupies[Occupied.Down]=true;
+                if (boxOccupied(boardAfterMove, row - 1, col)) {
                     boardAfterMove[row - 1][col].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
                 }
@@ -118,8 +126,8 @@ var gameLogic;
                 }
             }
             if (row < gameLogic.ROWS - 1) {
-                boardAfterMove[row + 1][col].occupies[Occupied.Up] = true;
-                if (boxOccupied(boardAfterMove[row + 1][col])) {
+                //boardAfterMove[row+1][col].occupies[Occupied.Up]=true;
+                if (boxOccupied(boardAfterMove, row + 1, col)) {
                     boardAfterMove[row + 1][col].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
                 }
@@ -132,8 +140,8 @@ var gameLogic;
         else {
             //If the line has left box.
             if (col > 0) {
-                boardAfterMove[row][col - 1].occupies[Occupied.Right] = true;
-                if (boxOccupied(boardAfterMove[row][col - 1])) {
+                //boardAfterMove[row][col-1].occupies[Occupied.Right]=true;
+                if (boxOccupied(boardAfterMove, row, col - 1)) {
                     boardAfterMove[row][col - 1].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
                 }
@@ -143,8 +151,8 @@ var gameLogic;
             }
             //If the line has right box.
             if (col < gameLogic.COLS - 1) {
-                boardAfterMove[row][col + 1].occupies[Occupied.Left] = true;
-                if (boxOccupied(boardAfterMove[row][col + 1])) {
+                //boardAfterMove[row][col+1].occupies[Occupied.Left]=true;
+                if (boxOccupied(boardAfterMove, row, col + 1)) {
                     boardAfterMove[row][col + 1].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
                 }
@@ -178,11 +186,15 @@ var gameLogic;
     /**
      * Check if the box is surrounded
      */
-    function boxOccupied(grid) {
-        return grid.occupies[Occupied.Down] &&
-            grid.occupies[Occupied.Up] &&
-            grid.occupies[Occupied.Left] &&
-            grid.occupies[Occupied.Right];
+    function boxOccupied(board, row, col) {
+        return board[row - 1][col].owner >= 0 &&
+            board[row + 1][col].owner >= 0 &&
+            board[row][col - 1].owner >= 0 &&
+            board[row][col + 1].owner >= 0;
+        // return grid.occupies[Occupied.Down]&&
+        // grid.occupies[Occupied.Up]&&
+        // grid.occupies[Occupied.Left]&&
+        // grid.occupies[Occupied.Right];
     }
     /**
      * Find out who wins
