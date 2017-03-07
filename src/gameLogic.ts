@@ -42,10 +42,6 @@ class Grid{
         // this.shape=Shape.Init;
         // this.dir=Direction.Init;
         this.owner=-1;
-        // this.occupies[Occupied.Down]=false;
-        // this.occupies[Occupied.Up]=false;
-        // this.occupies[Occupied.Left]=false;
-        // this.occupies[Occupied.Right]=false;
     }
 }
 
@@ -138,13 +134,13 @@ module gameLogic {
         //If the edge is vertical, check left and right box
         //If any adjcent box has all edges taken, assign the current player as the owner of that box    
         if(boardAfterMove[row][col].dir==Direction.Hor){
+            let streak: boolean=false;
             if(row>0){
                 //boardAfterMove[row-1][col].occupies[Occupied.Down]=true;
                 if(boxOccupied(boardAfterMove,row-1,col)){
                     boardAfterMove[row-1][col].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
-                }else{
-                    turnIndex=turnIndexBeforeMove^1;
+                    streak=true;
                 }
             }
             if(row<ROWS-1){
@@ -152,20 +148,24 @@ module gameLogic {
                 if(boxOccupied(boardAfterMove,row+1,col)){
                     boardAfterMove[row+1][col].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
-                }else{
-                    turnIndex=turnIndexBeforeMove^1;
+                    streak=true;
                 }
             }
+            if(!streak){
+                    turnIndex=turnIndexBeforeMove^1;
+            }
         //For the vertical line placed for current player   
-        }else{
+    }else if(boardAfterMove[row][col].dir==Direction.Ver){
+            let streak: boolean=false;
             //If the line has left box.
             if(col>0){
                 //boardAfterMove[row][col-1].occupies[Occupied.Right]=true;
                 if(boxOccupied(boardAfterMove,row,col-1)){
                     boardAfterMove[row][col-1].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
+                    streak=true;
                 }else{
-                    turnIndex=turnIndexBeforeMove^1;
+                    
                 }
             }
             //If the line has right box.
@@ -174,9 +174,11 @@ module gameLogic {
                 if(boxOccupied(boardAfterMove,row,col+1)){
                     boardAfterMove[row][col+1].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
-                }else{
-                    turnIndex=turnIndexBeforeMove^1;
+                    streak=true;
                 }
+            }
+            if(!streak){
+                turnIndex=turnIndexBeforeMove^1;
             }
         }
 

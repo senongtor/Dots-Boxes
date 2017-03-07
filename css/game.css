@@ -67,8 +67,8 @@ textarea, input {
 .edge {
   background: saddlebrown !important; 
   border-collapse: collapse !important;
-  border: hidden;
-  border: 0pt;
+  border: hidden !important;
+  border: 0pt !important;
   opacity: 0.8;
   /*-webkit-animation-name: highlight_last_move; Chrome, Safari, Opera */
   /*-webkit-animation-duration: 1s; Chrome, Safari, Opera */
