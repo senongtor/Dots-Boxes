@@ -23,7 +23,6 @@ interface BoardDelta {
   row: number;
   col: number;
   //To inducate the occupied grid
-  
 }
 
 /**
@@ -65,8 +64,8 @@ import log = gamingPlatform.log;
 import dragAndDropService = gamingPlatform.dragAndDropService;
 
 module gameLogic {
-      export const ROWS = 11;
-      export const COLS = 11;
+      export const ROWS = 15;
+      export const COLS = 15;
       /**
        * Private method for initiating the board with the size we need
        */
@@ -134,9 +133,10 @@ module gameLogic {
         //Now this edge was owned, turn it to 1.
         boardAfterMove[row][col].owner=1;
        
-        //If all 4 edges of any of the adjcent grid is occupied, 
         //assign the current move player as the owner of that edge
-        //If the edge is horizontal, check left and right box     
+        //If the edge is horizontal, check up and down box
+        //If the edge is vertical, check left and right box
+        //If any adjcent box has all edges taken, assign the current player as the owner of that box    
         if(boardAfterMove[row][col].dir==Direction.Hor){
             if(row>0){
                 //boardAfterMove[row-1][col].occupies[Occupied.Down]=true;

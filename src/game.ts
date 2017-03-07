@@ -146,6 +146,7 @@ module game {
     makeMove(move);
 
   }
+
   export function setDim(row: number, col: number) {
     row = row;
     col = col;
@@ -204,7 +205,7 @@ module game {
   }
 
   export function cellClicked(row: number, col: number): void {
-    log.info("Clicked on cell:", row, col);
+    log.info("Clicked on cell:", row, col, "index: ", currentUpdateUI.turnIndex);
     if (!isHumanTurn()) return;
     let nextMove: IMove = null;
     try {
@@ -216,13 +217,6 @@ module game {
     }
     // Move is legal, make it!
     makeMove(nextMove);
-  }
-
-  export function shouldShowImage(row: number, col: number): boolean {
-    if(state.board[row][col].shape!=Shape.Box){
-      return false;
-    }
-    return state.board[row][col].owner >=0 || isProposal(row, col);
   }
 
   export function shouldColorVisitedEdge(row: number, col: number): boolean {
@@ -247,7 +241,17 @@ module game {
 
   export function shouldSlowlyAppear(row: number, col: number): boolean {
     return state.delta &&
-        state.delta.row === row && state.delta.col === col;
+        state.delta.row === row && 
+        state.delta.col === col;
+  }
+
+  // export function isNewlyFilledEdge(row: number, col: number ): boolean {
+    
+  //   return board[row][col].owner==currentUpdateUI.turnIndex;
+  // }
+
+  export function divideByTwoThenFloor(row: number): number {
+    return Math.floor(row/2);
   }
 }
 

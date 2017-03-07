@@ -7,8 +7,8 @@ html, body {
   position: fixed!important;
 }
 div {
+  border: 1px solid #E8E8E8;
   border-collapse: collapse;
-  border: 1px groove;
   border-spacing: 0;
   padding: 0;
   margin: 0;
@@ -35,11 +35,12 @@ textarea, input {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
-body {
-  background-color: rgb(250,250,250);
-}
 
-.r {
+/*body {
+  background-color: rgb(250,250,250);
+}*/
+
+/*.r {
   border-right: 6pt outset lightgrey;
 }
 .b {
@@ -57,34 +58,28 @@ body {
   border-left: black;
   border-bottom: black;
   border-right: black;
-}
-
-.p1 {
-  border-color: red;
-  border-right: black;
-  border-bottom: black;
-}
-
-.p2 {
-  border-color: blue;
-}
+}*/
 
 .slowlyAppear {
   animation: slowlyAppear 0.5s linear;
 }
 
 .edge {
-  background: #9999FF; 
-  border: 1px solid #959595;
+  background: saddlebrown !important; 
+  border-collapse: collapse !important;
+  border: hidden;
+  border: 0pt;
+  opacity: 0.8;
   /*-webkit-animation-name: highlight_last_move; Chrome, Safari, Opera */
   /*-webkit-animation-duration: 1s; Chrome, Safari, Opera */
   animation-name: highlight_last_move;
-  animation-duration: 0.01s;
+  animation-duration: 0.1s ease;
 }
 
 .edge_new {
-  background: #FF6600; 
-  border: 1px solid #959595;
+  background: #FF6600 !important; 
+  border-collapse: collapse !important; 
+  border: 0pt;
   /*-webkit-animation-name: highlight_last_move; Chrome, Safari, Opera */
   /*-webkit-animation-duration: 1s; Chrome, Safari, Opera */
   animation-name: highlight_last_move_new;
@@ -92,8 +87,8 @@ body {
 }
 
 @keyframes highlight_last_move {
-    from {background-color: yellow;}
-    to {background-color: #9999FF;}
+    from {background-color: black;}
+    to {background-color: saddlebrown;}
 }
 @keyframes highlight_last_move_new {
     from {background-color: yellow;}
@@ -112,19 +107,53 @@ body {
 }*/
 
 
-/*.cell_player0 {
-  background: #ff9933; //orange
-  border: 1px solid #959595;
+.cell_player0 {
+  background: #ff9933; 
+  /*border: 1px solid #959595;*/
 }
 
 .cell_player1 {
-  background: #0099ff; //blue
-  border: 1px solid #959595;
+  background: #0099ff; 
+  /*border: 1px solid #959595;*/
 }
 
-.corner {
-  background: #6666CC; //dark purple
-  border: 1px solid #959595;
+.dot {
+  background: #bfbfbf; 
+  box-shadow: inset 0 0 35px 5px rgba(0,0,0,0.25), inset 0 2px 1px 1px rgba(255,255,255,0.9), inset 0 -2px 1px 0 rgba(0,0,0,0.25);
+}
+
+.dot:hover{
+  -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);  
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+  box-shadow: inset 0 0 30px 5px rgba(0,0,0,0.25), inset 0 2px 1px 1px rgba(255,255,255,0.9), inset 0 -2px 1px 0 rgba(0,0,0,0.25);
+}
+
+/*.rotate {
+	-webkit-transition-duration: 0.8s;
+    -moz-transition-duration: 0.8s;
+    -o-transition-duration: 0.8s;
+    transition-duration: 0.8s;
+     
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    -o-transition-property: -o-transform;
+    transition-property: transform;
+     margin: 10px;
+    overflow: hidden;
+}
+
+.dot :hover .rotate {
+    -webkit-transform:rotate(360deg);
+    -moz-transform:rotate(360deg);
+    -o-transform:rotate(360deg);
 }*/
 
 .slowlyAppear {
@@ -135,10 +164,18 @@ body {
 	animation: slowlyAppear 0.01s linear;
 }
 
-.line:hover{
-  fill:grey;
-  opacity: 0.5;
+.line:not(.no-hover):hover{
+  border-collapse: collapse;
+  border: 1px groove;
+  border-spacing: 2;
+  fill:darkred; 
+  opacity: 0.3;
   /*animation: hideshow 0.3s ease infinite;*/
+}
+
+
+.line:active{
+  background: black;
 }
 
 @keyframes hideshow {

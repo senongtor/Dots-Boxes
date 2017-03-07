@@ -186,7 +186,7 @@ var game;
             game.currentUpdateUI.yourPlayerIndex === game.currentUpdateUI.turnIndex; // it's my turn
     }
     function cellClicked(row, col) {
-        log.info("Clicked on cell:", row, col);
+        log.info("Clicked on cell:", row, col, "index: ", game.currentUpdateUI.turnIndex);
         if (!isHumanTurn())
             return;
         var nextMove = null;
@@ -201,13 +201,6 @@ var game;
         makeMove(nextMove);
     }
     game.cellClicked = cellClicked;
-    function shouldShowImage(row, col) {
-        if (game.state.board[row][col].shape != Shape.Box) {
-            return false;
-        }
-        return game.state.board[row][col].owner >= 0 || isProposal(row, col);
-    }
-    game.shouldShowImage = shouldShowImage;
     function shouldColorVisitedEdge(row, col) {
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;
@@ -229,9 +222,17 @@ var game;
     game.isOccupiedBy1 = isOccupiedBy1;
     function shouldSlowlyAppear(row, col) {
         return game.state.delta &&
-            game.state.delta.row === row && game.state.delta.col === col;
+            game.state.delta.row === row &&
+            game.state.delta.col === col;
     }
     game.shouldSlowlyAppear = shouldSlowlyAppear;
+    // export function isNewlyFilledEdge(row: number, col: number ): boolean {
+    //   return board[row][col].owner==currentUpdateUI.turnIndex;
+    // }
+    function divideByTwoThenFloor(row) {
+        return Math.floor(row / 2);
+    }
+    game.divideByTwoThenFloor = divideByTwoThenFloor;
 })(game || (game = {}));
 angular.module('myApp', ['gameServices'])
     .run(['$rootScope', '$timeout',
