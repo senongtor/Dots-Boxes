@@ -245,11 +245,6 @@ module game {
         state.delta.col === col;
   }
 
-  // export function isNewlyFilledEdge(row: number, col: number ): boolean {
-    
-  //   return board[row][col].owner==currentUpdateUI.turnIndex;
-  // }
-
   export function divideByTwoThenFloor(row: number): number {
     return Math.floor(row/2);
   }

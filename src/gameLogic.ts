@@ -22,7 +22,6 @@ type IProposalData = BoardDelta;
 interface BoardDelta {
   row: number;
   col: number;
-  //To inducate the occupied grid
 }
 
 /**
@@ -39,8 +38,6 @@ class Grid{
     //This is only for line grid. It has two state, horizontal and vertical.
     dir: Direction;
     constructor(){       
-        // this.shape=Shape.Init;
-        // this.dir=Direction.Init;
         this.owner=-1;
     }
 }
@@ -136,7 +133,6 @@ module gameLogic {
         if(boardAfterMove[row][col].dir==Direction.Hor){
             let streak: boolean=false;
             if(row>0){
-                //boardAfterMove[row-1][col].occupies[Occupied.Down]=true;
                 if(boxOccupied(boardAfterMove,row-1,col)){
                     boardAfterMove[row-1][col].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
@@ -144,7 +140,6 @@ module gameLogic {
                 }
             }
             if(row<ROWS-1){
-                //boardAfterMove[row+1][col].occupies[Occupied.Up]=true;
                 if(boxOccupied(boardAfterMove,row+1,col)){
                     boardAfterMove[row+1][col].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
@@ -159,18 +154,14 @@ module gameLogic {
             let streak: boolean=false;
             //If the line has left box.
             if(col>0){
-                //boardAfterMove[row][col-1].occupies[Occupied.Right]=true;
                 if(boxOccupied(boardAfterMove,row,col-1)){
                     boardAfterMove[row][col-1].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
                     streak=true;
-                }else{
-                    
                 }
             }
             //If the line has right box.
             if(col<COLS-1){
-                //boardAfterMove[row][col+1].occupies[Occupied.Left]=true;
                 if(boxOccupied(boardAfterMove,row,col+1)){
                     boardAfterMove[row][col+1].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
@@ -182,7 +173,6 @@ module gameLogic {
             }
         }
 
-        // let winner = getWinner(boardAfterMove);
         let endMatchScores: number[];
         
         if (isOver(board)){
@@ -212,10 +202,6 @@ module gameLogic {
           board[row+1][col].owner >=0 &&
           board[row][col-1].owner >=0 &&
           board[row][col+1].owner >=0
-        // return grid.occupies[Occupied.Down]&&
-        // grid.occupies[Occupied.Up]&&
-        // grid.occupies[Occupied.Left]&&
-        // grid.occupies[Occupied.Right];
       }
       /**
        * Find out who wins
