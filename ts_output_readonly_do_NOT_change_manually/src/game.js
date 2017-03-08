@@ -226,13 +226,12 @@ var game;
             game.state.delta.col === col;
     }
     game.shouldSlowlyAppear = shouldSlowlyAppear;
-    // export function isNewlyFilledEdge(row: number, col: number ): boolean {
-    //   return board[row][col].owner==currentUpdateUI.turnIndex;
-    // }
     function divideByTwoThenFloor(row) {
         return Math.floor(row / 2);
     }
     game.divideByTwoThenFloor = divideByTwoThenFloor;
+    /**Drag and drop */
+    //Add layer, Add drag and drop
 })(game || (game = {}));
 angular.module('myApp', ['gameServices'])
     .run(['$rootScope', '$timeout',

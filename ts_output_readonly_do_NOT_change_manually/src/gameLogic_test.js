@@ -64,12 +64,17 @@ describe("In Dots and Boxes", function () {
         expectMove(X_TURN, null, 0, 1, b, O_TURN, NO_ONE_WINS);
         expectException(O_TURN, b, 0, 0);
     });
-    // it("cannot move after the game is over", function() {
-    //   expectException(O_TURN,
-    //     [['X', 'O', ''],
-    //      ['X', 'O', ''],
-    //      ['X', '', '']], 2, 1);
-    // });
+    it("cannot move after the game is over", function () {
+        var b = gameLogic.getInitialBoard();
+        for (var i = 0; i < b.length; i++) {
+            for (var j = 0; j < b.length; j++) {
+                if (b[i][j].shape == Shape.Box) {
+                    b[i][j].owner = 1;
+                }
+            }
+        }
+        expectException(O_TURN, b, 2, 1);
+    });
     // it("placing O in 2x1", function() {
     //   expectMove(O_TURN,
     //     [['O', 'X', ''],

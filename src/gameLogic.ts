@@ -224,6 +224,7 @@ module gameLogic {
          if(count[1]>count[0]){
             return 1;
         }
+        //Ties
         return -1;
       }
       /**

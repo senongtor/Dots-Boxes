@@ -248,6 +248,9 @@ module game {
   export function divideByTwoThenFloor(row: number): number {
     return Math.floor(row/2);
   }
+
+  /**Drag and drop */
+  //Add layer, Add drag and drop
 }
 
 angular.module('myApp', ['gameServices'])

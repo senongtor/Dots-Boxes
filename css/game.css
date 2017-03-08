@@ -155,18 +155,20 @@ textarea, input {
 	animation: slowlyAppear 0.03s linear;
 }
 
-.line:not(.no-hover):hover{
+.line:not(:active):hover{
   border-collapse: collapse;
   border: 1px groove;
-  border-spacing: 2;
-  fill:darkred; 
-  opacity: 0.3;
+  border-spacing: 0;
+  /*fill:darkred; 
+  opacity: 0.3;*/
   /*animation: hideshow 0.3s ease infinite;*/
 }
 
 .line:active{
   background: black;
+  opacity: 0.6;
   border: inset;
+  transform: scale(1.1);
 }
 
 @keyframes hideshow {
@@ -193,6 +195,122 @@ textarea, input {
   to {opacity: 1;}
 }
 
+@keyframes moveUp {
+    0%   {background-color:red; left:0%; top:0%;}
+    25%  {background-color:yellow; left:10%; top:0px;}
+    50%  {background-color:blue; left:10%; top:10%;}
+    75%  {background-color:green; left:0px; top:10%;}
+    100% {background-color:red; left:0%; top:0%;}
+}
+
 td {
   padding:0 3px 0 3px;
 }
+
+/*Modal layer*/
+/*button {
+  background-color: grey;
+  color: white;
+  margin: 20px auto 0 auto;
+  padding: 5px;
+  display: inline;
+  height: 50px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  -webkit-appearance: button;
+  overflow: visible;
+  border-radius: 6px;
+  white-space: nowrap;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
+  z-index: 1001;
+}
+.overlayModal {
+  background: rgba(0,0,0,0.5);
+  text-align:center;
+  z-index: 1000;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width:100%;
+  height:100%;
+  transition: visibility 0s linear 0.25s, opacity 0.25s linear;
+  -moz-transition: visibility 0s linear 0.25s, opacity 0.25s linear;
+  -webkit-transition: visibility 0s linear 0.25s, opacity 0.25s linear;
+}
+.zeroOpacity {
+  visibility: hidden;
+  opacity: 0;
+}
+.oneOpacity {
+  visibility:visible;
+  opacity:1;
+  transition-delay:0s;
+}
+.modal-backdrop {
+  z-index: 1000;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width:100%;
+  height:100%;
+}
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: 0;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+}
+.modal-header {
+    min-height: 16.42857143px;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.modal-title {
+    margin: 0;
+    line-height: 1.42857143;
+}
+.modal-body {
+    position: relative;
+    padding: 15px;
+}
+.modal-footer {
+    padding: 15px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-transform: none;
+    height: auto;
+}*/

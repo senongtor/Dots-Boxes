@@ -24,8 +24,6 @@ var Occupied;
  */
 var Grid = (function () {
     function Grid() {
-        // this.shape=Shape.Init;
-        // this.dir=Direction.Init;
         this.owner = -1;
     }
     return Grid;
@@ -114,7 +112,6 @@ var gameLogic;
         if (boardAfterMove[row][col].dir == Direction.Hor) {
             var streak = false;
             if (row > 0) {
-                //boardAfterMove[row-1][col].occupies[Occupied.Down]=true;
                 if (boxOccupied(boardAfterMove, row - 1, col)) {
                     boardAfterMove[row - 1][col].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
@@ -122,7 +119,6 @@ var gameLogic;
                 }
             }
             if (row < gameLogic.ROWS - 1) {
-                //boardAfterMove[row+1][col].occupies[Occupied.Up]=true;
                 if (boxOccupied(boardAfterMove, row + 1, col)) {
                     boardAfterMove[row + 1][col].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
@@ -138,18 +134,14 @@ var gameLogic;
             var streak = false;
             //If the line has left box.
             if (col > 0) {
-                //boardAfterMove[row][col-1].occupies[Occupied.Right]=true;
                 if (boxOccupied(boardAfterMove, row, col - 1)) {
                     boardAfterMove[row][col - 1].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
                     streak = true;
                 }
-                else {
-                }
             }
             //If the line has right box.
             if (col < gameLogic.COLS - 1) {
-                //boardAfterMove[row][col+1].occupies[Occupied.Left]=true;
                 if (boxOccupied(boardAfterMove, row, col + 1)) {
                     boardAfterMove[row][col + 1].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
@@ -160,7 +152,6 @@ var gameLogic;
                 turnIndex = turnIndexBeforeMove ^ 1;
             }
         }
-        // let winner = getWinner(boardAfterMove);
         var endMatchScores;
         if (isOver(board)) {
             turnIndex = -1;
@@ -190,10 +181,6 @@ var gameLogic;
             board[row + 1][col].owner >= 0 &&
             board[row][col - 1].owner >= 0 &&
             board[row][col + 1].owner >= 0;
-        // return grid.occupies[Occupied.Down]&&
-        // grid.occupies[Occupied.Up]&&
-        // grid.occupies[Occupied.Left]&&
-        // grid.occupies[Occupied.Right];
     }
     /**
      * Find out who wins
@@ -215,6 +202,7 @@ var gameLogic;
         if (count[1] > count[0]) {
             return 1;
         }
+        //Ties
         return -1;
     }
     /**
