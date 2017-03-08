@@ -31834,6 +31834,7 @@ var gameLogic;
         if (count[1] > count[0]) {
             return 1;
         }
+        //Ties
         return -1;
     }
     /**
@@ -32097,6 +32098,8 @@ var game;
         return Math.floor(row / 2);
     }
     game.divideByTwoThenFloor = divideByTwoThenFloor;
+    /**Drag and drop */
+    //Add layer, Add drag and drop
 })(game || (game = {}));
 angular.module('myApp', ['gameServices'])
     .run(['$rootScope', '$timeout',
