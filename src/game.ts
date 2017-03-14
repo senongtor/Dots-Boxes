@@ -6,6 +6,10 @@ interface SupportedLanguages {
 };
 
 module game {
+  export let isModalShown = false;
+  export let modalTitle = "";
+  export let modalBody = "";
+  
   export let $rootScope: angular.IScope = null;
   export let $timeout: angular.ITimeoutService = null;
 
@@ -21,8 +25,8 @@ module game {
   export let proposals: number[][] = null;
   export let yourPlayerInfo: IPlayerInfo = null;
 
-  export let row = 11;
-  export let col = 11;
+  export let row = 15;
+  export let col = 15;
   export let dimSet = false;
   export let board: Board = null;
 
@@ -249,8 +253,40 @@ module game {
     return Math.floor(row/2);
   }
 
+  /**
+   * Modal 
+   */
+  function showModal(titleId: string, bodyId: string) {
+    log.info("showModal: ", titleId);
+    isModalShown = true;
+    modalTitle = titleId;
+    modalBody = bodyId;
+  }
+   export function clickedOnModal(evt: Event) {
+    if (evt.target === evt.currentTarget) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      isModalShown = false;
+    }
+    return true;
+  }
+  
+  export function fontSizePx(): number {
+    // for iphone4 (min(width,height)=320) it should be 8.
+    return 8*Math.min(window.innerWidth, window.innerHeight) / 320;
+  }
+  //======
+  export function getRange(){
+    let list: number[]=[]
+    for(let i=0;i<row;i++){
+      list[i]=i;
+    }
+    return list;
+  }
+
   /**Drag and drop */
   //Add layer, Add drag and drop
+  
 }
 
 angular.module('myApp', ['gameServices'])

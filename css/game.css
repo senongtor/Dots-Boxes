@@ -29,6 +29,7 @@ div {
   outline: 0; /* To prevent blue-box outline after click: http://stackoverflow.com/questions/21719306/getting-rid-of-a-blue-box-around-button-when-pressed */
 }
 
+
 textarea, input {
   -webkit-user-select: text !important;
   -moz-user-select: text !important;
@@ -38,30 +39,6 @@ textarea, input {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
-
-/*body {
-  background-color: rgb(250,250,250);
-}*/
-
-/*.r {
-  border-right: 6pt outset lightgrey;
-}
-.b {
-  border-bottom: 6pt outset lightgrey;
-}
-.l {
-  border-left: 6pt outset lightgrey;
-}
-.t {
-  border-top: 6pt outset lightgrey;
-}
-
-.f {
-  border-top: black;
-  border-left: black;
-  border-bottom: black;
-  border-right: black;
-}*/
 
 .slowlyAppear {
   animation: slowlyAppear 0.3s linear;
@@ -127,26 +104,6 @@ textarea, input {
   box-shadow: inset 0 0 30px 5px rgba(0,0,0,0.25), inset 0 2px 1px 1px rgba(255,255,255,0.9), inset 0 -2px 1px 0 rgba(0,0,0,0.25);
 }
 
-/*.rotate {
-	-webkit-transition-duration: 0.8s;
-    -moz-transition-duration: 0.8s;
-    -o-transition-duration: 0.8s;
-    transition-duration: 0.8s;
-     
-    -webkit-transition-property: -webkit-transform;
-    -moz-transition-property: -moz-transform;
-    -o-transition-property: -o-transform;
-    transition-property: transform;
-     margin: 10px;
-    overflow: hidden;
-}
-
-.dot :hover .rotate {
-    -webkit-transform:rotate(360deg);
-    -moz-transform:rotate(360deg);
-    -o-transform:rotate(360deg);
-}*/
-
 .slowlyAppear {
 	-webkit-animation: slowlyAppear 0.03s linear;
 	-moz-animation: slowlyAppear 0.03s linear;
@@ -155,20 +112,13 @@ textarea, input {
 	animation: slowlyAppear 0.03s linear;
 }
 
-.line:not(:active):hover{
+.line:hover{
   border-collapse: collapse;
   border: 1px groove;
   border-spacing: 0;
   /*fill:darkred; 
   opacity: 0.3;*/
   /*animation: hideshow 0.3s ease infinite;*/
-}
-
-.line:active{
-  background: black;
-  opacity: 0.6;
-  border: inset;
-  transform: scale(1.1);
 }
 
 @keyframes hideshow {
@@ -208,7 +158,7 @@ td {
 }
 
 /*Modal layer*/
-/*button {
+button {
   background-color: grey;
   color: white;
   margin: 20px auto 0 auto;
@@ -291,6 +241,7 @@ td {
     text-align: right;
     border-top: 1px solid #e5e5e5;
 }
+
 .btn-primary {
     color: #fff;
     background-color: #337ab7;
@@ -313,4 +264,95 @@ td {
     border-radius: 4px;
     text-transform: none;
     height: auto;
-}*/
+}
+
+.text {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+  text-transform: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 0px hidden;
+}
+
+.selectSize {
+  background-color: deepskyblue;
+  margin: 3px auto 0 auto;
+  display: block;
+  border: 0px hidden;
+}
+
+.selectSize:hover{
+  box-shadow: 1px 1px 2px black, 0 0 25px darkgrey, 0 0 5px darkblue;
+}
+
+button {
+  /*background-color: grey;
+  color: white;*/
+  margin: 10px auto 0 auto;
+  padding: 6px;
+  display: inline-block;
+  height: 45px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  -webkit-appearance: button;
+  overflow: visible;
+  white-space: nowrap;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  border: 0px hidden;
+}
+
+/*DropDown*/
+.dropbtn {
+    position: relative;
+    background-color: deepskyblue;
+    color: white;
+    padding: 6px;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    border: 0px hidden;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    align-items: center;
+    border: 0px hidden;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 60px;
+    box-shadow: 0px 8px 16px 0px rgba(0,1,0,0.2);
+    z-index: 10;
+    border: 0px hidden;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: skyblue;
+}
+
+.boardArea > div  {
+  
+}

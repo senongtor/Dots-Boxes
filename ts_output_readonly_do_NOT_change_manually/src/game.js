@@ -1,6 +1,9 @@
 ;
 var game;
 (function (game) {
+    game.isModalShown = false;
+    game.modalTitle = "";
+    game.modalBody = "";
     game.$rootScope = null;
     game.$timeout = null;
     // Global variables are cleared when getting updateUI.
@@ -14,8 +17,8 @@ var game;
     // For community games.
     game.proposals = null;
     game.yourPlayerInfo = null;
-    game.row = 11;
-    game.col = 11;
+    game.row = 15;
+    game.col = 15;
     game.dimSet = false;
     game.board = null;
     function init($rootScope_, $timeout_) {
@@ -230,6 +233,38 @@ var game;
         return Math.floor(row / 2);
     }
     game.divideByTwoThenFloor = divideByTwoThenFloor;
+    /**
+     * Modal
+     */
+    function showModal(titleId, bodyId) {
+        log.info("showModal: ", titleId);
+        game.isModalShown = true;
+        game.modalTitle = titleId;
+        game.modalBody = bodyId;
+    }
+    function clickedOnModal(evt) {
+        if (evt.target === evt.currentTarget) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            game.isModalShown = false;
+        }
+        return true;
+    }
+    game.clickedOnModal = clickedOnModal;
+    function fontSizePx() {
+        // for iphone4 (min(width,height)=320) it should be 8.
+        return 8 * Math.min(window.innerWidth, window.innerHeight) / 320;
+    }
+    game.fontSizePx = fontSizePx;
+    //======
+    function getRange() {
+        var list = [];
+        for (var i = 0; i < game.row; i++) {
+            list[i] = i;
+        }
+        return list;
+    }
+    game.getRange = getRange;
     /**Drag and drop */
     //Add layer, Add drag and drop
 })(game || (game = {}));
