@@ -46,8 +46,8 @@ describe("In Dots and Boxes", function() {
   }
  
   it(": Initial move", function() {
-    let b=gameLogic.getInitialBoard();
-    let move: IMove = gameLogic.createInitialMove();
+    let b=gameLogic.getInitialBoardWP(15,15);
+    let move: IMove = gameLogic.createInitialMove(15,15);
     let expectedMove:IMove = {
         turnIndex: X_TURN,
         endMatchScores: NO_ONE_WINS,
@@ -58,7 +58,7 @@ describe("In Dots and Boxes", function() {
   });
   
   it(": X placing line on 0x1 edge from initial state", function() {
-    let b=gameLogic.getInitialBoard();
+    let b=gameLogic.getInitialBoardWP(15,15);
     b[0][1].owner=1;
     // b[1][1].occupies[Occupied.Up]=true;
     expectMove(X_TURN, null, 0, 1,
@@ -66,10 +66,10 @@ describe("In Dots and Boxes", function() {
   });
 
   it(": O placing line on 1x0 after X placed line on 0x1 ", function() {
-    let b=gameLogic.getInitialBoard();
+    let b=gameLogic.getInitialBoardWP(15,15);
     b[0][1].owner=1;
     //b[1][1].occupies[Occupied.Up]=true;
-    let b_=gameLogic.getInitialBoard();
+    let b_=gameLogic.getInitialBoardWP(15,15);
     b_[0][1].owner=1;
     //b_[1][1].occupies[Occupied.Up]=true;
     b_[1][0].owner=1;
@@ -79,7 +79,7 @@ describe("In Dots and Boxes", function() {
   });
 
   it("placing an O in a non-empty position is illegal", function() {
-    let b=gameLogic.getInitialBoard();
+    let b=gameLogic.getInitialBoardWP(15,15);
     b[0][1].owner=1;
     //b[1][1].occupies[Occupied.Up]=true;
     expectMove(X_TURN, null, 0, 1,
@@ -89,7 +89,7 @@ describe("In Dots and Boxes", function() {
   });
 
   it("cannot move after the game is over", function() {
-    let b=gameLogic.getInitialBoard();
+    let b=gameLogic.getInitialBoardWP(15,15);
     for(let i=0;i<b.length;i++){
       for(let j=0;j<b.length;j++){
         if(b[i][j].shape==Shape.Box){

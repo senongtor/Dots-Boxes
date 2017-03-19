@@ -31,8 +31,8 @@ describe("In Dots and Boxes", function () {
         expect(angular.equals(move, expectedMove)).toBe(true);
     }
     it(": Initial move", function () {
-        var b = gameLogic.getInitialBoard();
-        var move = gameLogic.createInitialMove();
+        var b = gameLogic.getInitialBoardWP(15, 15);
+        var move = gameLogic.createInitialMove(15, 15);
         var expectedMove = {
             turnIndex: X_TURN,
             endMatchScores: NO_ONE_WINS,
@@ -41,16 +41,16 @@ describe("In Dots and Boxes", function () {
         expect(angular.equals(move, expectedMove)).toBe(true);
     });
     it(": X placing line on 0x1 edge from initial state", function () {
-        var b = gameLogic.getInitialBoard();
+        var b = gameLogic.getInitialBoardWP(15, 15);
         b[0][1].owner = 1;
         // b[1][1].occupies[Occupied.Up]=true;
         expectMove(X_TURN, null, 0, 1, b, O_TURN, NO_ONE_WINS);
     });
     it(": O placing line on 1x0 after X placed line on 0x1 ", function () {
-        var b = gameLogic.getInitialBoard();
+        var b = gameLogic.getInitialBoardWP(15, 15);
         b[0][1].owner = 1;
         //b[1][1].occupies[Occupied.Up]=true;
-        var b_ = gameLogic.getInitialBoard();
+        var b_ = gameLogic.getInitialBoardWP(15, 15);
         b_[0][1].owner = 1;
         //b_[1][1].occupies[Occupied.Up]=true;
         b_[1][0].owner = 1;
@@ -58,14 +58,14 @@ describe("In Dots and Boxes", function () {
         expectMove(O_TURN, b, 1, 0, b_, X_TURN, NO_ONE_WINS);
     });
     it("placing an O in a non-empty position is illegal", function () {
-        var b = gameLogic.getInitialBoard();
+        var b = gameLogic.getInitialBoardWP(15, 15);
         b[0][1].owner = 1;
         //b[1][1].occupies[Occupied.Up]=true;
         expectMove(X_TURN, null, 0, 1, b, O_TURN, NO_ONE_WINS);
         expectException(O_TURN, b, 0, 0);
     });
     it("cannot move after the game is over", function () {
-        var b = gameLogic.getInitialBoard();
+        var b = gameLogic.getInitialBoardWP(15, 15);
         for (var i = 0; i < b.length; i++) {
             for (var j = 0; j < b.length; j++) {
                 if (b[i][j].shape == Shape.Box) {

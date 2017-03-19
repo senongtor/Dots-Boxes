@@ -12,8 +12,9 @@ module aiService {
    */
   export function getPossibleMoves(state: IState, turnIndexBeforeMove: number): IMove[] {
     let possibleMoves: IMove[] = [];
-    for (let i = 0; i < gameLogic.ROWS; i++) {
-      for (let j = 0; j < gameLogic.COLS; j++) {
+    //TODO
+    for (let i = 0; i < gameLogic.rows; i++) {
+      for (let j = 0; j < gameLogic.cols; j++) {
         try {
           possibleMoves.push(gameLogic.createMove(state, i, j, turnIndexBeforeMove));
         } catch (e) {

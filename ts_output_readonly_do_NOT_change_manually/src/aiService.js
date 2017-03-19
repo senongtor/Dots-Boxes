@@ -13,8 +13,9 @@ var aiService;
      */
     function getPossibleMoves(state, turnIndexBeforeMove) {
         var possibleMoves = [];
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            for (var j = 0; j < gameLogic.COLS; j++) {
+        //TODO
+        for (var i = 0; i < gameLogic.rows; i++) {
+            for (var j = 0; j < gameLogic.cols; j++) {
                 try {
                     possibleMoves.push(gameLogic.createMove(state, i, j, turnIndexBeforeMove));
                 }

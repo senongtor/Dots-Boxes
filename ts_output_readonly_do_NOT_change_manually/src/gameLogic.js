@@ -36,12 +36,9 @@ var log = gamingPlatform.log;
 var dragAndDropService = gamingPlatform.dragAndDropService;
 var gameLogic;
 (function (gameLogic) {
-    gameLogic.ROWS = 15;
-    gameLogic.COLS = 15;
-    /**
-     * Private method for initiating the board with the size we need
-     */
     function createNewBoard(row, col) {
+        gameLogic.rows = row;
+        gameLogic.cols = col;
         var board = [];
         for (var i = 0; i < row; i++) {
             board[i] = [];
@@ -75,22 +72,25 @@ var gameLogic;
         return createNewBoard(row, col);
     }
     gameLogic.getInitialBoardWP = getInitialBoardWP;
-    function getInitialBoard() {
-        return createNewBoard(gameLogic.ROWS, gameLogic.COLS);
+    //   export function getInitialBoard(): Board {
+    //     return createNewBoard();
+    //   }
+    function getInitialStateWP(row, col) {
+        return { board: getInitialBoardWP(row, col), delta: null };
     }
-    gameLogic.getInitialBoard = getInitialBoard;
-    function getInitialState() {
-        return { board: getInitialBoard(), delta: null };
-    }
-    gameLogic.getInitialState = getInitialState;
+    gameLogic.getInitialStateWP = getInitialStateWP;
+    //   export function getInitialState(): IState {
+    //     return {board: getInitialBoard(), delta: null};
+    //   }
     /**
      * Create Move
      */
     function createMove(stateBeforeMove, row, col, turnIndexBeforeMove) {
-        if (!stateBeforeMove) {
-            stateBeforeMove = getInitialState();
-        }
         var board = stateBeforeMove.board;
+        var dim = board.length;
+        if (!stateBeforeMove) {
+            stateBeforeMove = getInitialStateWP(dim, dim);
+        }
         if (isOver(board)) {
             throw new Error("Can only make a move if the game is not over!");
         }
@@ -118,7 +118,7 @@ var gameLogic;
                     streak = true;
                 }
             }
-            if (row < gameLogic.ROWS - 1) {
+            if (row < dim - 1) {
                 if (boxOccupied(boardAfterMove, row + 1, col)) {
                     boardAfterMove[row + 1][col].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
@@ -141,7 +141,7 @@ var gameLogic;
                 }
             }
             //If the line has right box.
-            if (col < gameLogic.COLS - 1) {
+            if (col < dim - 1) {
                 if (boxOccupied(boardAfterMove, row, col + 1)) {
                     boardAfterMove[row][col + 1].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
@@ -187,8 +187,9 @@ var gameLogic;
      */
     function getWinner(board) {
         var count;
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            for (var j = 0; j < gameLogic.COLS; j++) {
+        var dim = board.length;
+        for (var i = 0; i < dim; i++) {
+            for (var j = 0; j < dim; j++) {
                 if (board[i][j].shape == Shape.Box) {
                     count[board[i][j].owner]++;
                 }
@@ -205,12 +206,14 @@ var gameLogic;
         //Ties
         return -1;
     }
+    gameLogic.getWinner = getWinner;
     /**
      * Check for game termination
      */
     function isOver(board) {
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            for (var j = 0; j < gameLogic.COLS; j++) {
+        var dim = board.length;
+        for (var i = 0; i < dim; i++) {
+            for (var j = 0; j < dim; j++) {
                 if (board[i][j].shape != Shape.Box) {
                     continue;
                 }
@@ -221,9 +224,63 @@ var gameLogic;
         }
         return true;
     }
-    function createInitialMove() {
+    gameLogic.isOver = isOver;
+    /**
+     * 1-2 times (or more) allowed in a game for each player.
+     * Once this attck is instantiated, a number of random edges/lines will be reset
+     * (or one line will be reset),ie, if the edge had an owner, it will be erased.
+     * And all the adjcent squares will reset also.
+     * @param row
+     * @param col
+     */
+    function throwAtomicBomb(stateBeforeMove, row, col, turnIndexBeforeMove) {
+        var board = stateBeforeMove.board;
+        var dim = board.length;
+        var l = {};
+        var idx = 0;
+        for (var i = 0; i < dim; i++) {
+            for (var j = 0; j < dim; j++) {
+                if (board[i][j].shape != Shape.Line) {
+                    continue;
+                }
+                if (board[i][j].owner == -1) {
+                    continue;
+                }
+                l[idx++] = { row: i, col: j };
+            }
+        }
+        var rand = Math.floor(Math.random() * (idx - 1));
+        var r = l[rand].row;
+        var c = l[rand].col;
+        //Reset the ownership of the line
+        var boardAfterMove = angular.copy(board);
+        boardAfterMove[r][c].owner = -1;
+        //Reset the ownership of two regions adjacent to the line
+        if (boardAfterMove[r][c].dir == Direction.Hor) {
+            if (r > 0) {
+                boardAfterMove[r - 1][c].owner = -1;
+            }
+            if (r < dim - 1) {
+                boardAfterMove[r + 1][c].owner = -1;
+            }
+        }
+        else {
+            if (c > 0) {
+                boardAfterMove[r][c - 1].owner = -1;
+            }
+            if (c < dim - 1) {
+                boardAfterMove[r][c + 1].owner = -1;
+            }
+        }
+        var turnIndex = turnIndexBeforeMove ^ 1;
+        var delta = { row: r, col: c };
+        var state = { board: boardAfterMove, delta: delta };
+        return { endMatchScores: null, turnIndex: turnIndex, state: state };
+    }
+    gameLogic.throwAtomicBomb = throwAtomicBomb;
+    function createInitialMove(row, col) {
         return { endMatchScores: null, turnIndex: 0,
-            state: getInitialState() };
+            state: getInitialStateWP(row, col) };
     }
     gameLogic.createInitialMove = createInitialMove;
     function forSimpleTestHtml() {

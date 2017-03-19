@@ -84,9 +84,10 @@ module game {
   
   function getProposalsBoard(playerIdToProposal: IProposals): number[][] {
     let proposals: number[][] = [];
-    for (let i = 0; i < gameLogic.ROWS; i++) {
+    //TODO
+    for (let i = 0; i < gameLogic.rows; i++) {
       proposals[i] = [];
-      for (let j = 0; j < gameLogic.COLS; j++) {
+      for (let j = 0; j < gameLogic.cols; j++) {
         proposals[i][j] = 0;
       }
     }
@@ -118,7 +119,16 @@ module game {
     clearAnimationTimeout();
     state = params.state;
     if (isFirstMove()) {
-      state = gameLogic.getInitialState();
+      log.info("Update state");
+      dimSet=false;
+      state=gameLogic.getInitialStateWP(row,col);   
+      if (playerIdToProposal) setDim(9,9);
+    }else{
+      let s = params.state;
+      state = s;
+      dimSet = true;
+      row = s.board.length;
+      col = s.board.length;
     }
     // We calculate the AI move only after the animation finishes,
     // because if we call aiService now
@@ -148,14 +158,14 @@ module game {
     let move = aiService.findComputerMove(currentMove);
     log.info("Computer move: ", move);
     makeMove(move);
-
   }
 
-  export function setDim(row: number, col: number) {
-    row = row;
-    col = col;
+  export function setDim(r: number, c: number) {
+    row = r;
+    col = c;
     dimSet = true;
-    board = gameLogic.getInitialBoardWP(row,col);
+    state = gameLogic.getInitialStateWP(row,col);
+    log.info("Dimension is set to ",row,col);
   }
 
   function makeMove(move: IMove) {
@@ -198,7 +208,7 @@ module game {
     return isMyTurn() && isComputer();
   }
 
-  function isHumanTurn() {
+  export function isHumanTurn() {
     return isMyTurn() && !isComputer();
   }
 
@@ -219,10 +229,17 @@ module game {
       log.info(["Cell is already full in position:", row, col]);
       return;
     }
-    // Move is legal, make it!
     makeMove(nextMove);
   }
 
+  export function isOver(): boolean{
+    return gameLogic.isOver(state.board);
+  }
+
+  export function youWon():boolean{
+    return gameLogic.getWinner(state.board)==currentUpdateUI.turnIndex;
+  }
+  
   export function shouldColorVisitedEdge(row: number, col: number): boolean {
     if(state.board[row][col].shape!=Shape.Line){
       return false;
@@ -253,29 +270,12 @@ module game {
     return Math.floor(row/2);
   }
 
-  /**
-   * Modal 
-   */
-  function showModal(titleId: string, bodyId: string) {
-    log.info("showModal: ", titleId);
-    isModalShown = true;
-    modalTitle = titleId;
-    modalBody = bodyId;
-  }
-   export function clickedOnModal(evt: Event) {
-    if (evt.target === evt.currentTarget) {
-      evt.preventDefault();
-      evt.stopPropagation();
-      isModalShown = false;
-    }
-    return true;
-  }
-  
+  //======MENU========
   export function fontSizePx(): number {
     // for iphone4 (min(width,height)=320) it should be 8.
     return 8*Math.min(window.innerWidth, window.innerHeight) / 320;
   }
-  //======
+  
   export function getRange(){
     let list: number[]=[]
     for(let i=0;i<row;i++){
@@ -284,9 +284,7 @@ module game {
     return list;
   }
 
-  /**Drag and drop */
-  //Add layer, Add drag and drop
-  
+  /**Drag and drop */  
 }
 
 angular.module('myApp', ['gameServices'])

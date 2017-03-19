@@ -74,9 +74,10 @@ var game;
     game.getCellStyle = getCellStyle;
     function getProposalsBoard(playerIdToProposal) {
         var proposals = [];
-        for (var i = 0; i < gameLogic.ROWS; i++) {
+        //TODO
+        for (var i = 0; i < gameLogic.rows; i++) {
             proposals[i] = [];
-            for (var j = 0; j < gameLogic.COLS; j++) {
+            for (var j = 0; j < gameLogic.cols; j++) {
                 proposals[i][j] = 0;
             }
         }
@@ -107,7 +108,18 @@ var game;
         clearAnimationTimeout();
         game.state = params.state;
         if (isFirstMove()) {
-            game.state = gameLogic.getInitialState();
+            log.info("Update state");
+            game.dimSet = false;
+            game.state = gameLogic.getInitialStateWP(game.row, game.col);
+            if (playerIdToProposal)
+                setDim(9, 9);
+        }
+        else {
+            var s = params.state;
+            game.state = s;
+            game.dimSet = true;
+            game.row = s.board.length;
+            game.col = s.board.length;
         }
         // We calculate the AI move only after the animation finishes,
         // because if we call aiService now
@@ -137,11 +149,12 @@ var game;
         log.info("Computer move: ", move);
         makeMove(move);
     }
-    function setDim(row, col) {
-        row = row;
-        col = col;
+    function setDim(r, c) {
+        game.row = r;
+        game.col = c;
         game.dimSet = true;
-        game.board = gameLogic.getInitialBoardWP(row, col);
+        game.state = gameLogic.getInitialStateWP(game.row, game.col);
+        log.info("Dimension is set to ", game.row, game.col);
     }
     game.setDim = setDim;
     function makeMove(move) {
@@ -183,6 +196,7 @@ var game;
     function isHumanTurn() {
         return isMyTurn() && !isComputer();
     }
+    game.isHumanTurn = isHumanTurn;
     function isMyTurn() {
         return !game.didMakeMove &&
             game.currentUpdateUI.turnIndex >= 0 &&
@@ -200,10 +214,17 @@ var game;
             log.info(["Cell is already full in position:", row, col]);
             return;
         }
-        // Move is legal, make it!
         makeMove(nextMove);
     }
     game.cellClicked = cellClicked;
+    function isOver() {
+        return gameLogic.isOver(game.state.board);
+    }
+    game.isOver = isOver;
+    function youWon() {
+        return gameLogic.getWinner(game.state.board) == game.currentUpdateUI.turnIndex;
+    }
+    game.youWon = youWon;
     function shouldColorVisitedEdge(row, col) {
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;
@@ -233,30 +254,12 @@ var game;
         return Math.floor(row / 2);
     }
     game.divideByTwoThenFloor = divideByTwoThenFloor;
-    /**
-     * Modal
-     */
-    function showModal(titleId, bodyId) {
-        log.info("showModal: ", titleId);
-        game.isModalShown = true;
-        game.modalTitle = titleId;
-        game.modalBody = bodyId;
-    }
-    function clickedOnModal(evt) {
-        if (evt.target === evt.currentTarget) {
-            evt.preventDefault();
-            evt.stopPropagation();
-            game.isModalShown = false;
-        }
-        return true;
-    }
-    game.clickedOnModal = clickedOnModal;
+    //======MENU========
     function fontSizePx() {
         // for iphone4 (min(width,height)=320) it should be 8.
         return 8 * Math.min(window.innerWidth, window.innerHeight) / 320;
     }
     game.fontSizePx = fontSizePx;
-    //======
     function getRange() {
         var list = [];
         for (var i = 0; i < game.row; i++) {
@@ -266,7 +269,6 @@ var game;
     }
     game.getRange = getRange;
     /**Drag and drop */
-    //Add layer, Add drag and drop
 })(game || (game = {}));
 angular.module('myApp', ['gameServices'])
     .run(['$rootScope', '$timeout',

@@ -56,13 +56,17 @@ import resizeGameAreaService = gamingPlatform.resizeGameAreaService;
 import log = gamingPlatform.log;
 import dragAndDropService = gamingPlatform.dragAndDropService;
 
-module gameLogic {
-      export const ROWS = 15;
-      export const COLS = 15;
+module gameLogic {     
       /**
        * Private method for initiating the board with the size we need
        */
+      //TODO
+      export let rows:number;
+      export let cols:number;
       function createNewBoard(row: number, col: number): Board {
+          rows=row;
+          cols=col;
+
         let board: Board = [];
         for (let i = 0; i < row; i++) {
             board[i] = [];
@@ -93,23 +97,27 @@ module gameLogic {
       export function getInitialBoardWP(row: number,col: number){
         return createNewBoard(row,col);
       }
-      export function getInitialBoard(): Board {
-        return createNewBoard(ROWS,COLS);
+    //   export function getInitialBoard(): Board {
+    //     return createNewBoard();
+    //   }
+      export function getInitialStateWP(row:number, col:number): IState {
+        return {board: getInitialBoardWP(row,col), delta: null};
       }
-      export function getInitialState(): IState {
-        return {board: getInitialBoard(), delta: null};
-      }
-      
+    
+    //   export function getInitialState(): IState {
+    //     return {board: getInitialBoard(), delta: null};
+    //   }
       /**
        * Create Move
        */
       export function createMove(
           stateBeforeMove: IState, row: number, col: number,  
           turnIndexBeforeMove: number):IMove{
-        if (!stateBeforeMove) {
-            stateBeforeMove = getInitialState();
-        }
         let board: Board = stateBeforeMove.board;
+        let dim = board.length;
+        if (!stateBeforeMove) {
+            stateBeforeMove = getInitialStateWP(dim,dim);
+        }
         if (isOver(board)) {
             throw new Error("Can only make a move if the game is not over!");
         }
@@ -139,7 +147,7 @@ module gameLogic {
                     streak=true;
                 }
             }
-            if(row<ROWS-1){
+            if(row<dim-1){
                 if(boxOccupied(boardAfterMove,row+1,col)){
                     boardAfterMove[row+1][col].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
@@ -161,7 +169,7 @@ module gameLogic {
                 }
             }
             //If the line has right box.
-            if(col<COLS-1){
+            if(col<dim-1){
                 if(boxOccupied(boardAfterMove,row,col+1)){
                     boardAfterMove[row][col+1].owner=turnIndexBeforeMove;
                     turnIndex=turnIndexBeforeMove;
@@ -206,10 +214,11 @@ module gameLogic {
       /**
        * Find out who wins
        */
-      function getWinner(board: Board): number{       
+      export function getWinner(board: Board): number{       
         let count:number[];
-        for(let i=0;i<ROWS;i++){
-            for(let j=0;j<COLS;j++){
+        let dim=board.length;
+        for(let i=0;i<dim;i++){
+            for(let j=0;j<dim;j++){
                 if(board[i][j].shape==Shape.Box){
                     count[board[i][j].owner]++;
                 }            
@@ -230,9 +239,10 @@ module gameLogic {
       /**
        * Check for game termination
        */
-      function isOver(board: Board){
-        for (let i = 0; i < ROWS; i++) {       
-            for (let j = 0; j < COLS; j++) {
+      export function isOver(board: Board){
+        let dim=board.length;
+        for (let i = 0; i < dim; i++) {       
+            for (let j = 0; j < dim; j++) {
                 if(board[i][j].shape!=Shape.Box){
                     continue;
                 }
@@ -243,9 +253,65 @@ module gameLogic {
         }
         return true;
       }
-      export function createInitialMove(): IMove {
+      /**
+       * 1-2 times (or more) allowed in a game for each player.
+       * Once this attck is instantiated, a number of random edges/lines will be reset
+       * (or one line will be reset),ie, if the edge had an owner, it will be erased. 
+       * And all the adjcent squares will reset also.
+       * @param row 
+       * @param col 
+       */
+      export function throwAtomicBomb(stateBeforeMove: IState, row: number, col: number,  
+          turnIndexBeforeMove: number):IMove{
+        let board=stateBeforeMove.board
+        let dim=board.length
+        let l:{[id:number]: BoardDelta}={};
+        let idx=0;
+        for(let i=0;i<dim;i++){
+            for(let j=0;j<dim;j++){
+                if(board[i][j].shape!=Shape.Line){
+                    continue;
+                }
+                if(board[i][j].owner==-1){
+                    continue;
+                }
+                l[idx++]={row:i,col:j};
+            }
+        }
+        let rand=Math.floor(Math.random() * (idx-1));
+        let r=l[rand].row;
+        let c=l[rand].col;
+
+        //Reset the ownership of the line
+        let boardAfterMove = angular.copy(board);
+        boardAfterMove[r][c].owner=-1;
+        //Reset the ownership of two regions adjacent to the line
+        if(boardAfterMove[r][c].dir==Direction.Hor){
+            if(r>0){
+                boardAfterMove[r-1][c].owner=-1
+            }
+            if(r<dim-1){
+                boardAfterMove[r+1][c].owner=-1
+            }
+        }else{
+            if(c>0){
+                boardAfterMove[r][c-1].owner=-1
+            }
+            if(c<dim-1){
+                boardAfterMove[r][c+1].owner=-1
+            }
+        }
+        let turnIndex=turnIndexBeforeMove^1;
+        let delta: BoardDelta = {row: r, col: c};
+        let state: IState = {board: boardAfterMove, delta: delta};
+
+        return {endMatchScores: null, turnIndex: turnIndex, state: state}; 
+        
+      }
+
+      export function createInitialMove(row:number,col:number): IMove {
         return {endMatchScores: null, turnIndex: 0, 
-        state: getInitialState()};  
+        state: getInitialStateWP(row,col)};  
       }
 
       export function forSimpleTestHtml() {
