@@ -186,7 +186,7 @@ var gameLogic;
      * Find out who wins
      */
     function getWinner(board) {
-        var count;
+        var count = [0, 0];
         var dim = board.length;
         for (var i = 0; i < dim; i++) {
             for (var j = 0; j < dim; j++) {

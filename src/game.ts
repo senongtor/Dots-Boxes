@@ -9,7 +9,7 @@ module game {
   export let isModalShown = false;
   export let modalTitle = "";
   export let modalBody = "";
-  
+
   export let $rootScope: angular.IScope = null;
   export let $timeout: angular.ITimeoutService = null;
 
@@ -25,8 +25,8 @@ module game {
   export let proposals: number[][] = null;
   export let yourPlayerInfo: IPlayerInfo = null;
 
-  export let row = 15;
-  export let col = 15;
+  export let row = 11;
+  export let col = 11;
   export let dimSet = false;
   export let board: Board = null;
 
@@ -50,9 +50,9 @@ module game {
     if (!window.applicationCache && 'serviceWorker' in navigator) {
       let n: any = navigator;
       log.log('Calling serviceWorker.register');
-      n.serviceWorker.register('service-worker.js').then(function(registration: any) {
-        log.log('ServiceWorker registration successful with scope: ',    registration.scope);
-      }).catch(function(err: any) {
+      n.serviceWorker.register('service-worker.js').then(function (registration: any) {
+        log.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }).catch(function (err: any) {
         log.log('ServiceWorker registration failed: ', err);
       });
     }
@@ -81,7 +81,7 @@ module game {
       opacity: "" + opacity,
     };
   }
-  
+
   function getProposalsBoard(playerIdToProposal: IProposals): number[][] {
     let proposals: number[][] = [];
     //TODO
@@ -102,7 +102,7 @@ module game {
   export function updateUI(params: IUpdateUI): void {
     log.info("Game got updateUI:", params);
     let playerIdToProposal = params.playerIdToProposal;
-     // Only one move/proposal per updateUI
+    // Only one move/proposal per updateUI
     didMakeMove = playerIdToProposal && playerIdToProposal[yourPlayerInfo.playerId] != undefined;
     yourPlayerInfo = params.yourPlayerInfo;
     proposals = playerIdToProposal ? getProposalsBoard(playerIdToProposal) : null;
@@ -118,12 +118,14 @@ module game {
     currentUpdateUI = params;
     clearAnimationTimeout();
     state = params.state;
+    log.info(params.state);
     if (isFirstMove()) {
+      log.info("Update state initial");
+      dimSet = false;
+      state = gameLogic.getInitialStateWP(row, col);
+      if (playerIdToProposal) setDim(9, 9);
+    } else {
       log.info("Update state");
-      dimSet=false;
-      state=gameLogic.getInitialStateWP(row,col);   
-      if (playerIdToProposal) setDim(9,9);
-    }else{
       let s = params.state;
       state = s;
       dimSet = true;
@@ -150,7 +152,7 @@ module game {
 
   function maybeSendComputerMove() {
     if (!isComputerTurn()) return;
-    let currentMove:IMove = {
+    let currentMove: IMove = {
       endMatchScores: currentUpdateUI.endMatchScores,
       state: currentUpdateUI.state,
       turnIndex: currentUpdateUI.turnIndex,
@@ -164,8 +166,8 @@ module game {
     row = r;
     col = c;
     dimSet = true;
-    state = gameLogic.getInitialStateWP(row,col);
-    log.info("Dimension is set to ",row,col);
+    state = gameLogic.getInitialStateWP(row, col);
+    log.info("Dimension is set to ", row, col);
   }
 
   function makeMove(move: IMove) {
@@ -173,12 +175,12 @@ module game {
       return;
     }
     didMakeMove = true;
-    
+
     if (!proposals) {
       gameService.makeMove(move, null);
     } else {
       let delta = move.state.delta;
-      let myProposal:IProposal = {
+      let myProposal: IProposal = {
         data: delta,
         chatDescription: '' + (delta.row + 1) + 'x' + (delta.col + 1),
         playerInfo: yourPlayerInfo,
@@ -224,7 +226,7 @@ module game {
     let nextMove: IMove = null;
     try {
       nextMove = gameLogic.createMove(
-          state, row, col, currentUpdateUI.turnIndex);
+        state, row, col, currentUpdateUI.turnIndex);
     } catch (e) {
       log.info(["Cell is already full in position:", row, col]);
       return;
@@ -232,26 +234,30 @@ module game {
     makeMove(nextMove);
   }
 
-  export function isOver(): boolean{
-    return gameLogic.isOver(state.board);
+  export function isOver(): number {
+    if(gameLogic.isOver(state.board)){
+      //Tie
+      if(gameLogic.getWinner(state.board)==-1){
+        return 2;
+      }
+      //If you won, return 1, if you lost, return 0
+      return gameLogic.getWinner(state.board) == currentUpdateUI.yourPlayerIndex?1:0;
+    }
+    return -1;
   }
 
-  export function youWon():boolean{
-    return gameLogic.getWinner(state.board)==currentUpdateUI.turnIndex;
-  }
-  
   export function shouldColorVisitedEdge(row: number, col: number): boolean {
-    if(state.board[row][col].shape!=Shape.Line){
+    if (state.board[row][col].shape != Shape.Line) {
       return false;
     }
-    return  state.board[row][col].owner!=-1 || isProposal(row, col);
+    return state.board[row][col].owner != -1 || isProposal(row, col);
   }
 
   function isOccupied(row: number, col: number, turnIndex: number): boolean {
-    return (state.board[row][col].shape==Shape.Box && state.board[row][col].owner==turnIndex) || 
-    (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
+    return (state.board[row][col].shape == Shape.Box && state.board[row][col].owner == turnIndex) ||
+      (isProposal(row, col) && currentUpdateUI.turnIndex == turnIndex);
   }
-  
+
   export function isOccupiedBy0(row: number, col: number): boolean {
     return isOccupied(row, col, 0);
   }
@@ -262,29 +268,29 @@ module game {
 
   export function shouldSlowlyAppear(row: number, col: number): boolean {
     return state.delta &&
-        state.delta.row === row && 
-        state.delta.col === col;
+      state.delta.row === row &&
+      state.delta.col === col;
   }
 
   export function divideByTwoThenFloor(row: number): number {
-    return Math.floor(row/2);
+    return Math.floor(row / 2);
   }
 
   //======MENU========
   export function fontSizePx(): number {
     // for iphone4 (min(width,height)=320) it should be 8.
-    return 8*Math.min(window.innerWidth, window.innerHeight) / 320;
+    return 8 * Math.min(window.innerWidth, window.innerHeight) / 320;
   }
-  
-  export function getRange(){
-    let list: number[]=[]
-    for(let i=0;i<row;i++){
-      list[i]=i;
+
+  export function getRange() {
+    let list: number[] = []
+    for (let i = 0; i < row; i++) {
+      list[i] = i;
     }
     return list;
   }
 
-  /**Drag and drop */  
+  /**Drag and drop */
 }
 
 angular.module('myApp', ['gameServices'])

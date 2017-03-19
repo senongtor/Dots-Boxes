@@ -17,8 +17,8 @@ var game;
     // For community games.
     game.proposals = null;
     game.yourPlayerInfo = null;
-    game.row = 15;
-    game.col = 15;
+    game.row = 11;
+    game.col = 11;
     game.dimSet = false;
     game.board = null;
     function init($rootScope_, $timeout_) {
@@ -107,14 +107,16 @@ var game;
         game.currentUpdateUI = params;
         clearAnimationTimeout();
         game.state = params.state;
+        log.info(params.state);
         if (isFirstMove()) {
-            log.info("Update state");
+            log.info("Update state initial");
             game.dimSet = false;
             game.state = gameLogic.getInitialStateWP(game.row, game.col);
             if (playerIdToProposal)
                 setDim(9, 9);
         }
         else {
+            log.info("Update state");
             var s = params.state;
             game.state = s;
             game.dimSet = true;
@@ -218,13 +220,17 @@ var game;
     }
     game.cellClicked = cellClicked;
     function isOver() {
-        return gameLogic.isOver(game.state.board);
+        if (gameLogic.isOver(game.state.board)) {
+            //Tie
+            if (gameLogic.getWinner(game.state.board) == -1) {
+                return 2;
+            }
+            //If you won, return 1, if you lost, return 0
+            return gameLogic.getWinner(game.state.board) == game.currentUpdateUI.yourPlayerIndex ? 1 : 0;
+        }
+        return -1;
     }
     game.isOver = isOver;
-    function youWon() {
-        return gameLogic.getWinner(game.state.board) == game.currentUpdateUI.turnIndex;
-    }
-    game.youWon = youWon;
     function shouldColorVisitedEdge(row, col) {
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;

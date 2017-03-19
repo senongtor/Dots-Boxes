@@ -241,6 +241,7 @@ button {
     text-align: right;
     border-top: 1px solid #e5e5e5;
 }
+/**End modal*/
 
 .btn-primary {
     color: #fff;
@@ -268,7 +269,7 @@ button {
 
 .text {
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 20px;
   text-align: center;
   text-transform: none;
@@ -278,6 +279,21 @@ button {
   user-select: none;
   background-image: none;
   border: 0px hidden;
+  text-shadow: #e0e0e0 1px 1px 0;
+  /**text-shadow: -1px 0px 7px rgba(152, 147, 154, 1);*/
+}
+
+.menu {
+  text-align: center;
+  text-transform: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 0px hidden !important;
+  margin:0;
+  padding:0;
 }
 
 .selectSize {
@@ -295,6 +311,7 @@ button {
   /*background-color: grey;
   color: white;*/
   margin: 10px auto 0 auto;
+  position: relative;
   padding: 6px;
   display: inline-block;
   height: 45px;

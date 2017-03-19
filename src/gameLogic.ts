@@ -158,7 +158,7 @@ module gameLogic {
                     turnIndex=turnIndexBeforeMove^1;
             }
         //For the vertical line placed for current player   
-    }else if(boardAfterMove[row][col].dir==Direction.Ver){
+        }else if(boardAfterMove[row][col].dir==Direction.Ver){
             let streak: boolean=false;
             //If the line has left box.
             if(col>0){
@@ -215,7 +215,7 @@ module gameLogic {
        * Find out who wins
        */
       export function getWinner(board: Board): number{       
-        let count:number[];
+        let count:number[]=[0,0];
         let dim=board.length;
         for(let i=0;i<dim;i++){
             for(let j=0;j<dim;j++){
