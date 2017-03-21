@@ -29,7 +29,6 @@ div {
   outline: 0; /* To prevent blue-box outline after click: http://stackoverflow.com/questions/21719306/getting-rid-of-a-blue-box-around-button-when-pressed */
 }
 
-
 textarea, input {
   -webkit-user-select: text !important;
   -moz-user-select: text !important;
@@ -54,16 +53,6 @@ textarea, input {
   /*-webkit-animation-duration: 1s; Chrome, Safari, Opera */
   animation-name: highlight_last_move;
   animation-duration: 0.1s ease;
-}
-
-.edge_new {
-  background: #FF6600 !important; 
-  border-collapse: collapse !important; 
-  border: 0pt;
-  /*-webkit-animation-name: highlight_last_move; Chrome, Safari, Opera */
-  /*-webkit-animation-duration: 1s; Chrome, Safari, Opera */
-  animation-name: highlight_last_move_new;
-  animation-duration: 0.01s;
 }
 
 @keyframes highlight_last_move {
@@ -157,7 +146,6 @@ td {
   padding:0 3px 0 3px;
 }
 
-/*Modal layer*/
 button {
   background-color: grey;
   color: white;
@@ -176,95 +164,6 @@ button {
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 4px;
-}
-.modal-dialog {
-  position: relative;
-  width: auto;
-  margin: 10px;
-  z-index: 1001;
-}
-.overlayModal {
-  background: rgba(0,0,0,0.5);
-  text-align:center;
-  z-index: 1000;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width:100%;
-  height:100%;
-  transition: visibility 0s linear 0.25s, opacity 0.25s linear;
-  -moz-transition: visibility 0s linear 0.25s, opacity 0.25s linear;
-  -webkit-transition: visibility 0s linear 0.25s, opacity 0.25s linear;
-}
-.zeroOpacity {
-  visibility: hidden;
-  opacity: 0;
-}
-.oneOpacity {
-  visibility:visible;
-  opacity:1;
-  transition-delay:0s;
-}
-.modal-backdrop {
-  z-index: 1000;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width:100%;
-  height:100%;
-}
-.modal-content {
-    position: relative;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #999;
-    border: 1px solid rgba(0, 0, 0, .2);
-    border-radius: 6px;
-    outline: 0;
-    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
-}
-.modal-header {
-    min-height: 16.42857143px;
-    padding: 15px;
-    border-bottom: 1px solid #e5e5e5;
-}
-.modal-title {
-    margin: 0;
-    line-height: 1.42857143;
-}
-.modal-body {
-    position: relative;
-    padding: 15px;
-}
-.modal-footer {
-    padding: 15px;
-    text-align: right;
-    border-top: 1px solid #e5e5e5;
-}
-/**End modal*/
-
-.btn-primary {
-    color: #fff;
-    background-color: #337ab7;
-    border-color: #2e6da4;
-    display: inline-block;
-    padding: 6px 12px;
-    margin: 0;
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 1.42857143;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    user-select: none;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    text-transform: none;
-    height: auto;
 }
 
 .text {
@@ -285,12 +184,16 @@ button {
 
 .menu {
   text-align: center;
+  /*position:absolute;*/
   text-transform: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
   background-image: none;
+}
+
+.menu>div{
   border: 0px hidden !important;
   margin:0;
   padding:0;
@@ -305,27 +208,6 @@ button {
 
 .selectSize:hover{
   box-shadow: 1px 1px 2px black, 0 0 25px darkgrey, 0 0 5px darkblue;
-}
-
-button {
-  /*background-color: grey;
-  color: white;*/
-  margin: 10px auto 0 auto;
-  position: relative;
-  padding: 6px;
-  display: inline-block;
-  height: 45px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  -webkit-appearance: button;
-  overflow: visible;
-  white-space: nowrap;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
-  cursor: pointer;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  border: 0px hidden;
 }
 
 .dropbtn {
@@ -365,6 +247,14 @@ button {
     background-color: skyblue;
 }
 
-.boardArea > div  {
-  
+.boardArea {
+    position:absolute;
+}
+
+.bomb{
+    width:100%;
+    height:100%;
+    border: 0pt hidden !important;
+    border-collapse: collapse !important;
+    
 }

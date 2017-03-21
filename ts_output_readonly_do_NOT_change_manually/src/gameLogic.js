@@ -5,6 +5,7 @@ var Direction;
 (function (Direction) {
     Direction[Direction["Hor"] = 1] = "Hor";
     Direction[Direction["Ver"] = 2] = "Ver";
+    Direction[Direction["Bomb"] = 3] = "Bomb";
 })(Direction || (Direction = {}));
 var Shape;
 (function (Shape) {
@@ -101,6 +102,11 @@ var gameLogic;
         if (board[row][col].owner >= 0) {
             throw new Error("No further move can be created because this line is already occupied");
         }
+        // if(board[row][col].shape!=Shape.Box){
+        //     if(board[row][col].dir==Direction.Bomb){
+        //         return null;
+        //     }
+        // }
         var boardAfterMove = angular.copy(board);
         var turnIndex;
         //Now this edge was owned, turn it to 1.

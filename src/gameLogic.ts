@@ -4,11 +4,12 @@
 enum Direction {
     Hor = 1,
     Ver,
+    Bomb
 }
 enum Shape { 
     Dot = 1,
     Box,
-    Line,
+    Line
 }
 
 enum Occupied{
@@ -128,7 +129,11 @@ module gameLogic {
         if(board[row][col].owner>=0){
             throw new Error("No further move can be created because this line is already occupied");
         }
-         
+        // if(board[row][col].shape!=Shape.Box){
+        //     if(board[row][col].dir==Direction.Bomb){
+        //         return null;
+        //     }
+        // }
         let boardAfterMove = angular.copy(board);
         let turnIndex: number;
         //Now this edge was owned, turn it to 1.

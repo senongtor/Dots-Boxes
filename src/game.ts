@@ -123,15 +123,15 @@ module game {
       log.info("Update state initial");
       dimSet = false;
       state = gameLogic.getInitialStateWP(row, col);
-      if (playerIdToProposal) setDim(9, 9);
+      if (playerIdToProposal) setDim(15, 15);
     } else {
-      log.info("Update state");
-      let s = params.state;
-      state = s;
+      log.info("Update state");   
+      state = params.state;
       dimSet = true;
-      row = s.board.length;
-      col = s.board.length;
+      row = state.board.length;
+      col = state.board.length;
     }
+    state.board[1][1].dir=Direction.Bomb;
     // We calculate the AI move only after the animation finishes,
     // because if we call aiService now
     // then the animation will be paused until the javascript finishes.
@@ -166,6 +166,8 @@ module game {
     row = r;
     col = c;
     dimSet = true;
+    gameLogic.rows=row;
+    gameLogic.cols=col;
     state = gameLogic.getInitialStateWP(row, col);
     log.info("Dimension is set to ", row, col);
   }
@@ -246,6 +248,11 @@ module game {
     return -1;
   }
 
+  export function isBomb(row: number, col: number): boolean {
+    return state.board[row][col].shape==Shape.Box && 
+    state.board[row][col].dir==Direction.Bomb;
+  }
+
   export function shouldColorVisitedEdge(row: number, col: number): boolean {
     if (state.board[row][col].shape != Shape.Line) {
       return false;
@@ -271,9 +278,26 @@ module game {
       state.delta.row === row &&
       state.delta.col === col;
   }
-
-  export function divideByTwoThenFloor(row: number): number {
-    return Math.floor(row / 2);
+  export function sizeSmall(r:number):number{
+    switch(row){
+      case 7:
+        return Math.floor(r / 2)*(28+4) + (r%2)*4; 
+      case 11:
+        return Math.floor(r / 2)*(15.8+3.5) + (r%2)*3.5; 
+      case 15:
+        return Math.floor(r / 2)*(11.11111+2.77777) + (r%2)*2.77777; 
+    }
+  }
+  
+  export function sizeBig(r:number):number{
+    switch(row){
+      case 7:
+        return ((r+1)%2)*4+(r%2)*28;
+      case 11: 
+        return ((r+1)%2)*3.5+(r%2)*15.8;
+      case 15:
+        return ((r+1)%2)*2.77777+(r%2)*11.11111;
+    }
   }
 
   //======MENU========
@@ -289,8 +313,6 @@ module game {
     }
     return list;
   }
-
-  /**Drag and drop */
 }
 
 angular.module('myApp', ['gameServices'])

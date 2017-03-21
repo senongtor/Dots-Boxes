@@ -113,16 +113,16 @@ var game;
             game.dimSet = false;
             game.state = gameLogic.getInitialStateWP(game.row, game.col);
             if (playerIdToProposal)
-                setDim(9, 9);
+                setDim(15, 15);
         }
         else {
             log.info("Update state");
-            var s = params.state;
-            game.state = s;
+            game.state = params.state;
             game.dimSet = true;
-            game.row = s.board.length;
-            game.col = s.board.length;
+            game.row = game.state.board.length;
+            game.col = game.state.board.length;
         }
+        game.state.board[1][1].dir = Direction.Bomb;
         // We calculate the AI move only after the animation finishes,
         // because if we call aiService now
         // then the animation will be paused until the javascript finishes.
@@ -155,6 +155,8 @@ var game;
         game.row = r;
         game.col = c;
         game.dimSet = true;
+        gameLogic.rows = game.row;
+        gameLogic.cols = game.col;
         game.state = gameLogic.getInitialStateWP(game.row, game.col);
         log.info("Dimension is set to ", game.row, game.col);
     }
@@ -231,6 +233,11 @@ var game;
         return -1;
     }
     game.isOver = isOver;
+    function isBomb(row, col) {
+        return game.state.board[row][col].shape == Shape.Box &&
+            game.state.board[row][col].dir == Direction.Bomb;
+    }
+    game.isBomb = isBomb;
     function shouldColorVisitedEdge(row, col) {
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;
@@ -256,10 +263,31 @@ var game;
             game.state.delta.col === col;
     }
     game.shouldSlowlyAppear = shouldSlowlyAppear;
-    function divideByTwoThenFloor(row) {
-        return Math.floor(row / 2);
+    function sizeSmall(r) {
+        switch (game.row) {
+            case 7:
+                return Math.floor(r / 2) * (28 + 4) + (r % 2) * 4;
+            case 11:
+                return Math.floor(r / 2) * (15.8 + 3.5) + (r % 2) * 3.5;
+            case 15:
+                return Math.floor(r / 2) * (11.11111 + 2.77777) + (r % 2) * 2.77777;
+        }
     }
-    game.divideByTwoThenFloor = divideByTwoThenFloor;
+    game.sizeSmall = sizeSmall;
+    function sizeBig(r) {
+        switch (game.row) {
+            case 7:
+                return ((r + 1) % 2) * 4 + (r % 2) * 28;
+            case 11:
+                return ((r + 1) % 2) * 3.5 + (r % 2) * 15.8;
+            case 15:
+                return ((r + 1) % 2) * 2.77777 + (r % 2) * 11.11111;
+        }
+    }
+    game.sizeBig = sizeBig;
+    // export function divideByTwoThenFloor(row: number): number {
+    //   return Math.floor(row / 2);
+    // }
     //======MENU========
     function fontSizePx() {
         // for iphone4 (min(width,height)=320) it should be 8.
@@ -274,7 +302,6 @@ var game;
         return list;
     }
     game.getRange = getRange;
-    /**Drag and drop */
 })(game || (game = {}));
 angular.module('myApp', ['gameServices'])
     .run(['$rootScope', '$timeout',
