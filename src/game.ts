@@ -236,17 +236,17 @@ module game {
     makeMove(nextMove);
   }
 
-  export function isOver(): number {
-    if(gameLogic.isOver(state.board)){
-      //Tie
-      if(gameLogic.getWinner(state.board)==-1){
-        return 2;
-      }
-      //If you won, return 1, if you lost, return 0
-      return gameLogic.getWinner(state.board) == currentUpdateUI.yourPlayerIndex?1:0;
-    }
-    return -1;
-  }
+  // export function isOver(): number {
+  //   if(gameLogic.isOver(state.board)){
+  //     //Tie
+  //     if(gameLogic.getWinner(state.board)==-1){
+  //       return 2;
+  //     }
+  //     //If you won, return 1, if you lost, return 0
+  //     return gameLogic.getWinner(state.board) == currentUpdateUI.yourPlayerIndex?1:0;
+  //   }
+  //   return -1;
+  // }
 
   export function isBomb(row: number, col: number): boolean {
     return state.board[row][col].shape==Shape.Box && 

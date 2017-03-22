@@ -31637,6 +31637,7 @@ var Direction;
 (function (Direction) {
     Direction[Direction["Hor"] = 1] = "Hor";
     Direction[Direction["Ver"] = 2] = "Ver";
+    Direction[Direction["Bomb"] = 3] = "Bomb";
 })(Direction || (Direction = {}));
 var Shape;
 (function (Shape) {
@@ -31668,12 +31669,9 @@ var log = gamingPlatform.log;
 var dragAndDropService = gamingPlatform.dragAndDropService;
 var gameLogic;
 (function (gameLogic) {
-    gameLogic.ROWS = 15;
-    gameLogic.COLS = 15;
-    /**
-     * Private method for initiating the board with the size we need
-     */
     function createNewBoard(row, col) {
+        gameLogic.rows = row;
+        gameLogic.cols = col;
         var board = [];
         for (var i = 0; i < row; i++) {
             board[i] = [];
@@ -31707,22 +31705,25 @@ var gameLogic;
         return createNewBoard(row, col);
     }
     gameLogic.getInitialBoardWP = getInitialBoardWP;
-    function getInitialBoard() {
-        return createNewBoard(gameLogic.ROWS, gameLogic.COLS);
+    //   export function getInitialBoard(): Board {
+    //     return createNewBoard();
+    //   }
+    function getInitialStateWP(row, col) {
+        return { board: getInitialBoardWP(row, col), delta: null };
     }
-    gameLogic.getInitialBoard = getInitialBoard;
-    function getInitialState() {
-        return { board: getInitialBoard(), delta: null };
-    }
-    gameLogic.getInitialState = getInitialState;
+    gameLogic.getInitialStateWP = getInitialStateWP;
+    //   export function getInitialState(): IState {
+    //     return {board: getInitialBoard(), delta: null};
+    //   }
     /**
      * Create Move
      */
     function createMove(stateBeforeMove, row, col, turnIndexBeforeMove) {
-        if (!stateBeforeMove) {
-            stateBeforeMove = getInitialState();
-        }
         var board = stateBeforeMove.board;
+        var dim = board.length;
+        if (!stateBeforeMove) {
+            stateBeforeMove = getInitialStateWP(dim, dim);
+        }
         if (isOver(board)) {
             throw new Error("Can only make a move if the game is not over!");
         }
@@ -31733,6 +31734,11 @@ var gameLogic;
         if (board[row][col].owner >= 0) {
             throw new Error("No further move can be created because this line is already occupied");
         }
+        // if(board[row][col].shape!=Shape.Box){
+        //     if(board[row][col].dir==Direction.Bomb){
+        //         return null;
+        //     }
+        // }
         var boardAfterMove = angular.copy(board);
         var turnIndex;
         //Now this edge was owned, turn it to 1.
@@ -31750,7 +31756,7 @@ var gameLogic;
                     streak = true;
                 }
             }
-            if (row < gameLogic.ROWS - 1) {
+            if (row < dim - 1) {
                 if (boxOccupied(boardAfterMove, row + 1, col)) {
                     boardAfterMove[row + 1][col].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
@@ -31773,7 +31779,7 @@ var gameLogic;
                 }
             }
             //If the line has right box.
-            if (col < gameLogic.COLS - 1) {
+            if (col < dim - 1) {
                 if (boxOccupied(boardAfterMove, row, col + 1)) {
                     boardAfterMove[row][col + 1].owner = turnIndexBeforeMove;
                     turnIndex = turnIndexBeforeMove;
@@ -31818,9 +31824,10 @@ var gameLogic;
      * Find out who wins
      */
     function getWinner(board) {
-        var count;
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            for (var j = 0; j < gameLogic.COLS; j++) {
+        var count = [0, 0];
+        var dim = board.length;
+        for (var i = 0; i < dim; i++) {
+            for (var j = 0; j < dim; j++) {
                 if (board[i][j].shape == Shape.Box) {
                     count[board[i][j].owner]++;
                 }
@@ -31837,12 +31844,14 @@ var gameLogic;
         //Ties
         return -1;
     }
+    gameLogic.getWinner = getWinner;
     /**
      * Check for game termination
      */
     function isOver(board) {
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            for (var j = 0; j < gameLogic.COLS; j++) {
+        var dim = board.length;
+        for (var i = 0; i < dim; i++) {
+            for (var j = 0; j < dim; j++) {
                 if (board[i][j].shape != Shape.Box) {
                     continue;
                 }
@@ -31853,9 +31862,63 @@ var gameLogic;
         }
         return true;
     }
-    function createInitialMove() {
+    gameLogic.isOver = isOver;
+    /**
+     * 1-2 times (or more) allowed in a game for each player.
+     * Once this attck is instantiated, a number of random edges/lines will be reset
+     * (or one line will be reset),ie, if the edge had an owner, it will be erased.
+     * And all the adjcent squares will reset also.
+     * @param row
+     * @param col
+     */
+    function throwAtomicBomb(stateBeforeMove, row, col, turnIndexBeforeMove) {
+        var board = stateBeforeMove.board;
+        var dim = board.length;
+        var l = {};
+        var idx = 0;
+        for (var i = 0; i < dim; i++) {
+            for (var j = 0; j < dim; j++) {
+                if (board[i][j].shape != Shape.Line) {
+                    continue;
+                }
+                if (board[i][j].owner == -1) {
+                    continue;
+                }
+                l[idx++] = { row: i, col: j };
+            }
+        }
+        var rand = Math.floor(Math.random() * (idx - 1));
+        var r = l[rand].row;
+        var c = l[rand].col;
+        //Reset the ownership of the line
+        var boardAfterMove = angular.copy(board);
+        boardAfterMove[r][c].owner = -1;
+        //Reset the ownership of two regions adjacent to the line
+        if (boardAfterMove[r][c].dir == Direction.Hor) {
+            if (r > 0) {
+                boardAfterMove[r - 1][c].owner = -1;
+            }
+            if (r < dim - 1) {
+                boardAfterMove[r + 1][c].owner = -1;
+            }
+        }
+        else {
+            if (c > 0) {
+                boardAfterMove[r][c - 1].owner = -1;
+            }
+            if (c < dim - 1) {
+                boardAfterMove[r][c + 1].owner = -1;
+            }
+        }
+        var turnIndex = turnIndexBeforeMove ^ 1;
+        var delta = { row: r, col: c };
+        var state = { board: boardAfterMove, delta: delta };
+        return { endMatchScores: null, turnIndex: turnIndex, state: state };
+    }
+    gameLogic.throwAtomicBomb = throwAtomicBomb;
+    function createInitialMove(row, col) {
         return { endMatchScores: null, turnIndex: 0,
-            state: getInitialState() };
+            state: getInitialStateWP(row, col) };
     }
     gameLogic.createInitialMove = createInitialMove;
     function forSimpleTestHtml() {
@@ -31869,6 +31932,9 @@ var gameLogic;
 ;
 var game;
 (function (game) {
+    game.isModalShown = false;
+    game.modalTitle = "";
+    game.modalBody = "";
     game.$rootScope = null;
     game.$timeout = null;
     // Global variables are cleared when getting updateUI.
@@ -31939,9 +32005,10 @@ var game;
     game.getCellStyle = getCellStyle;
     function getProposalsBoard(playerIdToProposal) {
         var proposals = [];
-        for (var i = 0; i < gameLogic.ROWS; i++) {
+        //TODO
+        for (var i = 0; i < gameLogic.rows; i++) {
             proposals[i] = [];
-            for (var j = 0; j < gameLogic.COLS; j++) {
+            for (var j = 0; j < gameLogic.cols; j++) {
                 proposals[i][j] = 0;
             }
         }
@@ -31971,9 +32038,22 @@ var game;
         game.currentUpdateUI = params;
         clearAnimationTimeout();
         game.state = params.state;
+        log.info(params.state);
         if (isFirstMove()) {
-            game.state = gameLogic.getInitialState();
+            log.info("Update state initial");
+            game.dimSet = false;
+            game.state = gameLogic.getInitialStateWP(game.row, game.col);
+            if (playerIdToProposal)
+                setDim(15, 15);
         }
+        else {
+            log.info("Update state");
+            game.state = params.state;
+            game.dimSet = true;
+            game.row = game.state.board.length;
+            game.col = game.state.board.length;
+        }
+        game.state.board[1][1].dir = Direction.Bomb;
         // We calculate the AI move only after the animation finishes,
         // because if we call aiService now
         // then the animation will be paused until the javascript finishes.
@@ -32002,11 +32082,14 @@ var game;
         log.info("Computer move: ", move);
         makeMove(move);
     }
-    function setDim(row, col) {
-        row = row;
-        col = col;
+    function setDim(r, c) {
+        game.row = r;
+        game.col = c;
         game.dimSet = true;
-        game.board = gameLogic.getInitialBoardWP(row, col);
+        gameLogic.rows = game.row;
+        gameLogic.cols = game.col;
+        game.state = gameLogic.getInitialStateWP(game.row, game.col);
+        log.info("Dimension is set to ", game.row, game.col);
     }
     game.setDim = setDim;
     function makeMove(move) {
@@ -32048,6 +32131,7 @@ var game;
     function isHumanTurn() {
         return isMyTurn() && !isComputer();
     }
+    game.isHumanTurn = isHumanTurn;
     function isMyTurn() {
         return !game.didMakeMove &&
             game.currentUpdateUI.turnIndex >= 0 &&
@@ -32065,10 +32149,26 @@ var game;
             log.info(["Cell is already full in position:", row, col]);
             return;
         }
-        // Move is legal, make it!
         makeMove(nextMove);
     }
     game.cellClicked = cellClicked;
+    function isOver() {
+        if (gameLogic.isOver(game.state.board)) {
+            //Tie
+            if (gameLogic.getWinner(game.state.board) == -1) {
+                return 2;
+            }
+            //If you won, return 1, if you lost, return 0
+            return gameLogic.getWinner(game.state.board) == game.currentUpdateUI.yourPlayerIndex ? 1 : 0;
+        }
+        return -1;
+    }
+    game.isOver = isOver;
+    function isBomb(row, col) {
+        return game.state.board[row][col].shape == Shape.Box &&
+            game.state.board[row][col].dir == Direction.Bomb;
+    }
+    game.isBomb = isBomb;
     function shouldColorVisitedEdge(row, col) {
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;
@@ -32094,12 +32194,42 @@ var game;
             game.state.delta.col === col;
     }
     game.shouldSlowlyAppear = shouldSlowlyAppear;
-    function divideByTwoThenFloor(row) {
-        return Math.floor(row / 2);
+    function sizeSmall(r) {
+        switch (game.row) {
+            case 7:
+                return Math.floor(r / 2) * (28 + 4) + (r % 2) * 4;
+            case 11:
+                return Math.floor(r / 2) * (15.8 + 3.5) + (r % 2) * 3.5;
+            case 15:
+                return Math.floor(r / 2) * (11.11111 + 2.77777) + (r % 2) * 2.77777;
+        }
     }
-    game.divideByTwoThenFloor = divideByTwoThenFloor;
-    /**Drag and drop */
-    //Add layer, Add drag and drop
+    game.sizeSmall = sizeSmall;
+    function sizeBig(r) {
+        switch (game.row) {
+            case 7:
+                return ((r + 1) % 2) * 4 + (r % 2) * 28;
+            case 11:
+                return ((r + 1) % 2) * 3.5 + (r % 2) * 15.8;
+            case 15:
+                return ((r + 1) % 2) * 2.77777 + (r % 2) * 11.11111;
+        }
+    }
+    game.sizeBig = sizeBig;
+    //======MENU========
+    function fontSizePx() {
+        // for iphone4 (min(width,height)=320) it should be 8.
+        return 8 * Math.min(window.innerWidth, window.innerHeight) / 320;
+    }
+    game.fontSizePx = fontSizePx;
+    function getRange() {
+        var list = [];
+        for (var i = 0; i < game.row; i++) {
+            list[i] = i;
+        }
+        return list;
+    }
+    game.getRange = getRange;
 })(game || (game = {}));
 angular.module('myApp', ['gameServices'])
     .run(['$rootScope', '$timeout',
@@ -32124,8 +32254,9 @@ var aiService;
      */
     function getPossibleMoves(state, turnIndexBeforeMove) {
         var possibleMoves = [];
-        for (var i = 0; i < gameLogic.ROWS; i++) {
-            for (var j = 0; j < gameLogic.COLS; j++) {
+        //TODO
+        for (var i = 0; i < gameLogic.rows; i++) {
+            for (var j = 0; j < gameLogic.cols; j++) {
                 try {
                     possibleMoves.push(gameLogic.createMove(state, i, j, turnIndexBeforeMove));
                 }

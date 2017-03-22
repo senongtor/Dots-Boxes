@@ -221,18 +221,17 @@ var game;
         makeMove(nextMove);
     }
     game.cellClicked = cellClicked;
-    function isOver() {
-        if (gameLogic.isOver(game.state.board)) {
-            //Tie
-            if (gameLogic.getWinner(game.state.board) == -1) {
-                return 2;
-            }
-            //If you won, return 1, if you lost, return 0
-            return gameLogic.getWinner(game.state.board) == game.currentUpdateUI.yourPlayerIndex ? 1 : 0;
-        }
-        return -1;
-    }
-    game.isOver = isOver;
+    // export function isOver(): number {
+    //   if(gameLogic.isOver(state.board)){
+    //     //Tie
+    //     if(gameLogic.getWinner(state.board)==-1){
+    //       return 2;
+    //     }
+    //     //If you won, return 1, if you lost, return 0
+    //     return gameLogic.getWinner(state.board) == currentUpdateUI.yourPlayerIndex?1:0;
+    //   }
+    //   return -1;
+    // }
     function isBomb(row, col) {
         return game.state.board[row][col].shape == Shape.Box &&
             game.state.board[row][col].dir == Direction.Bomb;
@@ -285,9 +284,6 @@ var game;
         }
     }
     game.sizeBig = sizeBig;
-    // export function divideByTwoThenFloor(row: number): number {
-    //   return Math.floor(row / 2);
-    // }
     //======MENU========
     function fontSizePx() {
         // for iphone4 (min(width,height)=320) it should be 8.

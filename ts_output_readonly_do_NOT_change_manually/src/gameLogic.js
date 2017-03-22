@@ -212,7 +212,6 @@ var gameLogic;
         //Ties
         return -1;
     }
-    gameLogic.getWinner = getWinner;
     /**
      * Check for game termination
      */
@@ -230,7 +229,6 @@ var gameLogic;
         }
         return true;
     }
-    gameLogic.isOver = isOver;
     /**
      * 1-2 times (or more) allowed in a game for each player.
      * Once this attck is instantiated, a number of random edges/lines will be reset

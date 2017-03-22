@@ -219,7 +219,7 @@ module gameLogic {
       /**
        * Find out who wins
        */
-      export function getWinner(board: Board): number{       
+      function getWinner(board: Board): number{       
         let count:number[]=[0,0];
         let dim=board.length;
         for(let i=0;i<dim;i++){
@@ -244,7 +244,7 @@ module gameLogic {
       /**
        * Check for game termination
        */
-      export function isOver(board: Board){
+      function isOver(board: Board){
         let dim=board.length;
         for (let i = 0; i < dim; i++) {       
             for (let j = 0; j < dim; j++) {
