@@ -122,7 +122,30 @@ var game;
             game.row = game.state.board.length;
             game.col = game.state.board.length;
         }
-        game.state.board[1][1].dir = Direction.Bomb;
+        //Unbomb all bombs
+        for (var i = 0; i < game.state.board.length; i++) {
+            for (var j = 0; j < game.state.board.length; j++) {
+                if (game.state.board[i][j].shape != Shape.Box) {
+                    continue;
+                }
+                game.state.board[i][j].isBomb = false;
+            }
+        }
+        //Generate a number
+        var rr = Math.floor(Math.random() * 100);
+        //If the number is in certain range, generate new bomb
+        if (rr < 100 / game.state.board.length) {
+            log.info(["Random number is: ", rr]);
+            while (true) {
+                var i = Math.floor(Math.random() * (game.state.board.length - 1));
+                var j = Math.floor(Math.random() * (game.state.board.length - 1));
+                if (game.state.board[i][j].shape == Shape.Box) {
+                    log.info(["Bomb is at: ", i, j]);
+                    game.state.board[i][j].isBomb = true;
+                    break;
+                }
+            }
+        }
         // We calculate the AI move only after the animation finishes,
         // because if we call aiService now
         // then the animation will be paused until the javascript finishes.
@@ -234,7 +257,7 @@ var game;
     // }
     function isBomb(row, col) {
         return game.state.board[row][col].shape == Shape.Box &&
-            game.state.board[row][col].dir == Direction.Bomb;
+            game.state.board[row][col].isBomb && game.state.board[row][col].owner == -1;
     }
     game.isBomb = isBomb;
     function shouldColorVisitedEdge(row, col) {

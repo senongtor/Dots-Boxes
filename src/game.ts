@@ -125,13 +125,37 @@ module game {
       state = gameLogic.getInitialStateWP(row, col);
       if (playerIdToProposal) setDim(15, 15);
     } else {
-      log.info("Update state");   
+      log.info("Update state");
       state = params.state;
       dimSet = true;
       row = state.board.length;
       col = state.board.length;
     }
-    state.board[1][1].dir=Direction.Bomb;
+    //Unbomb all bombs
+    for (let i = 0; i < state.board.length; i++) {
+      for (let j = 0; j < state.board.length; j++) {
+        if (state.board[i][j].shape != Shape.Box) {
+          continue;
+        }
+        state.board[i][j].isBomb = false;
+      }
+    }
+    //Generate a number
+    let rr = Math.floor(Math.random() * 100);
+    //If the number is in certain range, generate new bomb
+    if (rr < 100 / state.board.length) {
+      log.info(["Random number is: ", rr]);
+      while (true) {
+        let i = Math.floor(Math.random() * (state.board.length - 1));
+        let j = Math.floor(Math.random() * (state.board.length - 1));
+        if (state.board[i][j].shape == Shape.Box) {
+          log.info(["Bomb is at: ", i, j]);
+          state.board[i][j].isBomb = true;
+          break;
+        }
+      }
+    }
+
     // We calculate the AI move only after the animation finishes,
     // because if we call aiService now
     // then the animation will be paused until the javascript finishes.
@@ -166,8 +190,8 @@ module game {
     row = r;
     col = c;
     dimSet = true;
-    gameLogic.rows=row;
-    gameLogic.cols=col;
+    gameLogic.rows = row;
+    gameLogic.cols = col;
     state = gameLogic.getInitialStateWP(row, col);
     log.info("Dimension is set to ", row, col);
   }
@@ -249,8 +273,8 @@ module game {
   // }
 
   export function isBomb(row: number, col: number): boolean {
-    return state.board[row][col].shape==Shape.Box && 
-    state.board[row][col].dir==Direction.Bomb;
+    return state.board[row][col].shape == Shape.Box &&
+      state.board[row][col].isBomb && state.board[row][col].owner == -1;
   }
 
   export function shouldColorVisitedEdge(row: number, col: number): boolean {
@@ -278,25 +302,25 @@ module game {
       state.delta.row === row &&
       state.delta.col === col;
   }
-  export function sizeSmall(r:number):number{
-    switch(row){
+  export function sizeSmall(r: number): number {
+    switch (row) {
       case 7:
-        return Math.floor(r / 2)*(28+4) + (r%2)*4; 
+        return Math.floor(r / 2) * (28 + 4) + (r % 2) * 4;
       case 11:
-        return Math.floor(r / 2)*(15.8+3.5) + (r%2)*3.5; 
+        return Math.floor(r / 2) * (15.8 + 3.5) + (r % 2) * 3.5;
       case 15:
-        return Math.floor(r / 2)*(11.11111+2.77777) + (r%2)*2.77777; 
+        return Math.floor(r / 2) * (11.11111 + 2.77777) + (r % 2) * 2.77777;
     }
   }
-  
-  export function sizeBig(r:number):number{
-    switch(row){
+
+  export function sizeBig(r: number): number {
+    switch (row) {
       case 7:
-        return ((r+1)%2)*4+(r%2)*28;
-      case 11: 
-        return ((r+1)%2)*3.5+(r%2)*15.8;
+        return ((r + 1) % 2) * 4 + (r % 2) * 28;
+      case 11:
+        return ((r + 1) % 2) * 3.5 + (r % 2) * 15.8;
       case 15:
-        return ((r+1)%2)*2.77777+(r%2)*11.11111;
+        return ((r + 1) % 2) * 2.77777 + (r % 2) * 11.11111;
     }
   }
 

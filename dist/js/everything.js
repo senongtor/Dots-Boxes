@@ -31637,7 +31637,6 @@ var Direction;
 (function (Direction) {
     Direction[Direction["Hor"] = 1] = "Hor";
     Direction[Direction["Ver"] = 2] = "Ver";
-    Direction[Direction["Bomb"] = 3] = "Bomb";
 })(Direction || (Direction = {}));
 var Shape;
 (function (Shape) {
@@ -31658,6 +31657,7 @@ var Occupied;
 var Grid = (function () {
     function Grid() {
         this.owner = -1;
+        this.isBomb = false;
     }
     return Grid;
 }());
@@ -31728,17 +31728,21 @@ var gameLogic;
             throw new Error("Can only make a move if the game is not over!");
         }
         //If the shape of this grid is not line, return
-        if (board[row][col].shape != Shape.Line) {
+        if (board[row][col].shape == Shape.Dot) {
             throw new Error("Cannot put it here man");
+        }
+        //If the user touches a bomb
+        if (stateBeforeMove.board[row][col].shape == Shape.Box) {
+            if (stateBeforeMove.board[row][col].isBomb) {
+                return throwAtomicBomb(stateBeforeMove, row, col, turnIndexBeforeMove);
+            }
+            else {
+                throw new Error("Cannot put it here man");
+            }
         }
         if (board[row][col].owner >= 0) {
             throw new Error("No further move can be created because this line is already occupied");
         }
-        // if(board[row][col].shape!=Shape.Box){
-        //     if(board[row][col].dir==Direction.Bomb){
-        //         return null;
-        //     }
-        // }
         var boardAfterMove = angular.copy(board);
         var turnIndex;
         //Now this edge was owned, turn it to 1.
@@ -31844,7 +31848,6 @@ var gameLogic;
         //Ties
         return -1;
     }
-    gameLogic.getWinner = getWinner;
     /**
      * Check for game termination
      */
@@ -31862,7 +31865,6 @@ var gameLogic;
         }
         return true;
     }
-    gameLogic.isOver = isOver;
     /**
      * 1-2 times (or more) allowed in a game for each player.
      * Once this attck is instantiated, a number of random edges/lines will be reset
@@ -31917,8 +31919,10 @@ var gameLogic;
     }
     gameLogic.throwAtomicBomb = throwAtomicBomb;
     function createInitialMove(row, col) {
-        return { endMatchScores: null, turnIndex: 0,
-            state: getInitialStateWP(row, col) };
+        return {
+            endMatchScores: null, turnIndex: 0,
+            state: getInitialStateWP(row, col)
+        };
     }
     gameLogic.createInitialMove = createInitialMove;
     function forSimpleTestHtml() {
@@ -32053,7 +32057,30 @@ var game;
             game.row = game.state.board.length;
             game.col = game.state.board.length;
         }
-        game.state.board[1][1].dir = Direction.Bomb;
+        //Unbomb all bombs
+        for (var i = 0; i < game.state.board.length; i++) {
+            for (var j = 0; j < game.state.board.length; j++) {
+                if (game.state.board[i][j].shape != Shape.Box) {
+                    continue;
+                }
+                game.state.board[i][j].isBomb = false;
+            }
+        }
+        //Generate a number
+        var rr = Math.floor(Math.random() * 100);
+        //If the number is in certain range, generate new bomb
+        if (rr < 100 / game.state.board.length) {
+            log.info(["Random number is: ", rr]);
+            while (true) {
+                var i = Math.floor(Math.random() * (game.state.board.length - 1));
+                var j = Math.floor(Math.random() * (game.state.board.length - 1));
+                if (game.state.board[i][j].shape == Shape.Box) {
+                    log.info(["Bomb is at: ", i, j]);
+                    game.state.board[i][j].isBomb = true;
+                    break;
+                }
+            }
+        }
         // We calculate the AI move only after the animation finishes,
         // because if we call aiService now
         // then the animation will be paused until the javascript finishes.
@@ -32152,21 +32179,20 @@ var game;
         makeMove(nextMove);
     }
     game.cellClicked = cellClicked;
-    function isOver() {
-        if (gameLogic.isOver(game.state.board)) {
-            //Tie
-            if (gameLogic.getWinner(game.state.board) == -1) {
-                return 2;
-            }
-            //If you won, return 1, if you lost, return 0
-            return gameLogic.getWinner(game.state.board) == game.currentUpdateUI.yourPlayerIndex ? 1 : 0;
-        }
-        return -1;
-    }
-    game.isOver = isOver;
+    // export function isOver(): number {
+    //   if(gameLogic.isOver(state.board)){
+    //     //Tie
+    //     if(gameLogic.getWinner(state.board)==-1){
+    //       return 2;
+    //     }
+    //     //If you won, return 1, if you lost, return 0
+    //     return gameLogic.getWinner(state.board) == currentUpdateUI.yourPlayerIndex?1:0;
+    //   }
+    //   return -1;
+    // }
     function isBomb(row, col) {
         return game.state.board[row][col].shape == Shape.Box &&
-            game.state.board[row][col].dir == Direction.Bomb;
+            game.state.board[row][col].isBomb && game.state.board[row][col].owner == -1;
     }
     game.isBomb = isBomb;
     function shouldColorVisitedEdge(row, col) {

@@ -5,7 +5,6 @@ var Direction;
 (function (Direction) {
     Direction[Direction["Hor"] = 1] = "Hor";
     Direction[Direction["Ver"] = 2] = "Ver";
-    Direction[Direction["Bomb"] = 3] = "Bomb";
 })(Direction || (Direction = {}));
 var Shape;
 (function (Shape) {
@@ -26,6 +25,7 @@ var Occupied;
 var Grid = (function () {
     function Grid() {
         this.owner = -1;
+        this.isBomb = false;
     }
     return Grid;
 }());
@@ -96,17 +96,21 @@ var gameLogic;
             throw new Error("Can only make a move if the game is not over!");
         }
         //If the shape of this grid is not line, return
-        if (board[row][col].shape != Shape.Line) {
+        if (board[row][col].shape == Shape.Dot) {
             throw new Error("Cannot put it here man");
+        }
+        //If the user touches a bomb
+        if (stateBeforeMove.board[row][col].shape == Shape.Box) {
+            if (stateBeforeMove.board[row][col].isBomb) {
+                return throwAtomicBomb(stateBeforeMove, row, col, turnIndexBeforeMove);
+            }
+            else {
+                throw new Error("Cannot put it here man");
+            }
         }
         if (board[row][col].owner >= 0) {
             throw new Error("No further move can be created because this line is already occupied");
         }
-        // if(board[row][col].shape!=Shape.Box){
-        //     if(board[row][col].dir==Direction.Bomb){
-        //         return null;
-        //     }
-        // }
         var boardAfterMove = angular.copy(board);
         var turnIndex;
         //Now this edge was owned, turn it to 1.
@@ -283,8 +287,10 @@ var gameLogic;
     }
     gameLogic.throwAtomicBomb = throwAtomicBomb;
     function createInitialMove(row, col) {
-        return { endMatchScores: null, turnIndex: 0,
-            state: getInitialStateWP(row, col) };
+        return {
+            endMatchScores: null, turnIndex: 0,
+            state: getInitialStateWP(row, col)
+        };
     }
     gameLogic.createInitialMove = createInitialMove;
     function forSimpleTestHtml() {

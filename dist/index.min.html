@@ -53,7 +53,7 @@
           style="width:100%;height:100%;display:block">
       </div>
     </div>
-    <div class="boarArea" ng-show="game.dimSet && game.isOver()==-1" style="font-size: {{game.fontSizePx()}}px;">
+    <div class="boarArea" ng-show="game.dimSet" style="font-size: {{game.fontSizePx()}}px;">
       <rect width="100%" height="100%" style="fill:#CCCCFF" />
       <div ng-repeat="row in game.getRange()" style="position:absolute; left:0; width:100%; top:{{game.sizeSmall(row)}}%; height:{{game.sizeBig(row)}}%">
         <div ng-repeat="col in game.getRange()" style="position:absolute; left:{{game.sizeSmall(col)}}%; width:{{game.sizeBig(col)}}%; top:0; height:100%"
@@ -66,26 +66,12 @@
             </div>
             <div style="width:100%; height: 100%" ng-if="game.isOccupiedBy1(row, col)" ng-class="{pl1: true}">
             </div>
-            <div style="width:100%; height: 100%" ng-if="game.isBomb(row, col)" style="background-image: url(http://www.icon100.com/up/3959/256/7-Bomb.png)!important;width:100%;height:100%">
-            </div>
+            <div style="width:100%; height: 100%" ng-if="game.isBomb(row, col)" ng-class="{bomb: true}">
+            </div>  
+            <!--<div style="width:100%; height: 100%" ng-if="!game.isBomb(row, col)" ng-class="{Box: true}">
+            </div>       -->
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="result">
-      {{show=game.isOver();}}
-      <div ng-show="show!=-1 && game.dimSet">
-        <div class="text" ng-if="show==2">
-          Tie
-        </div>
-        <div class="text" ng-if="show==1">
-          You Won
-        </div>
-        <div class="text" ng-if="show==0">
-          You Lost
-        </div>
-        <button type="button" ng-click="game.dimSet=false" width="60px;" class="text selectSize">Main Menu</button>
       </div>
     </div>
   </div>

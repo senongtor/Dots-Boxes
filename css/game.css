@@ -65,12 +65,12 @@ textarea, input {
 }
 
 .pl0 {
-  background: #ff9933; 
+  background: #ff9933!important; 
   /*border: 1px solid #959595;*/
 }
 
 .pl1 {
-  background: #0099ff; 
+  background: #0099ff!important; 
   /*border: 1px solid #959595;*/
 }
 
@@ -252,9 +252,13 @@ button {
 }
 
 .bomb{
-    width:100%;
-    height:100%;
+    background-image: url(http://www.icon100.com/up/3959/256/7-Bomb.png);
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
     border: 0pt hidden !important;
     border-collapse: collapse !important;
-    
+}
+
+.Box{
+   display:none;
 }
