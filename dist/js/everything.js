@@ -31912,6 +31912,7 @@ var gameLogic;
                 boardAfterMove[r][c + 1].owner = -1;
             }
         }
+        //Bombing is one move, must switch player after the move.
         var turnIndex = turnIndexBeforeMove ^ 1;
         var delta = { row: r, col: c };
         var state = { board: boardAfterMove, delta: delta };
@@ -32057,27 +32058,34 @@ var game;
             game.row = game.state.board.length;
             game.col = game.state.board.length;
         }
-        //Unbomb all bombs
+        //Unbomb all bombs, and check if any edge has been occupied.
+        var anyEdgeOccupied = false;
         for (var i = 0; i < game.state.board.length; i++) {
             for (var j = 0; j < game.state.board.length; j++) {
-                if (game.state.board[i][j].shape != Shape.Box) {
-                    continue;
+                if (game.state.board[i][j].shape == Shape.Box) {
+                    game.state.board[i][j].isBomb = false;
                 }
-                game.state.board[i][j].isBomb = false;
+                if (game.state.board[i][j].shape == Shape.Line) {
+                    if (game.state.board[i][j].owner != -1) {
+                        anyEdgeOccupied = true;
+                    }
+                }
             }
         }
-        //Generate a number
-        var rr = Math.floor(Math.random() * 100);
-        //If the number is in certain range, generate new bomb
-        if (rr < 100 / game.state.board.length) {
-            log.info(["Random number is: ", rr]);
-            while (true) {
-                var i = Math.floor(Math.random() * (game.state.board.length - 1));
-                var j = Math.floor(Math.random() * (game.state.board.length - 1));
-                if (game.state.board[i][j].shape == Shape.Box) {
-                    log.info(["Bomb is at: ", i, j]);
-                    game.state.board[i][j].isBomb = true;
-                    break;
+        //Generate a number. If no edge has been occupied, don't show bomb
+        if (anyEdgeOccupied) {
+            var rr = Math.floor(Math.random() * 100);
+            //If the number is in certain range, generate new bomb
+            if (rr < 100 / game.state.board.length) {
+                log.info(["Random number is: ", rr]);
+                while (true) {
+                    var i = Math.floor(Math.random() * (game.state.board.length - 1));
+                    var j = Math.floor(Math.random() * (game.state.board.length - 1));
+                    if (game.state.board[i][j].shape == Shape.Box) {
+                        log.info(["Bomb is at: ", i, j]);
+                        game.state.board[i][j].isBomb = true;
+                        break;
+                    }
                 }
             }
         }

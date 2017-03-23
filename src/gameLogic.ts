@@ -311,6 +311,7 @@ module gameLogic {
                 boardAfterMove[r][c + 1].owner = -1
             }
         }
+        //Bombing is one move, must switch player after the move.
         let turnIndex = turnIndexBeforeMove ^ 1;
         let delta: BoardDelta = { row: r, col: c };
 

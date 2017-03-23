@@ -280,6 +280,7 @@ var gameLogic;
                 boardAfterMove[r][c + 1].owner = -1;
             }
         }
+        //Bombing is one move, must switch player after the move.
         var turnIndex = turnIndexBeforeMove ^ 1;
         var delta = { row: r, col: c };
         var state = { board: boardAfterMove, delta: delta };

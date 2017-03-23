@@ -131,30 +131,38 @@ module game {
       row = state.board.length;
       col = state.board.length;
     }
-    //Unbomb all bombs
+    //Unbomb all bombs, and check if any edge has been occupied.
+    let anyEdgeOccupied: boolean = false;
     for (let i = 0; i < state.board.length; i++) {
       for (let j = 0; j < state.board.length; j++) {
-        if (state.board[i][j].shape != Shape.Box) {
-          continue;
-        }
-        state.board[i][j].isBomb = false;
-      }
-    }
-    //Generate a number
-    let rr = Math.floor(Math.random() * 100);
-    //If the number is in certain range, generate new bomb
-    if (rr < 100 / state.board.length) {
-      log.info(["Random number is: ", rr]);
-      while (true) {
-        let i = Math.floor(Math.random() * (state.board.length - 1));
-        let j = Math.floor(Math.random() * (state.board.length - 1));
         if (state.board[i][j].shape == Shape.Box) {
-          log.info(["Bomb is at: ", i, j]);
-          state.board[i][j].isBomb = true;
-          break;
+          state.board[i][j].isBomb = false;
+        }
+        if (state.board[i][j].shape == Shape.Line) {
+          if (state.board[i][j].owner != -1) {
+            anyEdgeOccupied = true;
+          }
         }
       }
     }
+    //Generate a number. If no edge has been occupied, don't show bomb
+    if (anyEdgeOccupied) {
+      let rr = Math.floor(Math.random() * 100);
+      //If the number is in certain range, generate new bomb
+      if (rr < 100 / state.board.length) {
+        log.info(["Random number is: ", rr]);
+        while (true) {
+          let i = Math.floor(Math.random() * (state.board.length - 1));
+          let j = Math.floor(Math.random() * (state.board.length - 1));
+          if (state.board[i][j].shape == Shape.Box) {
+            log.info(["Bomb is at: ", i, j]);
+            state.board[i][j].isBomb = true;
+            break;
+          }
+        }
+      }
+    }
+
 
     // We calculate the AI move only after the animation finishes,
     // because if we call aiService now
