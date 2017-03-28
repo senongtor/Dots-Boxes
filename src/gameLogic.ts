@@ -96,7 +96,7 @@ module gameLogic {
         return board;
     }
 
-    export function getInitialBoardWP(row: number, col: number) {
+    export function getInitialBoardWP(row: number, col: number):Board {
         return createNewBoard(row, col);
     }
     //   export function getInitialBoard(): Board {
@@ -115,11 +115,13 @@ module gameLogic {
     export function createMove(
         stateBeforeMove: IState, row: number, col: number,
         turnIndexBeforeMove: number): IMove {
+
+        if (!stateBeforeMove) {
+            stateBeforeMove = getInitialStateWP(15, 15);
+        }
+
         let board: Board = stateBeforeMove.board;
         let dim = board.length;
-        if (!stateBeforeMove) {
-            stateBeforeMove = getInitialStateWP(dim, dim);
-        }
         if (isOver(board)) {
             throw new Error("Can only make a move if the game is not over!");
         }

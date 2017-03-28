@@ -278,36 +278,33 @@ var game;
         game.bombEnabled = false;
     }
     game.disableBomb = disableBomb;
-    function shouldColorVisitedEdge(row, col) {
-        if (game.state.board[row][col].shape != Shape.Line) {
-            return false;
-        }
-        if (game.state.delta == null) {
-            return false;
-        }
-        return (game.state.delta.row != row || game.state.delta.col != col) && game.state.board[row][col].owner != -1 || isProposal(row, col);
-    }
-    game.shouldColorVisitedEdge = shouldColorVisitedEdge;
+    // export function shouldColorVisitedEdge(row: number, col: number): boolean {
+    //   if (state.board[row][col].shape != Shape.Line) {
+    //     return false;
+    //   }
+    //   if (state.delta == null) {
+    //     return false;
+    //   }
+    //   return (state.delta.row != row || state.delta.col != col) && state.board[row][col].owner != -1 || isProposal(row, col);
+    // }
     function shouldColorVisitedEdgePl0(row, col) {
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;
         }
-        if (game.state.delta == null) {
-            return false;
-        }
-        log.info([row, col, "delta equals?", game.state.delta === { row: row, col: col }, "owner", game.state.board[row][col].owner]);
-        return game.state.delta.row == row && game.state.delta.col == col && game.state.board[row][col].owner == 0 || isProposal(row, col);
+        // if (state.delta == null) {
+        //   return false;
+        // }
+        return game.state.board[row][col].owner == 0 || isProposal(row, col);
     }
     game.shouldColorVisitedEdgePl0 = shouldColorVisitedEdgePl0;
     function shouldColorVisitedEdgePl1(row, col) {
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;
         }
-        if (game.state.delta == null) {
-            return false;
-        }
-        log.info([row, col, "delta equals?", game.state.delta === { row: row, col: col }, "owner", game.state.board[row][col].owner]);
-        return game.state.delta.row == row && game.state.delta.col == col && game.state.board[row][col].owner == 1 || isProposal(row, col);
+        // if (state.delta == null) {
+        //   return false;
+        // }
+        return game.state.board[row][col].owner == 1 || isProposal(row, col);
     }
     game.shouldColorVisitedEdgePl1 = shouldColorVisitedEdgePl1;
     function isOccupied(row, col, turnIndex) {

@@ -296,37 +296,35 @@ module game {
     bombEnabled = false;
   }
 
-  export function shouldColorVisitedEdge(row: number, col: number): boolean {
-    if (state.board[row][col].shape != Shape.Line) {
-      return false;
-    }
-    if (state.delta == null) {
-      return false;
-    }
-    return (state.delta.row != row || state.delta.col != col) && state.board[row][col].owner != -1 || isProposal(row, col);
-  }
+  // export function shouldColorVisitedEdge(row: number, col: number): boolean {
+  //   if (state.board[row][col].shape != Shape.Line) {
+  //     return false;
+  //   }
+  //   if (state.delta == null) {
+  //     return false;
+  //   }
+  //   return (state.delta.row != row || state.delta.col != col) && state.board[row][col].owner != -1 || isProposal(row, col);
+  // }
 
   export function shouldColorVisitedEdgePl0(row: number, col: number): boolean {
     if (state.board[row][col].shape != Shape.Line) {
       return false;
     }
-    if (state.delta == null) {
-      return false;
-    }
-    log.info([row, col, "delta equals?", state.delta === { row: row, col: col }, "owner", state.board[row][col].owner]);
-    return state.delta.row == row && state.delta.col == col && state.board[row][col].owner == 0 || isProposal(row, col);
+    // if (state.delta == null) {
+    //   return false;
+    // }
+    return state.board[row][col].owner == 0 || isProposal(row, col);
   }
 
   export function shouldColorVisitedEdgePl1(row: number, col: number): boolean {
     if (state.board[row][col].shape != Shape.Line) {
       return false;
     }
-    if (state.delta == null) {
-      return false;
-    }
-    log.info([row, col, "delta equals?", state.delta === { row: row, col: col }, "owner", state.board[row][col].owner]);
+    // if (state.delta == null) {
+    //   return false;
+    // }
 
-    return state.delta.row == row && state.delta.col == col && state.board[row][col].owner == 1 || isProposal(row, col);
+    return state.board[row][col].owner == 1 || isProposal(row, col);
   }
 
   function isOccupied(row: number, col: number, turnIndex: number): boolean {

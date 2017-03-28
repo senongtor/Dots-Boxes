@@ -87,11 +87,11 @@ var gameLogic;
      * Create Move
      */
     function createMove(stateBeforeMove, row, col, turnIndexBeforeMove) {
+        if (!stateBeforeMove) {
+            stateBeforeMove = getInitialStateWP(15, 15);
+        }
         var board = stateBeforeMove.board;
         var dim = board.length;
-        if (!stateBeforeMove) {
-            stateBeforeMove = getInitialStateWP(dim, dim);
-        }
         if (isOver(board)) {
             throw new Error("Can only make a move if the game is not over!");
         }
