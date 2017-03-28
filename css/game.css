@@ -55,6 +55,30 @@ textarea, input {
   animation-duration: 0.1s ease;
 }
 
+.edgePl0 {
+  background: #ff9933 !important; 
+  border-collapse: collapse !important;
+  border: hidden !important;
+  border: 0pt !important;
+  opacity: 0.8;
+  /*-webkit-animation-name: highlight_last_move; Chrome, Safari, Opera */
+  /*-webkit-animation-duration: 1s; Chrome, Safari, Opera */
+  /*animation-name: highlight_last_move_new;
+  animation-duration: 0.1s ease;*/
+}
+
+.edgePl1{
+  background: #0099ff !important; 
+  border-collapse: collapse !important;
+  border: hidden !important;
+  border: 0pt !important;
+  opacity: 0.8;
+  /*-webkit-animation-name: highlight_last_move; Chrome, Safari, Opera */
+  /*-webkit-animation-duration: 1s; Chrome, Safari, Opera */
+  /*animation-name: highlight_last_move_new;
+  animation-duration: 0.1s ease;*/
+}
+
 @keyframes highlight_last_move {
     from {background-color: black;}
     to {background-color: saddlebrown;}
@@ -255,14 +279,14 @@ button {
     background-image: url(http://www.icon100.com/up/3959/256/7-Bomb.png);
     background-size: 75% 75%;
     background-repeat: no-repeat;
-    
-   
+    background-position: center; 
 }
 
 @keyframes enlarge {
   0% { background-size: 80% 80%; }
   10% { background-size: 90% 90%;}
   15% { background-size: 105% 105%; }
+  35% { background-size: 110% 110%; }
   50% { background-size: 120% 120%; }
   75% { background-size: 100% 100%; }
   100% { background-size: 75% 75%; }

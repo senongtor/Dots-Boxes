@@ -136,16 +136,16 @@ var game;
                 }
             }
         }
-        //Generate a number. If no edge has been occupied, don't show bomb
+        //Generate a number. If no edge has been occupied, don't introduce bomb
         if (anyEdgeOccupied) {
             var rr = Math.floor(Math.random() * 100);
-            //If the number is in certain range, generate new bomb
+            //If the number is in a certain range, generate new bomb
             if (rr < 100 / game.state.board.length) {
                 log.info(["Random number is: ", rr]);
                 while (true) {
-                    var i = Math.floor(Math.random() * (game.state.board.length - 1));
-                    var j = Math.floor(Math.random() * (game.state.board.length - 1));
-                    if (game.state.board[i][j].shape == Shape.Box) {
+                    var i = Math.floor(Math.random() * (game.state.board.length - 2) + 1);
+                    var j = Math.floor(Math.random() * (game.state.board.length - 2) + 1);
+                    if (game.state.board[i][j].shape == Shape.Box && anySurroundingOccupied(i, j)) {
                         log.info(["Bomb is at: ", i, j]);
                         game.state.board[i][j].isBomb = true;
                         break;
@@ -159,6 +159,19 @@ var game;
         game.animationEndedTimeout = game.$timeout(animationEndedCallback, 500);
     }
     game.updateUI = updateUI;
+    function anySurroundingOccupied(row, col) {
+        var directions = {};
+        directions[0] = { row: row - 1, col: col };
+        directions[1] = { row: row + 1, col: col };
+        directions[2] = { row: row, col: col + 1 };
+        directions[3] = { row: row, col: col - 1 };
+        for (var i = 0; i < 4; i++) {
+            if (game.state.board[directions[i].row][directions[i].col].owner != -1) {
+                return true;
+            }
+        }
+        return false;
+    }
     function animationEndedCallback() {
         log.info("Animation ended");
         maybeSendComputerMove();
@@ -245,23 +258,12 @@ var game;
             nextMove = gameLogic.createMove(game.state, row, col, game.currentUpdateUI.turnIndex);
         }
         catch (e) {
-            log.info(["Cell is already full in position:", row, col]);
+            log.info(["Cell is already full in position:", row, col, e]);
             return;
         }
         makeMove(nextMove);
     }
     game.cellClicked = cellClicked;
-    // export function isOver(): number {
-    //   if(gameLogic.isOver(state.board)){
-    //     //Tie
-    //     if(gameLogic.getWinner(state.board)==-1){
-    //       return 2;
-    //     }
-    //     //If you won, return 1, if you lost, return 0
-    //     return gameLogic.getWinner(state.board) == currentUpdateUI.yourPlayerIndex?1:0;
-    //   }
-    //   return -1;
-    // }
     function isBomb(row, col) {
         return game.state.board[row][col].shape == Shape.Box &&
             game.state.board[row][col].isBomb && game.state.board[row][col].owner == -1;
@@ -274,6 +276,20 @@ var game;
         return game.state.board[row][col].owner != -1 || isProposal(row, col);
     }
     game.shouldColorVisitedEdge = shouldColorVisitedEdge;
+    function shouldColorVisitedEdgePl0(row, col) {
+        if (game.state.board[row][col].shape != Shape.Line) {
+            return false;
+        }
+        return game.state.delta == { row: row, col: col } && game.state.board[row][col].owner == 0 || isProposal(row, col);
+    }
+    game.shouldColorVisitedEdgePl0 = shouldColorVisitedEdgePl0;
+    function shouldColorVisitedEdgePl1(row, col) {
+        if (game.state.board[row][col].shape != Shape.Line) {
+            return false;
+        }
+        return game.state.delta == { row: row, col: col } && game.state.board[row][col].owner == 1 || isProposal(row, col);
+    }
+    game.shouldColorVisitedEdgePl1 = shouldColorVisitedEdgePl1;
     function isOccupied(row, col, turnIndex) {
         return (game.state.board[row][col].shape == Shape.Box && game.state.board[row][col].owner == turnIndex) ||
             (isProposal(row, col) && game.currentUpdateUI.turnIndex == turnIndex);

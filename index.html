@@ -35,8 +35,9 @@
       <button type="button" ng-click="inst = inst == true ? false : true;" width="80px;" class="dropbtn selectSize">Instruction</button>
       <div class="instruction" ng-if="inst">
         <div class="text">
-          Instruction: Conquer as more lands(squares) as possible by occupying walls(lines). The last player who makes a successful
-          surrounding will occupy the land surrounded.
+          Instruction: Conquer as more lands(dots) as possible by occupying walls(lines). The last player who makes a successful
+          surrounding will occupy the land surrounded. There is a possibility that a bomb will show up in an unoccupied dot. You can click the bomb
+          and one random line will be destroyed. 
         </div>
       </div>
      
@@ -70,6 +71,10 @@
           ng-class="{dot: (row%2==0)&&(col%2==0),line: !game.shouldColorVisitedEdge(row, col)&&((row%2==0)&&(col%2==1)||(row%2==1) && (col%2==0))}"
           ng-click="game.cellClicked(row, col)">
           <div style="width:100%; height: 100%" ng-class="{slowlyAppear: game.shouldSlowlyAppear(row, col)}">
+            <!--<div style="width:100%; height: 100%" ng-if="game.shouldColorVisitedEdgePl0(row, col)" ng-class="{edgePl0: true}">
+            </div>
+            <div style="width:100%; height: 100%" ng-if="game.shouldColorVisitedEdgePl1(row, col)" ng-class="{edgePl1: true}">
+            </div>-->
             <div style="width:100%; height: 100%" ng-if="game.shouldColorVisitedEdge(row, col)" ng-class="{edge: true}">
             </div>
             <div style="width:100%; height: 100%" ng-if="game.isOccupiedBy0(row, col)" ng-class="{pl0: true}">

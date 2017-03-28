@@ -113,8 +113,8 @@ var gameLogic;
         }
         var boardAfterMove = angular.copy(board);
         var turnIndex;
-        //Now this edge was owned, turn it to 1.
-        boardAfterMove[row][col].owner = 1;
+        //Now this edge was owned, turn it to currentplayer index.
+        boardAfterMove[row][col].owner = turnIndexBeforeMove;
         //assign the current move player as the owner of that edge
         //If the edge is horizontal, check up and down box
         //If the edge is vertical, check left and right box
@@ -162,16 +162,18 @@ var gameLogic;
                 turnIndex = turnIndexBeforeMove ^ 1;
             }
         }
+        log.info(["board after step on position", row, ",", col, ":", boardAfterMove]);
         var endMatchScores;
-        if (isOver(board)) {
+        if (isOver(boardAfterMove)) {
+            log.info("IS OVER!");
             turnIndex = -1;
-            if (getWinner(board) == -1) {
+            if (getWinner(boardAfterMove) == -1) {
                 endMatchScores = [0, 0];
             }
-            if (getWinner(board) == 1) {
+            if (getWinner(boardAfterMove) == 1) {
                 endMatchScores = [0, 1];
             }
-            if (getWinner(board) == 0) {
+            if (getWinner(boardAfterMove) == 0) {
                 endMatchScores = [1, 0];
             }
         }
@@ -187,6 +189,7 @@ var gameLogic;
      * Check if the box is surrounded
      */
     function boxOccupied(board, row, col) {
+        log.info(["board:", board, row, col]);
         return board[row - 1][col].owner >= 0 &&
             board[row + 1][col].owner >= 0 &&
             board[row][col - 1].owner >= 0 &&
@@ -205,8 +208,6 @@ var gameLogic;
                 }
             }
         }
-        var maxCount = 0;
-        var winner;
         if (count[0] > count[1]) {
             return 0;
         }
@@ -234,57 +235,74 @@ var gameLogic;
         return true;
     }
     /**
-     * 1-2 times (or more) allowed in a game for each player.
-     * Once this attck is instantiated, a number of random edges/lines will be reset
-     * (or one line will be reset),ie, if the edge had an owner, it will be erased.
-     * And all the adjcent squares will reset also.
+     * At each turn, has a possibility of 100/row that it will show up randomly in a place.
+     * Once it is clicked, the edges/lines around it will be destroyed
+     * And all the adjcent already occupied squares will reset also.
      * @param row
      * @param col
      */
-    function throwAtomicBomb(stateBeforeMove, row, col, turnIndexBeforeMove) {
+    function throwAtomicBomb(stateBeforeMove, r, c, turnIndexBeforeMove) {
         var board = stateBeforeMove.board;
         var dim = board.length;
-        var l = {};
-        var idx = 0;
-        for (var i = 0; i < dim; i++) {
-            for (var j = 0; j < dim; j++) {
-                if (board[i][j].shape != Shape.Line) {
-                    continue;
-                }
-                if (board[i][j].owner == -1) {
-                    continue;
-                }
-                l[idx++] = { row: i, col: j };
-            }
-        }
-        var rand = Math.floor(Math.random() * (idx - 1));
-        var r = l[rand].row;
-        var c = l[rand].col;
-        //Reset the ownership of the line
+        // let l: { [id: number]: BoardDelta } = {};
+        // let idx = 0;
+        // for (let i = 0; i < dim; i++) {
+        //     for (let j = 0; j < dim; j++) {
+        //         if (board[i][j].shape != Shape.Line) {
+        //             continue;
+        //         }
+        //         if (board[i][j].owner == -1) {
+        //             continue;
+        //         }
+        //         l[idx++] = { row: i, col: j };
+        //     }
+        // }
+        // let rand = Math.floor(Math.random() * (idx - 1));
+        // let r = l[rand].row;
+        // let c = l[rand].col;
+        // //Reset the ownership of the line
         var boardAfterMove = angular.copy(board);
-        boardAfterMove[r][c].owner = -1;
-        //Reset the ownership of two regions adjacent to the line
-        if (boardAfterMove[r][c].dir == Direction.Hor) {
-            if (r > 0) {
-                boardAfterMove[r - 1][c].owner = -1;
+        // boardAfterMove[r][c].owner = -1;
+        // //Reset the ownership of two regions adjacent to the line
+        // if (boardAfterMove[r][c].dir == Direction.Hor) {
+        //     if (r > 0) {
+        //         boardAfterMove[r - 1][c].owner = -1
+        //     }
+        //     if (r < dim - 1) {
+        //         boardAfterMove[r + 1][c].owner = -1
+        //     }
+        // } else {
+        //     if (c > 0) {
+        //         boardAfterMove[r][c - 1].owner = -1
+        //     }
+        //     if (c < dim - 1) {
+        //         boardAfterMove[r][c + 1].owner = -1
+        //     }
+        // }
+        var boxes = {};
+        //Unset all 4 lines surrounding
+        boardAfterMove[r - 1][c].owner = -1;
+        boardAfterMove[r + 1][c].owner = -1;
+        boardAfterMove[r][c + 1].owner = -1;
+        boardAfterMove[r][c - 1].owner = -1;
+        boxes[0] = { row: r - 2, col: c };
+        boxes[1] = { row: r + 2, col: c };
+        boxes[2] = { row: r, col: c + 2 };
+        boxes[3] = { row: r, col: c - 2 };
+        // log.info(["Unset the square at", r, c]);
+        // log.info(["Surrounding boxes:",boxes[0],boxes[1],boxes[2],boxes[3]]);
+        for (var i = 0; i < 4; i++) {
+            var rr = boxes[i].row;
+            var cc = boxes[i].col;
+            if (rr <= 0 || rr > dim - 1 || cc <= 0 || cc >= dim - 1) {
+                continue;
             }
-            if (r < dim - 1) {
-                boardAfterMove[r + 1][c].owner = -1;
-            }
+            boardAfterMove[rr][cc].owner = -1;
         }
-        else {
-            if (c > 0) {
-                boardAfterMove[r][c - 1].owner = -1;
-            }
-            if (c < dim - 1) {
-                boardAfterMove[r][c + 1].owner = -1;
-            }
-        }
-        //Bombing is one move, must switch player after the move.
-        var turnIndex = turnIndexBeforeMove ^ 1;
+        //log.info(["board after bombing at position", r, ",", c, ":", boardAfterMove]);
         var delta = { row: r, col: c };
         var state = { board: boardAfterMove, delta: delta };
-        return { endMatchScores: null, turnIndex: turnIndex, state: state };
+        return { endMatchScores: null, turnIndex: turnIndexBeforeMove ^ 1, state: state };
     }
     gameLogic.throwAtomicBomb = throwAtomicBomb;
     function createInitialMove(row, col) {

@@ -145,16 +145,16 @@ module game {
         }
       }
     }
-    //Generate a number. If no edge has been occupied, don't show bomb
+    //Generate a number. If no edge has been occupied, don't introduce bomb
     if (anyEdgeOccupied) {
       let rr = Math.floor(Math.random() * 100);
-      //If the number is in certain range, generate new bomb
+      //If the number is in a certain range, generate new bomb
       if (rr < 100 / state.board.length) {
         log.info(["Random number is: ", rr]);
         while (true) {
-          let i = Math.floor(Math.random() * (state.board.length - 1));
-          let j = Math.floor(Math.random() * (state.board.length - 1));
-          if (state.board[i][j].shape == Shape.Box) {
+          let i = Math.floor(Math.random() * (state.board.length - 2) + 1);
+          let j = Math.floor(Math.random() * (state.board.length - 2) + 1);
+          if (state.board[i][j].shape == Shape.Box && anySurroundingOccupied(i, j)) {
             log.info(["Bomb is at: ", i, j]);
             state.board[i][j].isBomb = true;
             break;
@@ -170,6 +170,22 @@ module game {
     animationEndedTimeout = $timeout(animationEndedCallback, 500);
   }
 
+  function anySurroundingOccupied(row: number, col: number): boolean {
+    let directions: { [id: number]: { row: number, col: number } } = {};
+    directions[0] = { row: row - 1, col: col };
+    directions[1] = { row: row + 1, col: col };
+    directions[2] = { row: row, col: col + 1 };
+    directions[3] = { row: row, col: col - 1 };
+
+    for (let i = 0; i < 4; i++) {
+      if (state.board[directions[i].row][directions[i].col].owner != -1) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+  
   function animationEndedCallback() {
     log.info("Animation ended");
     maybeSendComputerMove();
@@ -262,23 +278,11 @@ module game {
       nextMove = gameLogic.createMove(
         state, row, col, currentUpdateUI.turnIndex);
     } catch (e) {
-      log.info(["Cell is already full in position:", row, col]);
+      log.info(["Cell is already full in position:", row, col, e]);
       return;
     }
     makeMove(nextMove);
   }
-
-  // export function isOver(): number {
-  //   if(gameLogic.isOver(state.board)){
-  //     //Tie
-  //     if(gameLogic.getWinner(state.board)==-1){
-  //       return 2;
-  //     }
-  //     //If you won, return 1, if you lost, return 0
-  //     return gameLogic.getWinner(state.board) == currentUpdateUI.yourPlayerIndex?1:0;
-  //   }
-  //   return -1;
-  // }
 
   export function isBomb(row: number, col: number): boolean {
     return state.board[row][col].shape == Shape.Box &&
@@ -290,6 +294,20 @@ module game {
       return false;
     }
     return state.board[row][col].owner != -1 || isProposal(row, col);
+  }
+
+  export function shouldColorVisitedEdgePl0(row: number, col: number): boolean {
+    if (state.board[row][col].shape != Shape.Line) {
+      return false;
+    }
+    return state.delta == { row: row, col: col } && state.board[row][col].owner == 0 || isProposal(row, col);
+  }
+
+  export function shouldColorVisitedEdgePl1(row: number, col: number): boolean {
+    if (state.board[row][col].shape != Shape.Line) {
+      return false;
+    }
+    return state.delta == { row: row, col: col } && state.board[row][col].owner == 1 || isProposal(row, col);
   }
 
   function isOccupied(row: number, col: number, turnIndex: number): boolean {
