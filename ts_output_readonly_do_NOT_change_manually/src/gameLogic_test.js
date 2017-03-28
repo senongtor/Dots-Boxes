@@ -43,17 +43,18 @@ describe("In Dots and Boxes", function () {
     it(": X placing line on 0x1 edge from initial state", function () {
         var b = gameLogic.getInitialBoardWP(15, 15);
         var bb = gameLogic.getInitialBoardWP(15, 15);
-        bb[0][1].owner = 1;
+        bb[0][1].owner = 0;
         expectMove(X_TURN, b, 0, 1, bb, O_TURN, NO_ONE_WINS);
     });
-    it(": O placing line on 1x0 after X placed line on 0x1 ", function () {
-        var b = gameLogic.getInitialBoardWP(15, 15);
-        b[0][1].owner = 1;
-        var b_ = gameLogic.getInitialBoardWP(15, 15);
-        b_[0][1].owner = 1;
-        b_[1][0].owner = 1;
-        expectMove(O_TURN, b, 1, 0, b_, X_TURN, NO_ONE_WINS);
-    });
+    // it(": O placing line on 1x0 after X placed line on 0x1 ", function() {
+    //   let b=gameLogic.getInitialBoardWP(15,15);
+    //   b[0][1].owner=0;
+    //   let b_=gameLogic.getInitialBoardWP(15,15);
+    //   b_[0][1].owner=0;
+    //   b_[1][0].owner=1;
+    //   expectMove(O_TURN, b, 1, 0, 
+    //     b_, X_TURN, NO_ONE_WINS);
+    // });
     // it("placing an O in a non-empty position is illegal", function() {
     //   let b=gameLogic.getInitialBoardWP(15,15);
     //   b[0][1].owner=1;

@@ -22,15 +22,13 @@
       <div class="text">
         <p>Welcome to Dots and Boxes</p>
       </div>
-      <button type="button" ng-click="inst = inst == true ? false : true;" width="80px;" class="dropbtn selectSize">Instruction</button>
-      <div class="instruction" ng-if="inst">
-        <div class="text">
-          Instruction: Conquer as more lands(squares) as possible by occupying walls(lines). The last player who makes a successful
-          surrounding will occupy the land surrounded.
-        </div>
+      <!--TODO-->
+      <button type="button" ng-click="inst = inst == true ? false : true;" width="80px;" class="dropbtn selectSize">Mode</button>
+      <div class="mode" ng-if="inst">
+        <button type="button" ng-click="game.enableBomb()" width="60px;" class="dropbtn selectSize">With Bomb</button>
+        <button type="button" ng-click="game.disableBomb()" width="60px;" class="dropbtn selectSize">No Bomb</button>
       </div>
-     
-
+      
       <div ng-if="game.isHumanTurn()">
         <div class="text">
           Choose you board size
@@ -49,7 +47,7 @@
         Oppenent choose board size
       </div>
        <div class="image">
-        <img src="https://store-images.s-microsoft.com/image/apps.24039.9007199266251639.add58da4-c029-4b36-b4fd-0c2bc975ade2.9ede376f-ad57-4cba-8e14-d5accfa0eb71?w=471&h=265&q=60"
+        <img src=dotsandboxes.jpeg
           style="width:100%;height:100%;display:block">
       </div>
     </div>
@@ -60,8 +58,13 @@
           ng-class="{dot: (row%2==0)&&(col%2==0),line: !game.shouldColorVisitedEdge(row, col)&&((row%2==0)&&(col%2==1)||(row%2==1) && (col%2==0))}"
           ng-click="game.cellClicked(row, col)">
           <div style="width:100%; height: 100%" ng-class="{slowlyAppear: game.shouldSlowlyAppear(row, col)}">
-            <div style="width:100%; height: 100%" ng-if="game.shouldColorVisitedEdge(row, col)" ng-class="{edge: true}">
+            <div style="width:100%; height: 100%" ng-class="{edgePl0: game.shouldColorVisitedEdgePl0(row, col),edgePl1:game.shouldColorVisitedEdgePl1(row, col),edge:game.shouldColorVisitedEdge(row, col)}">
+            <!--<div style="width:100%; height: 100%" ng-if="game.shouldColorVisitedEdgePl0(row, col)" ng-class="{edgePl0: true}">
             </div>
+            <div style="width:100%; height: 100%" ng-if="game.shouldColorVisitedEdgePl1(row, col)" ng-class="{edgePl1: true}">
+            </div>
+            <div style="width:100%; height: 100%" ng-if="game.shouldColorVisitedEdge(row, col)" ng-class="{edge: true}">
+            </div>-->
             <div style="width:100%; height: 100%" ng-if="game.isOccupiedBy0(row, col)" ng-class="{pl0: true}">
             </div>
             <div style="width:100%; height: 100%" ng-if="game.isOccupiedBy1(row, col)" ng-class="{pl1: true}">

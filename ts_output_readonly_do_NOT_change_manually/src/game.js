@@ -20,6 +20,7 @@ var game;
     game.row = 11;
     game.col = 11;
     game.dimSet = false;
+    game.bombEnabled = true;
     game.board = null;
     function init($rootScope_, $timeout_) {
         game.$rootScope = $rootScope_;
@@ -137,7 +138,7 @@ var game;
             }
         }
         //Generate a number. If no edge has been occupied, don't introduce bomb
-        if (anyEdgeOccupied) {
+        if (anyEdgeOccupied && game.bombEnabled) {
             var rr = Math.floor(Math.random() * 100);
             //If the number is in a certain range, generate new bomb
             if (rr < 100 / game.state.board.length) {
@@ -269,25 +270,44 @@ var game;
             game.state.board[row][col].isBomb && game.state.board[row][col].owner == -1;
     }
     game.isBomb = isBomb;
+    function enableBomb() {
+        game.bombEnabled = true;
+    }
+    game.enableBomb = enableBomb;
+    function disableBomb() {
+        game.bombEnabled = false;
+    }
+    game.disableBomb = disableBomb;
     function shouldColorVisitedEdge(row, col) {
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;
         }
-        return game.state.board[row][col].owner != -1 || isProposal(row, col);
+        if (game.state.delta == null) {
+            return false;
+        }
+        return (game.state.delta.row != row || game.state.delta.col != col) && game.state.board[row][col].owner != -1 || isProposal(row, col);
     }
     game.shouldColorVisitedEdge = shouldColorVisitedEdge;
     function shouldColorVisitedEdgePl0(row, col) {
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;
         }
-        return game.state.delta == { row: row, col: col } && game.state.board[row][col].owner == 0 || isProposal(row, col);
+        if (game.state.delta == null) {
+            return false;
+        }
+        log.info([row, col, "delta equals?", game.state.delta === { row: row, col: col }, "owner", game.state.board[row][col].owner]);
+        return game.state.delta.row == row && game.state.delta.col == col && game.state.board[row][col].owner == 0 || isProposal(row, col);
     }
     game.shouldColorVisitedEdgePl0 = shouldColorVisitedEdgePl0;
     function shouldColorVisitedEdgePl1(row, col) {
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;
         }
-        return game.state.delta == { row: row, col: col } && game.state.board[row][col].owner == 1 || isProposal(row, col);
+        if (game.state.delta == null) {
+            return false;
+        }
+        log.info([row, col, "delta equals?", game.state.delta === { row: row, col: col }, "owner", game.state.board[row][col].owner]);
+        return game.state.delta.row == row && game.state.delta.col == col && game.state.board[row][col].owner == 1 || isProposal(row, col);
     }
     game.shouldColorVisitedEdgePl1 = shouldColorVisitedEdgePl1;
     function isOccupied(row, col, turnIndex) {

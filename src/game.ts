@@ -28,6 +28,7 @@ module game {
   export let row = 11;
   export let col = 11;
   export let dimSet = false;
+  export let bombEnabled = true;
   export let board: Board = null;
 
   export function init($rootScope_: angular.IScope, $timeout_: angular.ITimeoutService) {
@@ -146,7 +147,7 @@ module game {
       }
     }
     //Generate a number. If no edge has been occupied, don't introduce bomb
-    if (anyEdgeOccupied) {
+    if (anyEdgeOccupied && bombEnabled) {
       let rr = Math.floor(Math.random() * 100);
       //If the number is in a certain range, generate new bomb
       if (rr < 100 / state.board.length) {
@@ -162,7 +163,6 @@ module game {
         }
       }
     }
-
 
     // We calculate the AI move only after the animation finishes,
     // because if we call aiService now
@@ -185,7 +185,7 @@ module game {
 
     return false;
   }
-  
+
   function animationEndedCallback() {
     log.info("Animation ended");
     maybeSendComputerMove();
@@ -289,25 +289,44 @@ module game {
       state.board[row][col].isBomb && state.board[row][col].owner == -1;
   }
 
+  export function enableBomb() {
+    bombEnabled = true;
+  }
+  export function disableBomb() {
+    bombEnabled = false;
+  }
+
   export function shouldColorVisitedEdge(row: number, col: number): boolean {
     if (state.board[row][col].shape != Shape.Line) {
       return false;
     }
-    return state.board[row][col].owner != -1 || isProposal(row, col);
+    if (state.delta == null) {
+      return false;
+    }
+    return (state.delta.row != row || state.delta.col != col) && state.board[row][col].owner != -1 || isProposal(row, col);
   }
 
   export function shouldColorVisitedEdgePl0(row: number, col: number): boolean {
     if (state.board[row][col].shape != Shape.Line) {
       return false;
     }
-    return state.delta == { row: row, col: col } && state.board[row][col].owner == 0 || isProposal(row, col);
+    if (state.delta == null) {
+      return false;
+    }
+    log.info([row, col, "delta equals?", state.delta === { row: row, col: col }, "owner", state.board[row][col].owner]);
+    return state.delta.row == row && state.delta.col == col && state.board[row][col].owner == 0 || isProposal(row, col);
   }
 
   export function shouldColorVisitedEdgePl1(row: number, col: number): boolean {
     if (state.board[row][col].shape != Shape.Line) {
       return false;
     }
-    return state.delta == { row: row, col: col } && state.board[row][col].owner == 1 || isProposal(row, col);
+    if (state.delta == null) {
+      return false;
+    }
+    log.info([row, col, "delta equals?", state.delta === { row: row, col: col }, "owner", state.board[row][col].owner]);
+
+    return state.delta.row == row && state.delta.col == col && state.board[row][col].owner == 1 || isProposal(row, col);
   }
 
   function isOccupied(row: number, col: number, turnIndex: number): boolean {
