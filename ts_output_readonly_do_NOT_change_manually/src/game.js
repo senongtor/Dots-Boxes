@@ -328,22 +328,22 @@ var game;
     function sizeSmall(r) {
         switch (game.row) {
             case 7:
-                return Math.floor(r / 2) * (28 + 4) + (r % 2) * 4;
+                return Math.floor(r / 2) * (26.933333 + 4.8) + (r % 2) * 4.8;
             case 11:
-                return Math.floor(r / 2) * (15.2 + 4) + (r % 2) * 4;
-            case 15:
-                return Math.floor(r / 2) * (10.2857 + 3.5) + (r % 2) * 3.5;
+                return Math.floor(r / 2) * (14.6 + 4.5) + (r % 2) * 4.5;
+            case 13:
+                return Math.floor(r / 2) * (11.65 + 4.3) + (r % 2) * 4.3;
         }
     }
     game.sizeSmall = sizeSmall;
     function sizeBig(r) {
         switch (game.row) {
             case 7:
-                return ((r + 1) % 2) * 4 + (r % 2) * 28;
+                return ((r + 1) % 2) * 4.8 + (r % 2) * 26.933333;
             case 11:
-                return ((r + 1) % 2) * 4 + (r % 2) * 15.2;
-            case 15:
-                return ((r + 1) % 2) * 3.5 + (r % 2) * 10.2857;
+                return ((r + 1) % 2) * 4.5 + (r % 2) * 14.6;
+            case 13:
+                return ((r + 1) % 2) * 4.3 + (r % 2) * 11.65;
         }
     }
     game.sizeBig = sizeBig;
