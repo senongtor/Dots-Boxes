@@ -350,9 +350,9 @@ module game {
       case 7:
         return Math.floor(r / 2) * (28 + 4) + (r % 2) * 4;
       case 11:
-        return Math.floor(r / 2) * (15.8 + 3.5) + (r % 2) * 3.5;
+        return Math.floor(r / 2) * (15.2 + 4) + (r % 2) * 4;
       case 15:
-        return Math.floor(r / 2) * (11.11111 + 2.77777) + (r % 2) * 2.77777;
+        return Math.floor(r / 2) * (10.2857 + 3.5) + (r % 2) * 3.5;
     }
   }
 
@@ -361,9 +361,9 @@ module game {
       case 7:
         return ((r + 1) % 2) * 4 + (r % 2) * 28;
       case 11:
-        return ((r + 1) % 2) * 3.5 + (r % 2) * 15.8;
+        return ((r + 1) % 2) * 4 + (r % 2) * 15.2;
       case 15:
-        return ((r + 1) % 2) * 2.77777 + (r % 2) * 11.11111;
+        return ((r + 1) % 2) * 3.5 + (r % 2) * 10.2857;
     }
   }
 
