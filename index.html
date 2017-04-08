@@ -27,43 +27,46 @@
 </head>
 
 <body ng-cloak>
-  <div id="gameArea" style="width:800px; height:800px">
+  <div id="gameArea" style="position:absolute; width:100%; height:100%">
     <div class="menu" ng-if="!game.dimSet">
       <div class="text">
         <p>Welcome to Dots and Boxes</p>
       </div>
+
       <!--TODO-->
-      <button type="button" ng-click="inst = inst == true ? false : true;" width="80px;" class="dropbtn selectSize">Mode</button>
-      <div class="mode" ng-if="inst">
-        <button type="button" ng-click="game.enableBomb()" width="60px;" class="dropbtn selectSize">With Bomb</button>
-        <button type="button" ng-click="game.disableBomb()" width="60px;" class="dropbtn selectSize">No Bomb</button>
-      </div>
-      
-      <div ng-if="game.isHumanTurn()">
-        <div class="text">
-          Choose you board size
-        </div>
+      <div class="left">
         <div class="dropdown">
-          <button class="dropbtn">Options</button>
+          <button class="dropbtn">Mode</button>
           <div class="dropdown-content">
-            <button type="button" ng-click="game.setDim(7,7)" width="60px;" class="text selectSize">{{3}}x{{3}}</button>
-            <button type="button" ng-click="game.setDim(11,11)" width="80px;" class="text selectSize">{{5}}x{{5}}</button>
-            <button type="button" ng-click="game.setDim(13,13)" width="100px;" class="text selectSize">{{6}}x{{6}}</button>
+            <button type="button" ng-click="game.enableBomb()" class="text selectSize">With Bomb</button>
+            <button type="button" ng-click="game.disableBomb()" class="text selectSize">No Bomb</button>
           </div>
         </div>
       </div>
 
-      <div class="text" ng-if="!game.isHumanTurn()">
-        Oppenent choose board size
+      <div class="left">
+        <div ng-if="game.isHumanTurn()">
+          <div class="dropdown">
+            <button class="dropbtn">Choose board size</button>
+            <div class="dropdown-content">
+              <button type="button" ng-click="game.setDim(7,7)" class="text selectSize">{{3}}x{{3}}</button>
+              <button type="button" ng-click="game.setDim(11,11)" class="text selectSize">{{5}}x{{5}}</button>
+              <button type="button" ng-click="game.setDim(13,13)" class="text selectSize">{{6}}x{{6}}</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="text" ng-if="!game.isHumanTurn()">
+          Oppenent choose board size
+        </div>
       </div>
-       <div class="image">
+       
+      <div class="image">
         <!--<img src="https://store-images.s-microsoft.com/image/apps.24039.9007199266251639.add58da4-c029-4b36-b4fd-0c2bc975ade2.9ede376f-ad57-4cba-8e14-d5accfa0eb71?w=471&h=265&q=60"-->
-        
-        <img src=imgs/dotsandboxes.jpeg
-        style="width:100%;height:100%;display:block">
-          
+        <img src=imgs/dotsandboxes.jpeg style="position:relative;width:100%;height:100%;display:block">
       </div>
     </div>
+
     <div class="boarArea" ng-show="game.dimSet" style="position:absolute; width:100%; height:100%;font-size: {{game.fontSizePx()}}px;">
       <rect width="100%" height="100%" style="fill:#CCCCFF" />
       <div ng-repeat="row in game.getRange()" style="position:absolute; left:0; width:100%; top:{{game.sizeSmall(row)}}%; height:{{game.sizeBig(row)}}%">
@@ -72,17 +75,17 @@
           ng-click="game.cellClicked(row, col)">
           <div style="width:100%; height: 100%" ng-class="{slowlyAppear: game.shouldSlowlyAppear(row, col)}">
             <div style="width:100%; height: 100%" ng-class="{edgePl0: game.shouldColorVisitedEdgePl0(row, col),edgePl1:game.shouldColorVisitedEdgePl1(row, col)}">
-            <div style="width:100%; height: 100%" ng-if="game.isOccupiedBy0(row, col)" ng-class="{pl0: true}">
+              <div style="width:100%; height: 100%" ng-if="game.isOccupiedBy0(row, col)" ng-class="{pl0: true}">
+              </div>
+              <div style="width:100%; height: 100%" ng-if="game.isOccupiedBy1(row, col)" ng-class="{pl1: true}">
+              </div>
+              <div style="width:100%; height: 100%" ng-if="game.isBomb(row, col)" ng-class="{bomb: true}">
+              </div>
             </div>
-            <div style="width:100%; height: 100%" ng-if="game.isOccupiedBy1(row, col)" ng-class="{pl1: true}">
-            </div>
-            <div style="width:100%; height: 100%" ng-if="game.isBomb(row, col)" ng-class="{bomb: true}">
-            </div>  
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 
 </body>

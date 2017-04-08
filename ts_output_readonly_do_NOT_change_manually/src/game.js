@@ -328,7 +328,7 @@ var game;
     function sizeSmall(r) {
         switch (game.row) {
             case 7:
-                return Math.floor(r / 2) * (26.933333 + 4.8) + (r % 2) * 4.8;
+                return Math.floor(r / 2) * (26.94 + 4.8) + (r % 2) * 4.8;
             case 11:
                 return Math.floor(r / 2) * (14.6 + 4.5) + (r % 2) * 4.5;
             case 13:
@@ -339,7 +339,7 @@ var game;
     function sizeBig(r) {
         switch (game.row) {
             case 7:
-                return ((r + 1) % 2) * 4.8 + (r % 2) * 26.933333;
+                return ((r + 1) % 2) * 4.8 + (r % 2) * 26.94;
             case 11:
                 return ((r + 1) % 2) * 4.5 + (r % 2) * 14.6;
             case 13:
