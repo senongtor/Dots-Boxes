@@ -32232,22 +32232,23 @@ var game;
         game.bombEnabled = false;
     }
     game.disableBomb = disableBomb;
-    // export function shouldColorVisitedEdge(row: number, col: number): boolean {
-    //   if (state.board[row][col].shape != Shape.Line) {
-    //     return false;
-    //   }
-    //   if (state.delta == null) {
-    //     return false;
-    //   }
-    //   return (state.delta.row != row || state.delta.col != col) && state.board[row][col].owner != -1 || isProposal(row, col);
-    // }
+    function shouldColorVisitedEdge(row, col) {
+        if (game.state.board[row][col].shape != Shape.Line) {
+            return false;
+        }
+        if (game.state.delta == null) {
+            return false;
+        }
+        return (game.state.delta.row != row || game.state.delta.col != col) && game.state.board[row][col].owner != -1 || isProposal(row, col);
+    }
+    game.shouldColorVisitedEdge = shouldColorVisitedEdge;
     function shouldColorVisitedEdgePl0(row, col) {
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;
         }
-        // if (state.delta == null) {
-        //   return false;
-        // }
+        if (game.state.delta == null) {
+            return false;
+        }
         return game.state.board[row][col].owner == 0 || isProposal(row, col);
     }
     game.shouldColorVisitedEdgePl0 = shouldColorVisitedEdgePl0;
@@ -32255,9 +32256,9 @@ var game;
         if (game.state.board[row][col].shape != Shape.Line) {
             return false;
         }
-        // if (state.delta == null) {
-        //   return false;
-        // }
+        if (game.state.delta == null) {
+            return false;
+        }
         return game.state.board[row][col].owner == 1 || isProposal(row, col);
     }
     game.shouldColorVisitedEdgePl1 = shouldColorVisitedEdgePl1;
@@ -32282,22 +32283,22 @@ var game;
     function sizeSmall(r) {
         switch (game.row) {
             case 7:
-                return Math.floor(r / 2) * (28 + 4) + (r % 2) * 4;
+                return Math.floor(r / 2) * (26.933333 + 4.8) + (r % 2) * 4.8;
             case 11:
-                return Math.floor(r / 2) * (15.8 + 3.5) + (r % 2) * 3.5;
-            case 15:
-                return Math.floor(r / 2) * (11.11111 + 2.77777) + (r % 2) * 2.77777;
+                return Math.floor(r / 2) * (14.6 + 4.5) + (r % 2) * 4.5;
+            case 13:
+                return Math.floor(r / 2) * (11.65 + 4.3) + (r % 2) * 4.3;
         }
     }
     game.sizeSmall = sizeSmall;
     function sizeBig(r) {
         switch (game.row) {
             case 7:
-                return ((r + 1) % 2) * 4 + (r % 2) * 28;
+                return ((r + 1) % 2) * 4.8 + (r % 2) * 26.933333;
             case 11:
-                return ((r + 1) % 2) * 3.5 + (r % 2) * 15.8;
-            case 15:
-                return ((r + 1) % 2) * 2.77777 + (r % 2) * 11.11111;
+                return ((r + 1) % 2) * 4.5 + (r % 2) * 14.6;
+            case 13:
+                return ((r + 1) % 2) * 4.3 + (r % 2) * 11.65;
         }
     }
     game.sizeBig = sizeBig;

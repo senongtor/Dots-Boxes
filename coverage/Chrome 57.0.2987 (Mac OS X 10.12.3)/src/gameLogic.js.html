@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/gameLogic.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">src/</a> gameLogic.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">58.93% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>99/168</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">41.03% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>32/78</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">81.25% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>13/16</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">58.93% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>99/168</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1125×</span>
+<span class="cline-any cline-yes">1125×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-yes">1125×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1125×</span>
+<span class="cline-any cline-yes">600×</span>
+<span class="cline-any cline-yes">320×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">280×</span>
+<span class="cline-any cline-yes">280×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">525×</span>
+<span class="cline-any cline-yes">280×</span>
+<span class="cline-any cline-yes">280×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">245×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">259×</span>
+<span class="cline-any cline-yes">208×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">51×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * 4 Direction for each grid
+ */
+var Direction;
+(function (Direction) {
+    Direction[Direction["Hor"] = 1] = "Hor";
+    Direction[Direction["Ver"] = 2] = "Ver";
+})(Direction || (Direction = {}));
+var Shape;
+(function (Shape) {
+    Shape[Shape["Dot"] = 1] = "Dot";
+    Shape[Shape["Box"] = 2] = "Box";
+    Shape[Shape["Line"] = 3] = "Line";
+})(Shape || (Shape = {}));
+var Occupied;
+(function (Occupied) {
+    Occupied[Occupied["Up"] = 1] = "Up";
+    Occupied[Occupied["Down"] = 2] = "Down";
+    Occupied[Occupied["Left"] = 3] = "Left";
+    Occupied[Occupied["Right"] = 4] = "Right";
+})(Occupied || (Occupied = {}));
+/**
+ * Grid that will model the region
+ */
+var Grid = (function () {
+    function Grid() {
+        this.owner = -1;
+        this.isBomb = false;
+    }
+    return Grid;
+}());
+var gameService = gamingPlatform.gameService;
+var alphaBetaService = gamingPlatform.alphaBetaService;
+var translate = gamingPlatform.translate;
+var resizeGameAreaService = gamingPlatform.resizeGameAreaService;
+var log = gamingPlatform.log;
+var dragAndDropService = gamingPlatform.dragAndDropService;
+var gameLogic;
+(function (gameLogic) {
+    function createNewBoard(row, col) {
+        gameLogic.rows = row;
+        gameLogic.cols = col;
+        var board = [];
+        for (var i = 0; i &lt; row; i++) {
+            board[i] = [];
+            for (var j = 0; j &lt; col; j++) {
+                board[i][j] = new Grid();
+                //[][     ][][      ][]
+                if (i % 2 == 0) {
+                    if (j % 2 == 0) {
+                        board[i][j].shape = Shape.Dot;
+                    }
+                    else {
+                        board[i][j].shape = Shape.Line;
+                        board[i][j].dir = Direction.Hor;
+                    }
+                    //|[BOX]|[BOX ]                    
+                }
+                else {
+                    if (j % 2 == 0) {
+                        board[i][j].shape = Shape.Line;
+                        board[i][j].dir = Direction.Ver;
+                    }
+                    else {
+                        board[i][j].shape = Shape.Box;
+                    }
+                }
+            }
+        }
+        return board;
+    }
+    function getInitialBoardWP(row, col) {
+        return createNewBoard(row, col);
+    }
+    gameLogic.getInitialBoardWP = getInitialBoardWP;
+    //   export function getInitialBoard(): Board {
+    //     return createNewBoard();
+    //   }
+    function getInitialStateWP(row, col) {
+        return { board: getInitialBoardWP(row, col), delta: null };
+    }
+    gameLogic.getInitialStateWP = getInitialStateWP;
+    //   export function getInitialState(): IState {
+    //     return {board: getInitialBoard(), delta: null};
+    //   }
+    /**
+     * Create Move
+     */
+    function createMove(stateBeforeMove, row, col, turnIndexBeforeMove) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!stateBeforeMove) {
+<span class="cstat-no" title="statement not covered" >            stateBeforeMove = getInitialStateWP(15, 15);</span>
+        }
+        var board = stateBeforeMove.board;
+        var dim = board.length;
+        if (isOver(board)) {
+            throw new Error("Can only make a move if the game is not over!");
+        }
+        //If the shape of this grid is not line, return
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (board[row][col].shape == Shape.Dot) {
+<span class="cstat-no" title="statement not covered" >            throw new Error("Cannot put it here man");</span>
+        }
+        //If the user touches a bomb
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (stateBeforeMove.board[row][col].shape == Shape.Box) {
+<span class="cstat-no" title="statement not covered" >            if (stateBeforeMove.board[row][col].isBomb) {</span>
+<span class="cstat-no" title="statement not covered" >                return throwAtomicBomb(stateBeforeMove, row, col, turnIndexBeforeMove);</span>
+            }
+            else {
+<span class="cstat-no" title="statement not covered" >                throw new Error("Cannot put it here man");</span>
+            }
+        }
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (board[row][col].owner &gt;= 0) {
+<span class="cstat-no" title="statement not covered" >            throw new Error("No further move can be created because this line is already occupied");</span>
+        }
+        var boardAfterMove = angular.copy(board);
+        var turnIndex;
+        //Now this edge was owned, turn it to currentplayer index.
+        boardAfterMove[row][col].owner = turnIndexBeforeMove;
+        //assign the current move player as the owner of that edge
+        //If the edge is horizontal, check up and down box
+        //If the edge is vertical, check left and right box
+        //If any adjcent box has all edges taken, assign the current player as the owner of that box    
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (boardAfterMove[row][col].dir == Direction.Hor) {
+            var streak = false;
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (row &gt; 0) {
+<span class="cstat-no" title="statement not covered" >                if (boxOccupied(boardAfterMove, row - 1, col)) {</span>
+<span class="cstat-no" title="statement not covered" >                    boardAfterMove[row - 1][col].owner = turnIndexBeforeMove;</span>
+<span class="cstat-no" title="statement not covered" >                    turnIndex = turnIndexBeforeMove;</span>
+<span class="cstat-no" title="statement not covered" >                    streak = true;</span>
+                }
+            }
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (row &lt; dim - 1) {
+                <span class="missing-if-branch" title="if path not taken" >I</span>if (boxOccupied(boardAfterMove, row + 1, col)) {
+<span class="cstat-no" title="statement not covered" >                    boardAfterMove[row + 1][col].owner = turnIndexBeforeMove;</span>
+<span class="cstat-no" title="statement not covered" >                    turnIndex = turnIndexBeforeMove;</span>
+<span class="cstat-no" title="statement not covered" >                    streak = true;</span>
+                }
+            }
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (!streak) {
+                turnIndex = turnIndexBeforeMove ^ 1;
+            }
+            //For the vertical line placed for current player   
+        }
+        else <span class="cstat-no" title="statement not covered" >if (boardAfterMove[row][col].dir == Direction.Ver) {</span>
+<span class="cstat-no" title="statement not covered" >            var streak = false;</span>
+            //If the line has left box.
+<span class="cstat-no" title="statement not covered" >            if (col &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                if (boxOccupied(boardAfterMove, row, col - 1)) {</span>
+<span class="cstat-no" title="statement not covered" >                    boardAfterMove[row][col - 1].owner = turnIndexBeforeMove;</span>
+<span class="cstat-no" title="statement not covered" >                    turnIndex = turnIndexBeforeMove;</span>
+<span class="cstat-no" title="statement not covered" >                    streak = true;</span>
+                }
+            }
+            //If the line has right box.
+<span class="cstat-no" title="statement not covered" >            if (col &lt; dim - 1) {</span>
+<span class="cstat-no" title="statement not covered" >                if (boxOccupied(boardAfterMove, row, col + 1)) {</span>
+<span class="cstat-no" title="statement not covered" >                    boardAfterMove[row][col + 1].owner = turnIndexBeforeMove;</span>
+<span class="cstat-no" title="statement not covered" >                    turnIndex = turnIndexBeforeMove;</span>
+<span class="cstat-no" title="statement not covered" >                    streak = true;</span>
+                }
+            }
+<span class="cstat-no" title="statement not covered" >            if (!streak) {</span>
+<span class="cstat-no" title="statement not covered" >                turnIndex = turnIndexBeforeMove ^ 1;</span>
+            }
+        }
+        log.info(["board after step on position", row, ",", col, ":", boardAfterMove]);
+        var endMatchScores;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (isOver(boardAfterMove)) {
+<span class="cstat-no" title="statement not covered" >            log.info("IS OVER!");</span>
+<span class="cstat-no" title="statement not covered" >            turnIndex = -1;</span>
+<span class="cstat-no" title="statement not covered" >            if (getWinner(boardAfterMove) == -1) {</span>
+<span class="cstat-no" title="statement not covered" >                endMatchScores = [0, 0];</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (getWinner(boardAfterMove) == 1) {</span>
+<span class="cstat-no" title="statement not covered" >                endMatchScores = [0, 1];</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (getWinner(boardAfterMove) == 0) {</span>
+<span class="cstat-no" title="statement not covered" >                endMatchScores = [1, 0];</span>
+            }
+        }
+        else {
+            endMatchScores = null;
+        }
+        var delta = { row: row, col: col };
+        var state = { board: boardAfterMove, delta: delta };
+        return { endMatchScores: endMatchScores, turnIndex: turnIndex, state: state };
+    }
+    gameLogic.createMove = createMove;
+    /**
+     * Check if the box is surrounded
+     */
+    function boxOccupied(board, row, col) {
+        log.info(["board:", board, row, col]);
+        return board[row - 1][col].owner &gt;= 0 &amp;&amp;
+            board[row + 1][col].owner &gt;= 0 &amp;&amp;
+<span class="branch-2 cbranch-no" title="branch not covered" >            board[row][col - 1].owner &gt;= 0 </span>&amp;&amp;
+<span class="branch-3 cbranch-no" title="branch not covered" >            board[row][col + 1].owner &gt;= 0;</span>
+    }
+    /**
+     * Find out who wins
+     */
+<span class="fstat-no" title="function not covered" >    function getWinner(board) {</span>
+<span class="cstat-no" title="statement not covered" >        var count = [0, 0];</span>
+<span class="cstat-no" title="statement not covered" >        var dim = board.length;</span>
+<span class="cstat-no" title="statement not covered" >        for (var i = 0; i &lt; dim; i++) {</span>
+<span class="cstat-no" title="statement not covered" >            for (var j = 0; j &lt; dim; j++) {</span>
+<span class="cstat-no" title="statement not covered" >                if (board[i][j].shape == Shape.Box) {</span>
+<span class="cstat-no" title="statement not covered" >                    count[board[i][j].owner]++;</span>
+                }
+            }
+        }
+<span class="cstat-no" title="statement not covered" >        if (count[0] &gt; count[1]) {</span>
+<span class="cstat-no" title="statement not covered" >            return 0;</span>
+        }
+<span class="cstat-no" title="statement not covered" >        if (count[1] &gt; count[0]) {</span>
+<span class="cstat-no" title="statement not covered" >            return 1;</span>
+        }
+        //Ties
+<span class="cstat-no" title="statement not covered" >        return -1;</span>
+    }
+    /**
+     * Check for game termination
+     */
+    function isOver(board) {
+        var dim = board.length;
+        for (var i = 0; i &lt; dim; i++) {
+            for (var j = 0; j &lt; dim; j++) {
+                if (board[i][j].shape != Shape.Box) {
+                    continue;
+                }
+                if (board[i][j].owner == -1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    /**
+     * At each turn, has a possibility of 100/row that it will show up randomly in a place.
+     * Once it is clicked, the edges/lines around it will be destroyed
+     * And all the adjcent already occupied squares will reset also.
+     * @param row
+     * @param col
+     */
+<span class="fstat-no" title="function not covered" >    function throwAtomicBomb(stateBeforeMove, r, c, turnIndexBeforeMove) {</span>
+<span class="cstat-no" title="statement not covered" >        var board = stateBeforeMove.board;</span>
+<span class="cstat-no" title="statement not covered" >        var dim = board.length;</span>
+        // let l: { [id: number]: BoardDelta } = {};
+        // let idx = 0;
+        // for (let i = 0; i &lt; dim; i++) {
+        //     for (let j = 0; j &lt; dim; j++) {
+        //         if (board[i][j].shape != Shape.Line) {
+        //             continue;
+        //         }
+        //         if (board[i][j].owner == -1) {
+        //             continue;
+        //         }
+        //         l[idx++] = { row: i, col: j };
+        //     }
+        // }
+        // let rand = Math.floor(Math.random() * (idx - 1));
+        // let r = l[rand].row;
+        // let c = l[rand].col;
+        // //Reset the ownership of the line
+<span class="cstat-no" title="statement not covered" >        var boardAfterMove = angular.copy(board);</span>
+        // boardAfterMove[r][c].owner = -1;
+        // //Reset the ownership of two regions adjacent to the line
+        // if (boardAfterMove[r][c].dir == Direction.Hor) {
+        //     if (r &gt; 0) {
+        //         boardAfterMove[r - 1][c].owner = -1
+        //     }
+        //     if (r &lt; dim - 1) {
+        //         boardAfterMove[r + 1][c].owner = -1
+        //     }
+        // } else {
+        //     if (c &gt; 0) {
+        //         boardAfterMove[r][c - 1].owner = -1
+        //     }
+        //     if (c &lt; dim - 1) {
+        //         boardAfterMove[r][c + 1].owner = -1
+        //     }
+        // }
+<span class="cstat-no" title="statement not covered" >        var boxes = {};</span>
+        //Unset all 4 lines surrounding
+<span class="cstat-no" title="statement not covered" >        boardAfterMove[r - 1][c].owner = -1;</span>
+<span class="cstat-no" title="statement not covered" >        boardAfterMove[r + 1][c].owner = -1;</span>
+<span class="cstat-no" title="statement not covered" >        boardAfterMove[r][c + 1].owner = -1;</span>
+<span class="cstat-no" title="statement not covered" >        boardAfterMove[r][c - 1].owner = -1;</span>
+<span class="cstat-no" title="statement not covered" >        boxes[0] = { row: r - 2, col: c };</span>
+<span class="cstat-no" title="statement not covered" >        boxes[1] = { row: r + 2, col: c };</span>
+<span class="cstat-no" title="statement not covered" >        boxes[2] = { row: r, col: c + 2 };</span>
+<span class="cstat-no" title="statement not covered" >        boxes[3] = { row: r, col: c - 2 };</span>
+        // log.info(["Unset the square at", r, c]);
+        // log.info(["Surrounding boxes:",boxes[0],boxes[1],boxes[2],boxes[3]]);
+<span class="cstat-no" title="statement not covered" >        for (var i = 0; i &lt; 4; i++) {</span>
+<span class="cstat-no" title="statement not covered" >            var rr = boxes[i].row;</span>
+<span class="cstat-no" title="statement not covered" >            var cc = boxes[i].col;</span>
+<span class="cstat-no" title="statement not covered" >            if (rr &lt;= 0 || rr &gt; dim - 1 || cc &lt;= 0 || cc &gt;= dim - 1) {</span>
+<span class="cstat-no" title="statement not covered" >                continue;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            boardAfterMove[rr][cc].owner = -1;</span>
+        }
+        //log.info(["board after bombing at position", r, ",", c, ":", boardAfterMove]);
+<span class="cstat-no" title="statement not covered" >        var delta = { row: r, col: c };</span>
+<span class="cstat-no" title="statement not covered" >        var state = { board: boardAfterMove, delta: delta };</span>
+<span class="cstat-no" title="statement not covered" >        return { endMatchScores: null, turnIndex: turnIndexBeforeMove ^ 1, state: state };</span>
+    }
+    gameLogic.throwAtomicBomb = throwAtomicBomb;
+    function createInitialMove(row, col) {
+        return {
+            endMatchScores: null, turnIndex: 0,
+            state: getInitialStateWP(row, col)
+        };
+    }
+    gameLogic.createInitialMove = createInitialMove;
+<span class="fstat-no" title="function not covered" >    function forSimpleTestHtml() {</span>
+<span class="cstat-no" title="statement not covered" >        var move = gameLogic.createMove(null, 0, 1, 0);</span>
+<span class="cstat-no" title="statement not covered" >        log.log("move=", move);</span>
+    }
+    gameLogic.forSimpleTestHtml = forSimpleTestHtml;
+})(gameLogic || (gameLogic = {}));
+//# sourceMappingURL=gameLogic.js.map</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Apr 10 2017 01:39:17 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
