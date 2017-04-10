@@ -7,14 +7,14 @@ html, body {
   position: fixed!important;
 }
 
-div {
+/*div {
   border: 1px solid #E8E8E8;
   border-collapse: collapse;
   border-spacing: 0;
   padding: 0;
   margin: 0;
   font-size: 0px;
-}
+}*/
 
 /* To prevent long-press that will bring up copy-paste dialog. */
 * {
@@ -67,6 +67,10 @@ textarea, input {
   animation-duration: 0.1s ease;
 }
 
+.edgePl0:hover{
+
+}
+
 .edgePl1{
   background: #0099ff !important; 
   border-collapse: collapse !important;
@@ -77,6 +81,10 @@ textarea, input {
   /*-webkit-animation-duration: 1s; Chrome, Safari, Opera */
   animation-name: highlight_last_move_new;
   animation-duration: 0.1s ease;
+}
+
+.edgePl1:hover{
+
 }
 
 @keyframes highlight_last_move {
@@ -101,10 +109,10 @@ textarea, input {
 }
 
 .dot {
-  /*border:0px hidden;*/
+  border:0px hidden;
+  border-radius: 5px;
   border-collapse: collapse;
-  background: #bfbfbf; 
-  box-shadow: inset 0 0 35px 5px rgba(0,0,0,0.25), inset 0 2px 1px 1px rgba(255,255,255,0.9), inset 0 -2px 1px 0 rgba(0,0,0,0.25);
+  background: #404040; 
 }
 
 .dot:hover{
@@ -118,7 +126,7 @@ textarea, input {
   -ms-transition: all 0.2s ease;
   -o-transition: all 0.2s ease;
   transition: all 0.2s ease;
-  box-shadow: inset 0 0 30px 5px rgba(0,0,0,0.25), inset 0 2px 1px 1px rgba(255,255,255,0.9), inset 0 -2px 1px 0 rgba(0,0,0,0.25);
+  /*box-shadow: inset 0 0 30px 5px rgba(0,0,0,0.25), inset 0 2px 1px 1px rgba(255,255,255,0.9), inset 0 -2px 1px 0 rgba(0,0,0,0.25);*/
 }
 
 .slowlyAppear {
@@ -130,16 +138,35 @@ textarea, input {
 }
 
 .line{
-  /*border:0px hidden;*/
+  border:0px hidden;
+  border-spacing: 0;
   border-collapse: collapse;
+  background: #f2f2f2;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.line:hover{
-  border: 1px groove;
-  border-spacing: 0;
-  /*fill:darkred; 
-  opacity: 0.3;*/
-  /*animation: hideshow 0.3s ease infinite;*/
+.line:not(:active):hover{
+  background:grey; 
+  animation: lineAnimate 0.6s infinite;
+}
+/*
+.line:active:hover{
+  pointer-events: none;
+}*/
+/*div:focus {
+  animation: none;
+}*/
+
+@keyframes lineAnimate{
+  0%{
+    transform:scale(1.05);
+  }
+  50%{
+    transform:scale(0.95);
+  }
+  100%{
+    transform:scale(1.0);
+  }
 }
 
 @keyframes hideshow {
@@ -166,13 +193,20 @@ textarea, input {
   to {opacity: 1;}
 }
 
-@keyframes moveUp {
-    0%   {background-color:red; left:0%; top:0%;}
-    25%  {background-color:yellow; left:10%; top:0px;}
-    50%  {background-color:blue; left:10%; top:10%;}
-    75%  {background-color:green; left:0px; top:10%;}
-    100% {background-color:red; left:0%; top:0%;}
-}
+/*@keyframes bounce {
+  0% {
+    transform: translateY(4px);
+  }
+  25% {
+    transform: translateY(-4px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+  100% {
+    transform: translateX(4px);
+  }
+}*/
 
 td {
   padding:0 3px 0 3px;
@@ -189,7 +223,7 @@ button {
   background-repeat: no-repeat;
   -webkit-appearance: button;
   overflow: visible;
-  border-radius: 6px;
+  border-radius: 3px;
   white-space: nowrap;
   -ms-touch-action: manipulation;
   touch-action: manipulation;
@@ -200,7 +234,7 @@ button {
 
 .text {
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-weight: 256;
+  font-weight: 250;
   font-size: 20px;
   text-align: center;
   text-transform: none;
@@ -225,14 +259,8 @@ button {
   background-image: none;
 }
 
-.menu>div{
-  border: 0px hidden !important;
-  margin:0;
-  padding:0;
-}
-
 .selectSize {
-  background-color: deepskyblue;
+  background-color: #4d4d4d;
   margin: 1px auto 0 auto;
   display: block;
   opacity: 100;
@@ -249,10 +277,10 @@ button {
 
 .dropbtn {
     position: relative;
-    background-color: deepskyblue;
+    background-color: #4d4d4d;
     opacity: 100;
     color: white;
-    padding: 6px;
+    padding: 3px;
     font-size: 16px;
     border: none;
     cursor: pointer;
@@ -308,7 +336,8 @@ button {
 } 
 
 .bomb:hover{
-  border: 1pt inset !important;
+  border: 0.3pt inset !important;
+  z-index: 10;
    border-collapse: collapse !important;
     box-shadow: 0px 8px 16px 0px rgba(0,1,0,0.2);
   /*-moz-transform: rotate(180deg);
@@ -382,7 +411,9 @@ button {
 }*/
 
 .left{
+  padding-left:10px; 
   float: left;
+  border: 0px hidden !important;
 }
 .right{
   float: right;

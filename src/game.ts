@@ -296,23 +296,23 @@ module game {
     bombEnabled = false;
   }
 
-  // export function shouldColorVisitedEdge(row: number, col: number): boolean {
-  //   if (state.board[row][col].shape != Shape.Line) {
-  //     return false;
-  //   }
-  //   if (state.delta == null) {
-  //     return false;
-  //   }
-  //   return (state.delta.row != row || state.delta.col != col) && state.board[row][col].owner != -1 || isProposal(row, col);
-  // }
+  export function shouldColorVisitedEdge(row: number, col: number): boolean {
+    if (state.board[row][col].shape != Shape.Line) {
+      return false;
+    }
+    if (state.delta == null) {
+      return false;
+    }
+    return (state.delta.row != row || state.delta.col != col) && state.board[row][col].owner != -1 || isProposal(row, col);
+  }
 
   export function shouldColorVisitedEdgePl0(row: number, col: number): boolean {
     if (state.board[row][col].shape != Shape.Line) {
       return false;
     }
-    // if (state.delta == null) {
-    //   return false;
-    // }
+    if (state.delta == null) {
+      return false;
+    }
     return state.board[row][col].owner == 0 || isProposal(row, col);
   }
 
@@ -320,9 +320,9 @@ module game {
     if (state.board[row][col].shape != Shape.Line) {
       return false;
     }
-    // if (state.delta == null) {
-    //   return false;
-    // }
+    if (state.delta == null) {
+      return false;
+    }
 
     return state.board[row][col].owner == 1 || isProposal(row, col);
   }
