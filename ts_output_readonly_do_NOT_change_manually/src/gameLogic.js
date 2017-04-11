@@ -162,7 +162,7 @@ var gameLogic;
                 turnIndex = turnIndexBeforeMove ^ 1;
             }
         }
-        log.info(["board after step on position", row, ",", col, ":", boardAfterMove]);
+        // log.info(["board after step on position", row, ",", col, ":", boardAfterMove]);
         var endMatchScores;
         if (isOver(boardAfterMove)) {
             log.info("IS OVER!");
@@ -189,7 +189,7 @@ var gameLogic;
      * Check if the box is surrounded
      */
     function boxOccupied(board, row, col) {
-        log.info(["board:", board, row, col]);
+        // log.info(["board:",board,row,col]);
         return board[row - 1][col].owner >= 0 &&
             board[row + 1][col].owner >= 0 &&
             board[row][col - 1].owner >= 0 &&

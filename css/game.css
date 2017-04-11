@@ -411,10 +411,15 @@ button {
 }*/
 
 .left{
-  padding-left:10px; 
+  padding-left:1px; 
   float: left;
   border: 0px hidden !important;
 }
 .right{
   float: right;
+}
+
+.mainText{
+  color: #111; font-family: 'Helvetica Neue', sans-serif; font-size: 22px; font-weight: bold; letter-spacing: -1px; line-height: 1; text-align: center;
+  text-shadow: 1px 1px 14px rgba(150, 150, 150, 1);
 }

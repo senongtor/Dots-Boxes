@@ -19,7 +19,7 @@
 <body ng-cloak>
   <div id="gameArea" style="position:absolute; width:100%; height:100%">
     <div class="menu" ng-if="!game.dimSet">
-      <div class="text">
+      <div class="mainText">
         <p>Welcome to Dots and Boxes</p>
       </div>
 
@@ -45,11 +45,16 @@
             </div>
           </div>
         </div>
-
         <div class="text" ng-if="!game.isHumanTurn()">
           Oppenent choose board size
         </div>
       </div>
+
+      <!--<div class="left">
+        <div class="dropdown">
+          <button type="button" ng-click="game.showInfo()" class="dropbtn">Mining Boxes!</button>        
+        </div>
+      </div>-->
        
       <div class="image">
         <!--<img src="https://store-images.s-microsoft.com/image/apps.24039.9007199266251639.add58da4-c029-4b36-b4fd-0c2bc975ade2.9ede376f-ad57-4cba-8e14-d5accfa0eb71?w=471&h=265&q=60"-->
