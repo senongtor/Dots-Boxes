@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">14.47% </span>
+        <span class="strong">13.75% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>11/76</span>
+        <span class='fraction'>11/80</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">5.88% </span>
+        <span class="strong">4.08% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>2/34</span>
+        <span class='fraction'>2/49</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">12.5% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>1/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">14.47% </span>
+        <span class="strong">13.75% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>11/76</span>
+        <span class='fraction'>11/80</span>
       </div>
     </div>
   </div>
@@ -188,7 +188,9 @@
 143
 144
 145
-146</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+146
+147
+148</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
@@ -236,23 +238,25 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -380,26 +384,28 @@
 <span class="cstat-no" title="statement not covered" >        var boxWillBeOccupyByOpponent = [];</span>
 <span class="cstat-no" title="statement not covered" >        for (var i = 0; i &lt; gameLogic.rows; i++) {</span>
 <span class="cstat-no" title="statement not covered" >            for (var j = 0; j &lt; gameLogic.cols; j++) {</span>
-<span class="cstat-no" title="statement not covered" >                if (i % 2 != 0 &amp;&amp; j % 2 != 0) {</span>
-<span class="cstat-no" title="statement not covered" >                    if (state.board[i][j].owner == -1) {</span>
-                        //TODO
-                        //Need to take care of: Current grid is good but the adjacent grids has 2 surroudings already
-<span class="cstat-no" title="statement not covered" >                        if (getEdgeCount(i, j, state) == 2) {</span>
+<span class="cstat-no" title="statement not covered" >                if (i % 2 != 0 &amp;&amp; j % 2 != 0 &amp;&amp; state.board[i][j].owner == -1) {</span>
+                    //TODO
+                    //Need to take care of: Current grid is good but the adjacent grids has 2 surroudings already,
+                    //in this case, need to take a look at available edges instead of squares.
+<span class="cstat-no" title="statement not covered" >                    if (getEdgeCount(i, j, state) == 2) {</span>
+<span class="cstat-no" title="statement not covered" >                        boxWillBeOccupyByOpponent[count2++] = [i, j];</span>
+                    }
+                    else <span class="cstat-no" title="statement not covered" >if (getEdgeCount(i, j, state) == 1 || getEdgeCount(i, j, state) == 0) {</span>
+<span class="cstat-no" title="statement not covered" >                        if ((i &gt; 1 &amp;&amp; getEdgeCount(i - 2, j, state) == 2) ||</span>
+                            (i &lt; rows - 2 &amp;&amp; getEdgeCount(i + 2, j, state) == 2) ||
+                            (j &gt; 1 &amp;&amp; getEdgeCount(i, j - 2, state) == 2) ||
+                            (j &lt; cols - 2 &amp;&amp; getEdgeCount(i, j + 2, state) == 2)) {
 <span class="cstat-no" title="statement not covered" >                            boxWillBeOccupyByOpponent[count2++] = [i, j];</span>
                         }
                         else {
 <span class="cstat-no" title="statement not covered" >                            boxPos[count1++] = [i, j];</span>
                         }
-                        // continue;
+                    }
+                    else <span class="cstat-no" title="statement not covered" >if (getEdgeCount(i, j, state) == 3) {</span>
+<span class="cstat-no" title="statement not covered" >                        boxPos[count1++] = [i, j];</span>
                     }
                 }
-                // if (i % 2 == 0 &amp;&amp; j % 2 == 0) {
-                //   continue;
-                // }
-                // try {
-                //   possibleMoves.push(gameLogic.createMove(state, i, j, turnIndexBeforeMove));
-                // } catch (e) {
-                // }
             }
         }
 <span class="cstat-no" title="statement not covered" >        log.info(["boxPos", boxPos, "OppenPos", boxWillBeOccupyByOpponent]);</span>
@@ -484,7 +490,7 @@
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 12 2017 14:40:55 GMT-0400 (EDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 12 2017 15:12:37 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../prettify.js"></script>

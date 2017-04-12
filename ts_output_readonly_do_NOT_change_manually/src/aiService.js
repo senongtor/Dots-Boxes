@@ -45,26 +45,28 @@ var aiService;
         var boxWillBeOccupyByOpponent = [];
         for (var i = 0; i < gameLogic.rows; i++) {
             for (var j = 0; j < gameLogic.cols; j++) {
-                if (i % 2 != 0 && j % 2 != 0) {
-                    if (state.board[i][j].owner == -1) {
-                        //TODO
-                        //Need to take care of: Current grid is good but the adjacent grids has 2 surroudings already
-                        if (getEdgeCount(i, j, state) == 2) {
+                if (i % 2 != 0 && j % 2 != 0 && state.board[i][j].owner == -1) {
+                    //TODO
+                    //Need to take care of: Current grid is good but the adjacent grids has 2 surroudings already,
+                    //in this case, need to take a look at available edges instead of squares.
+                    if (getEdgeCount(i, j, state) == 2) {
+                        boxWillBeOccupyByOpponent[count2++] = [i, j];
+                    }
+                    else if (getEdgeCount(i, j, state) == 1 || getEdgeCount(i, j, state) == 0) {
+                        if ((i > 1 && getEdgeCount(i - 2, j, state) == 2) ||
+                            (i < rows - 2 && getEdgeCount(i + 2, j, state) == 2) ||
+                            (j > 1 && getEdgeCount(i, j - 2, state) == 2) ||
+                            (j < cols - 2 && getEdgeCount(i, j + 2, state) == 2)) {
                             boxWillBeOccupyByOpponent[count2++] = [i, j];
                         }
                         else {
                             boxPos[count1++] = [i, j];
                         }
-                        // continue;
+                    }
+                    else if (getEdgeCount(i, j, state) == 3) {
+                        boxPos[count1++] = [i, j];
                     }
                 }
-                // if (i % 2 == 0 && j % 2 == 0) {
-                //   continue;
-                // }
-                // try {
-                //   possibleMoves.push(gameLogic.createMove(state, i, j, turnIndexBeforeMove));
-                // } catch (e) {
-                // }
             }
         }
         log.info(["boxPos", boxPos, "OppenPos", boxWillBeOccupyByOpponent]);
