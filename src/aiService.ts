@@ -47,23 +47,25 @@ module aiService {
     for (let i = 0; i < gameLogic.rows; i++) {
       for (let j = 0; j < gameLogic.cols; j++) {
         if (i % 2 != 0 && j % 2 != 0) {
-          //TODO
-          //Need to take care of: Current grid is good but the adjacent grids has 2 surroudings already
-          if (getEdgeCount(i, j, state) == 2) {
-            boxWillBeOccupyByOpponent[count2++] = [i, j];
-          } 
-          // else if (getEdgeCount(i, j, state) < 2 &&
-          //   (i > 1 && getEdgeCount(i - 2, j, state) == 2) ||
-          //   (i < rows - 2 && getEdgeCount(i + 2, j, state) == 2) ||
-          //   (j > 1 && getEdgeCount(i, j - 2, state) == 2) ||
-          //   (j < cols - 2 && getEdgeCount(i, j + 2, state) == 2)
-          // ) {
-          //   boxWillBeOccupyByOpponent[count2++] = [i, j];
-          // } 
-          else {
-            boxPos[count1++] = [i, j];
-          }
-          // continue;
+          if (state.board[i][j].owner == -1) {
+            //TODO
+            //Need to take care of: Current grid is good but the adjacent grids has 2 surroudings already
+            if (getEdgeCount(i, j, state) == 2) {
+              boxWillBeOccupyByOpponent[count2++] = [i, j];
+            }
+            // else if (getEdgeCount(i, j, state) < 2 &&
+            //   (i > 1 && getEdgeCount(i - 2, j, state) == 2) ||
+            //   (i < rows - 2 && getEdgeCount(i + 2, j, state) == 2) ||
+            //   (j > 1 && getEdgeCount(i, j - 2, state) == 2) ||
+            //   (j < cols - 2 && getEdgeCount(i, j + 2, state) == 2)
+            // ) {
+            //   boxWillBeOccupyByOpponent[count2++] = [i, j];
+            // } 
+            else {
+              boxPos[count1++] = [i, j];
+            }
+            // continue;
+          }       
         }
         // if (i % 2 == 0 && j % 2 == 0) {
         //   continue;
@@ -74,19 +76,7 @@ module aiService {
         // }
       }
     }
-    boxPos.sort((n1, n2) => {
-      let c1 = getEdgeCount(n1[0], n1[1], state);
-      let c2 = getEdgeCount(n2[0], n2[1], state);
-      if (c1 < c2) {
-        return 1;
-      }
-      if (c1 > c2) {
-        return -1;
-      }
-      return 0;
-    });
-
-    //If we have to make a move that will impair our situation
+    log.info(["boxPos", boxPos, "OppenPos", boxWillBeOccupyByOpponent]);
     if (boxPos.length == 0) {
       for (let k = 0; k < boxWillBeOccupyByOpponent.length; k++) {
         let kx = boxWillBeOccupyByOpponent[k][0];
@@ -105,6 +95,21 @@ module aiService {
       }
       return possibleMoves;
     }
+
+    boxPos.sort((n1, n2) => {
+      let c1 = getEdgeCount(n1[0], n1[1], state);
+      let c2 = getEdgeCount(n2[0], n2[1], state);
+      if (c1 < c2) {
+        return 1;
+      }
+      if (c1 > c2) {
+        return -1;
+      }
+      return 0;
+    });
+
+    //If we have to make a move that will impair our situation
+
     //If we can find any move that won't let the opponent be in a good situation
     for (let k = 0; k < boxPos.length; k++) {
       let kx = boxPos[k][0];

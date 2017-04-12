@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">14.86% </span>
+        <span class="strong">14.47% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>11/74</span>
+        <span class='fraction'>11/76</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">6.25% </span>
+        <span class="strong">5.88% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>2/32</span>
+        <span class='fraction'>2/34</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">12.5% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>1/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">14.86% </span>
+        <span class="strong">14.47% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>11/74</span>
+        <span class='fraction'>11/76</span>
       </div>
     </div>
   </div>
@@ -185,7 +185,10 @@
 140
 141
 142
-143</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+143
+144
+145
+146</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
@@ -233,13 +236,15 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -253,17 +258,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -282,6 +276,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -375,15 +381,17 @@
 <span class="cstat-no" title="statement not covered" >        for (var i = 0; i &lt; gameLogic.rows; i++) {</span>
 <span class="cstat-no" title="statement not covered" >            for (var j = 0; j &lt; gameLogic.cols; j++) {</span>
 <span class="cstat-no" title="statement not covered" >                if (i % 2 != 0 &amp;&amp; j % 2 != 0) {</span>
-                    //TODO
-                    //Need to take care of: Current grid is good but the adjacent grids has 2 surroudings already
-<span class="cstat-no" title="statement not covered" >                    if (getEdgeCount(i, j, state) == 2) {</span>
-<span class="cstat-no" title="statement not covered" >                        boxWillBeOccupyByOpponent[count2++] = [i, j];</span>
+<span class="cstat-no" title="statement not covered" >                    if (state.board[i][j].owner == -1) {</span>
+                        //TODO
+                        //Need to take care of: Current grid is good but the adjacent grids has 2 surroudings already
+<span class="cstat-no" title="statement not covered" >                        if (getEdgeCount(i, j, state) == 2) {</span>
+<span class="cstat-no" title="statement not covered" >                            boxWillBeOccupyByOpponent[count2++] = [i, j];</span>
+                        }
+                        else {
+<span class="cstat-no" title="statement not covered" >                            boxPos[count1++] = [i, j];</span>
+                        }
+                        // continue;
                     }
-                    else {
-<span class="cstat-no" title="statement not covered" >                        boxPos[count1++] = [i, j];</span>
-                    }
-                    // continue;
                 }
                 // if (i % 2 == 0 &amp;&amp; j % 2 == 0) {
                 //   continue;
@@ -394,18 +402,7 @@
                 // }
             }
         }
-<span class="cstat-no" title="statement not covered" >        boxPos.sort(<span class="fstat-no" title="function not covered" >function (n1, n2) {</span></span>
-<span class="cstat-no" title="statement not covered" >            var c1 = getEdgeCount(n1[0], n1[1], state);</span>
-<span class="cstat-no" title="statement not covered" >            var c2 = getEdgeCount(n2[0], n2[1], state);</span>
-<span class="cstat-no" title="statement not covered" >            if (c1 &lt; c2) {</span>
-<span class="cstat-no" title="statement not covered" >                return 1;</span>
-            }
-<span class="cstat-no" title="statement not covered" >            if (c1 &gt; c2) {</span>
-<span class="cstat-no" title="statement not covered" >                return -1;</span>
-            }
-<span class="cstat-no" title="statement not covered" >            return 0;</span>
-        });
-        //If we have to make a move that will impair our situation
+<span class="cstat-no" title="statement not covered" >        log.info(["boxPos", boxPos, "OppenPos", boxWillBeOccupyByOpponent]);</span>
 <span class="cstat-no" title="statement not covered" >        if (boxPos.length == 0) {</span>
 <span class="cstat-no" title="statement not covered" >            for (var k = 0; k &lt; boxWillBeOccupyByOpponent.length; k++) {</span>
 <span class="cstat-no" title="statement not covered" >                var kx = boxWillBeOccupyByOpponent[k][0];</span>
@@ -425,6 +422,18 @@
             }
 <span class="cstat-no" title="statement not covered" >            return possibleMoves;</span>
         }
+<span class="cstat-no" title="statement not covered" >        boxPos.sort(<span class="fstat-no" title="function not covered" >function (n1, n2) {</span></span>
+<span class="cstat-no" title="statement not covered" >            var c1 = getEdgeCount(n1[0], n1[1], state);</span>
+<span class="cstat-no" title="statement not covered" >            var c2 = getEdgeCount(n2[0], n2[1], state);</span>
+<span class="cstat-no" title="statement not covered" >            if (c1 &lt; c2) {</span>
+<span class="cstat-no" title="statement not covered" >                return 1;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (c1 &gt; c2) {</span>
+<span class="cstat-no" title="statement not covered" >                return -1;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            return 0;</span>
+        });
+        //If we have to make a move that will impair our situation
         //If we can find any move that won't let the opponent be in a good situation
 <span class="cstat-no" title="statement not covered" >        for (var k = 0; k &lt; boxPos.length; k++) {</span>
 <span class="cstat-no" title="statement not covered" >            var kx = boxPos[k][0];</span>
@@ -475,7 +484,7 @@
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Apr 11 2017 00:48:18 GMT-0400 (EDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 12 2017 14:40:55 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../prettify.js"></script>
