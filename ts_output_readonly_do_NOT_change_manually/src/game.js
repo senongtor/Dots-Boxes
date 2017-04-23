@@ -137,19 +137,21 @@ var game;
                 }
             }
         }
-        //Generate a number. If no edge has been occupied, don't introduce bomb
-        if (anyEdgeOccupied && game.bombEnabled) {
-            var rr = Math.floor(Math.random() * 100);
-            //If the number is in a certain range, generate new bomb
-            if (rr < 100 / game.state.board.length) {
-                log.info(["Random number is: ", rr]);
-                while (true) {
-                    var i = Math.floor(Math.random() * (game.state.board.length - 2) + 1);
-                    var j = Math.floor(Math.random() * (game.state.board.length - 2) + 1);
-                    if (game.state.board[i][j].shape == Shape.Box && anySurroundingOccupied(i, j)) {
-                        log.info(["Bomb is at: ", i, j]);
-                        game.state.board[i][j].isBomb = true;
-                        break;
+        log.info(['yooo', game.currentUpdateUI.yourPlayerIndex, game.currentUpdateUI.turnIndex]);
+        //If it's our move
+        if (game.currentUpdateUI.yourPlayerIndex == game.currentUpdateUI.turnIndex) {
+            //Generate a number. If no edge has been occupied, don't introduce bomb
+            if (anyEdgeOccupied && game.bombEnabled) {
+                var rr = Math.floor(Math.random() * 100);
+                //If the number is in a certain range, generate new bomb
+                if (rr < 100 / game.state.board.length) {
+                    while (true) {
+                        var i = Math.floor(Math.random() * (game.state.board.length - 2) + 1);
+                        var j = Math.floor(Math.random() * (game.state.board.length - 2) + 1);
+                        if (game.state.board[i][j].shape == Shape.Box && anySurroundingOccupied(i, j)) {
+                            game.state.board[i][j].isBomb = true;
+                            break;
+                        }
                     }
                 }
             }

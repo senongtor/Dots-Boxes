@@ -146,24 +146,27 @@ module game {
         }
       }
     }
-    //Generate a number. If no edge has been occupied, don't introduce bomb
-    if (anyEdgeOccupied && bombEnabled) {
-      let rr = Math.floor(Math.random() * 100);
-      //If the number is in a certain range, generate new bomb
-      if (rr < 100 / state.board.length) {
-        log.info(["Random number is: ", rr]);
-        while (true) {
-          let i = Math.floor(Math.random() * (state.board.length - 2) + 1);
-          let j = Math.floor(Math.random() * (state.board.length - 2) + 1);
-          if (state.board[i][j].shape == Shape.Box && anySurroundingOccupied(i, j)) {
-            log.info(["Bomb is at: ", i, j]);
-            state.board[i][j].isBomb = true;
-            break;
+
+    log.info(['yooo', currentUpdateUI.yourPlayerIndex, currentUpdateUI.turnIndex]);
+    //If it's our move
+    if (currentUpdateUI.yourPlayerIndex == currentUpdateUI.turnIndex) {
+      //Generate a number. If no edge has been occupied, don't introduce bomb
+      if (anyEdgeOccupied && bombEnabled) {
+        let rr = Math.floor(Math.random() * 100);
+        //If the number is in a certain range, generate new bomb
+        if (rr < 100 / state.board.length) {
+          while (true) {
+            let i = Math.floor(Math.random() * (state.board.length - 2) + 1);
+            let j = Math.floor(Math.random() * (state.board.length - 2) + 1);
+            if (state.board[i][j].shape == Shape.Box && anySurroundingOccupied(i, j)) {
+              state.board[i][j].isBomb = true;
+              break;
+            }
           }
         }
       }
     }
-
+    
     // We calculate the AI move only after the animation finishes,
     // because if we call aiService now
     // then the animation will be paused until the javascript finishes.
