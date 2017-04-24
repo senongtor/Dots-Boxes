@@ -1,3 +1,9 @@
+/**
+ * IMPORTANT: do not change anything in this file!
+ * This is the API between the game and the platform,
+ * and it cannot be changed.
+ */
+
 // This file describes all the services provided by the gaming platform.
 // See examples for the platform at:
 // https://friendlygo.com/
@@ -62,7 +68,9 @@ interface IGameService {
   // If a community match, you can only send a proposal once, so call makeMove only if
   // (updateUI.playerIdToProposal[updateUI.yourPlayerInfo.playerId] == undefined)
   // You must pass either move or proposal.
-  makeMove(move: IMove, proposal: IProposal): void;
+  // chatDescription is a text that will be shown in the community game chat,
+  // e.g., in a game of chess it will describe the move such as "Q-R5".
+  makeMove(move: IMove, proposal: IProposal, chatDescription: string): void;
 }
 
 // Your game must support the updateUI method.
@@ -196,7 +204,6 @@ interface IProposals {
 // the winning proposal and pass the selected move.
 interface IProposal {
   playerInfo: IPlayerInfo; // the player making the proposal.
-  chatDescription: string; // string representation of the proposal that will be shown in the community game chat.
   data: IProposalData; // IProposalData must be defined by the game.
 }
 
