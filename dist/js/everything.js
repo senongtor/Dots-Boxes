@@ -30889,7 +30889,14 @@ $provide.value("$locale", {
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 ;
-"use strict"; var emulatorServicesCompilationDate = "Fri Feb 17 09:31:03 EST 2017";
+/**
+ * IMPORTANT: do not change anything in this file!
+ * These are are services that communicate between the game and the platform,
+ * and it cannot be changed.
+ */
+
+;
+"use strict"; var emulatorServicesCompilationDate = "Sun Apr 23 16:21:11 EDT 2017";
 
 ;
 var gamingPlatform;
@@ -30908,19 +30915,24 @@ var gamingPlatform;
             return ILogLevel;
         })();
         var alwaysLogs = [];
+        var logLaterFunctions = [];
         var lastLogs = [];
         var startTime = getCurrentTime();
         function getCurrentTime() {
             return new Date().getTime();
         }
         log_1.getCurrentTime = getCurrentTime;
+        function getMillisecondsFromStart() {
+            return getCurrentTime() - startTime;
+        }
+        log_1.getMillisecondsFromStart = getMillisecondsFromStart;
         function getLogEntry(args, logLevel, consoleFunc) {
-            var millisecondsFromStart = getCurrentTime() - startTime;
             // Note that if the first argument to console.log is a string,
             // then it's supposed to be a format string, see:
             // https://developer.mozilla.org/en-US/docs/Web/API/Console/log
             // However, the output looks better on chrome if I pass a string as the first argument,
             // and I hope then it doesn't break anything anywhere else...
+            var millisecondsFromStart = getMillisecondsFromStart();
             var secondsFromStart = millisecondsFromStart / 1000;
             var consoleArgs = ['', secondsFromStart, ' seconds:'].concat(args);
             consoleFunc.apply(console, consoleArgs);
@@ -30933,6 +30945,7 @@ var gamingPlatform;
             lastLogs.push(getLogEntry(args, logLevel, consoleFunc));
         }
         function getLogs() {
+            logLaterFunctions.map(function (func) { return alwaysLog(func()); });
             return lastLogs.concat(alwaysLogs);
         }
         log_1.getLogs = getLogs;
@@ -30944,6 +30957,10 @@ var gamingPlatform;
             alwaysLogs.push(getLogEntry(args, ILogLevel.ALWAYS, console.log));
         }
         log_1.alwaysLog = alwaysLog;
+        function logLater(func) {
+            logLaterFunctions.push(func);
+        }
+        log_1.logLater = logLater;
         function info() {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
@@ -31064,9 +31081,6 @@ var gamingPlatform;
             if (move) {
                 checkMove(move);
             }
-            if (proposal && !proposal.chatDescription) {
-                throw new Error("You didn't set chatDescription in your proposal=" + angular.toJson(proposal, true));
-            }
         }
         function sendMessage(msg) {
             gamingPlatform.messageService.sendMessage(msg);
@@ -31076,10 +31090,13 @@ var gamingPlatform;
             iframe.contentWindow.postMessage(msg, "*");
         }
         var lastUpdateUiMessage = null;
-        function makeMove(move, proposal) {
+        function makeMove(move, proposal, chatDescription) {
+            if (!chatDescription) {
+                throw new Error("You didn't set chatDescription in makeMove!");
+            }
             checkMakeMove(lastUpdateUiMessage, move, proposal);
             // I'm sending the move even in local testing to make sure it's simple json (or postMessage will fail).
-            sendMessage({ move: move, proposal: proposal, lastMessage: { updateUI: lastUpdateUiMessage } });
+            sendMessage({ move: move, proposal: proposal, chatDescription: chatDescription, lastMessage: { updateUI: lastUpdateUiMessage } });
             lastUpdateUiMessage = null; // to make sure you don't call makeMove until you get the next updateUI.
         }
         gameService.makeMove = makeMove;
@@ -32091,7 +32108,6 @@ var game;
                 }
             }
         }
-        log.info(['yooo', game.currentUpdateUI.yourPlayerIndex, game.currentUpdateUI.turnIndex]);
         //If it's our move
         if (game.currentUpdateUI.yourPlayerIndex == game.currentUpdateUI.turnIndex) {
             //Generate a number. If no edge has been occupied, don't introduce bomb
@@ -32166,21 +32182,22 @@ var game;
             return;
         }
         game.didMakeMove = true;
+        var delta = move.state.delta;
+        var chatDescription = '' + (delta.row + 1) + 'x' + (delta.col + 1);
         if (!game.proposals) {
-            gameService.makeMove(move, null);
+            gameService.makeMove(move, null, chatDescription);
         }
         else {
-            var delta = move.state.delta;
+            var delta_1 = move.state.delta;
             var myProposal = {
-                data: delta,
-                chatDescription: '' + (delta.row + 1) + 'x' + (delta.col + 1),
+                data: delta_1,
                 playerInfo: game.yourPlayerInfo,
             };
             // Decide whether we make a move or not (if we have <currentCommunityUI.numberOfPlayersRequiredToMove-1> other proposals supporting the same thing).
-            if (game.proposals[delta.row][delta.col] < game.currentUpdateUI.numberOfPlayersRequiredToMove - 1) {
+            if (game.proposals[delta_1.row][delta_1.col] < game.currentUpdateUI.numberOfPlayersRequiredToMove - 1) {
                 move = null;
             }
-            gameService.makeMove(move, myProposal);
+            gameService.makeMove(move, myProposal, chatDescription);
         }
     }
     function isFirstMove() {
@@ -32357,17 +32374,10 @@ var aiService;
      * Returns an empty array if the game is over.
      */
     function getPossibleMoves(state, turnIndexBeforeMove) {
-        log.info(["State", state]);
+        //log.info(["State", state]);
         var possibleMoves = [];
         var rows = gameLogic.rows;
         var cols = gameLogic.cols;
-        var visited = [];
-        for (var i = 0; i < rows; i++) {
-            visited[i] = [];
-            for (var j = 0; j < cols; j++) {
-                visited[i][j] = false;
-            }
-        }
         var count1 = 0;
         var boxPos = [];
         var count2 = 0;
@@ -32378,27 +32388,28 @@ var aiService;
                     //TODO
                     //Need to take care of: Current grid is good but the adjacent grids has 2 surroudings already,
                     //in this case, need to take a look at available edges instead of squares.
-                    if (getEdgeCount(i, j, state) == 2) {
+                    var edgeCount = getEdgeCount(i, j, state);
+                    if (edgeCount == 2) {
                         boxWillBeOccupyByOpponent[count2++] = [i, j];
                     }
-                    else if (getEdgeCount(i, j, state) == 1 || getEdgeCount(i, j, state) == 0) {
-                        if ((i > 1 && getEdgeCount(i - 2, j, state) == 2) ||
-                            (i < rows - 2 && getEdgeCount(i + 2, j, state) == 2) ||
-                            (j > 1 && getEdgeCount(i, j - 2, state) == 2) ||
-                            (j < cols - 2 && getEdgeCount(i, j + 2, state) == 2)) {
+                    else if (edgeCount == 1 || edgeCount == 0) {
+                        if ((i > 1 && getEdgeCount(i - 2, j, state) == 2 && state.board[i - 1][j].owner == -1) ||
+                            (i < rows - 2 && getEdgeCount(i + 2, j, state) == 2 && state.board[i + 1][j].owner == -1) ||
+                            (j > 1 && getEdgeCount(i, j - 2, state) == 2 && state.board[i][j - 1].owner == -1) ||
+                            (j < cols - 2 && getEdgeCount(i, j + 2, state) == 2 && state.board[i + 1][j].owner == -1)) {
                             boxWillBeOccupyByOpponent[count2++] = [i, j];
                         }
                         else {
                             boxPos[count1++] = [i, j];
                         }
                     }
-                    else if (getEdgeCount(i, j, state) == 3) {
+                    else if (edgeCount == 3) {
                         boxPos[count1++] = [i, j];
                     }
                 }
             }
         }
-        log.info(["boxPos", boxPos, "OppenPos", boxWillBeOccupyByOpponent]);
+        //log.info(["boxPos", boxPos, "OppenPos", boxWillBeOccupyByOpponent]);
         if (boxPos.length == 0) {
             for (var k = 0; k < boxWillBeOccupyByOpponent.length; k++) {
                 var kx = boxWillBeOccupyByOpponent[k][0];

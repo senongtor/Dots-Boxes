@@ -28,17 +28,10 @@ var aiService;
      * Returns an empty array if the game is over.
      */
     function getPossibleMoves(state, turnIndexBeforeMove) {
-        log.info(["State", state]);
+        //log.info(["State", state]);
         var possibleMoves = [];
         var rows = gameLogic.rows;
         var cols = gameLogic.cols;
-        var visited = [];
-        for (var i = 0; i < rows; i++) {
-            visited[i] = [];
-            for (var j = 0; j < cols; j++) {
-                visited[i][j] = false;
-            }
-        }
         var count1 = 0;
         var boxPos = [];
         var count2 = 0;
@@ -49,27 +42,28 @@ var aiService;
                     //TODO
                     //Need to take care of: Current grid is good but the adjacent grids has 2 surroudings already,
                     //in this case, need to take a look at available edges instead of squares.
-                    if (getEdgeCount(i, j, state) == 2) {
+                    var edgeCount = getEdgeCount(i, j, state);
+                    if (edgeCount == 2) {
                         boxWillBeOccupyByOpponent[count2++] = [i, j];
                     }
-                    else if (getEdgeCount(i, j, state) == 1 || getEdgeCount(i, j, state) == 0) {
-                        if ((i > 1 && getEdgeCount(i - 2, j, state) == 2) ||
-                            (i < rows - 2 && getEdgeCount(i + 2, j, state) == 2) ||
-                            (j > 1 && getEdgeCount(i, j - 2, state) == 2) ||
-                            (j < cols - 2 && getEdgeCount(i, j + 2, state) == 2)) {
+                    else if (edgeCount == 1 || edgeCount == 0) {
+                        if ((i > 1 && getEdgeCount(i - 2, j, state) == 2 && state.board[i - 1][j].owner == -1) ||
+                            (i < rows - 2 && getEdgeCount(i + 2, j, state) == 2 && state.board[i + 1][j].owner == -1) ||
+                            (j > 1 && getEdgeCount(i, j - 2, state) == 2 && state.board[i][j - 1].owner == -1) ||
+                            (j < cols - 2 && getEdgeCount(i, j + 2, state) == 2 && state.board[i + 1][j].owner == -1)) {
                             boxWillBeOccupyByOpponent[count2++] = [i, j];
                         }
                         else {
                             boxPos[count1++] = [i, j];
                         }
                     }
-                    else if (getEdgeCount(i, j, state) == 3) {
+                    else if (edgeCount == 3) {
                         boxPos[count1++] = [i, j];
                     }
                 }
             }
         }
-        log.info(["boxPos", boxPos, "OppenPos", boxWillBeOccupyByOpponent]);
+        //log.info(["boxPos", boxPos, "OppenPos", boxWillBeOccupyByOpponent]);
         if (boxPos.length == 0) {
             for (var k = 0; k < boxWillBeOccupyByOpponent.length; k++) {
                 var kx = boxWillBeOccupyByOpponent[k][0];
