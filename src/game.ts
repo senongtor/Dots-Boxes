@@ -389,7 +389,6 @@ angular.module('myApp', ['gameServices', 'ngMaterial', 'ngRoute'])
     function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
       $rootScope['game'] = game;
       game.init($rootScope, $timeout);
-    
       $rootScope.dimChanged = function () {
         if ($rootScope.dim == 1) {
           game.setDim(7, 7);
@@ -407,7 +406,4 @@ angular.module('myApp', ['gameServices', 'ngMaterial', 'ngRoute'])
           game.disableBomb();
         }
       };
-
-     
-
     }]);

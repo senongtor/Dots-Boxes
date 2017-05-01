@@ -11,6 +11,7 @@ exports.config = {
     },
   }],
   baseUrl: 'http://localhost:9000/',
+  chromeDriver: '/Applications/chromedriver', 
   directConnect: true,
   framework: 'jasmine',
   jasmineNodeOpts: {

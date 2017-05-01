@@ -2,13 +2,13 @@
 
 // The files we want to cache
 var urlsToCache = [
-  '//yoav-zibin.github.io/TicTacToe/dist/index.min.html',
+  '//senongtor.github.io/Dots-Boxes/dist/index.min.html',
 
   // Same list as in Gruntfile.js (for AppCache)
-  '//yoav-zibin.github.io/TicTacToe/dist/js/everything.min.js',
-  '//yoav-zibin.github.io/TicTacToe/dist/css/everything.min.css',
+  '//senongtor.github.io/Dots-Boxes/dist/js/everything.min.js',
+  '//senongtor.github.io/Dots-Boxes/dist/css/everything.min.css',
 ];
-var CACHE_NAME = 'cache-v2017-05-01T17:07:27.872Z';
+var CACHE_NAME = 'cache-v2017-05-01T21:22:27.839Z';
 
 self.addEventListener('activate', function(event) {
   event.waitUntil(
