@@ -32336,11 +32336,32 @@ var game;
     }
     game.getRange = getRange;
 })(game || (game = {}));
-angular.module('myApp', ['gameServices'])
+angular.module('myApp', ['gameServices', 'ngMaterial', 'ngRoute'])
     .run(['$rootScope', '$timeout',
     function ($rootScope, $timeout) {
         $rootScope['game'] = game;
         game.init($rootScope, $timeout);
+        $rootScope.dimChanged = function () {
+            alert("value changed-->" + $rootScope.dim);
+            if ($rootScope.dim == 1) {
+                game.setDim(7, 7);
+            }
+            else if ($rootScope.dim == 2) {
+                game.setDim(11, 11);
+            }
+            else if ($rootScope.dim == 3) {
+                game.setDim(13, 13);
+            }
+        };
+        $rootScope.modeChanged = function () {
+            alert("value changed-->" + $rootScope.mode);
+            if ($rootScope.mode == 1) {
+                game.enableBomb();
+            }
+            else if ($rootScope.mode == 2) {
+                game.disableBomb();
+            }
+        };
     }]);
 //# sourceMappingURL=game.js.map
 ;

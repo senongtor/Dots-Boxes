@@ -165,7 +165,7 @@ module game {
         }
       }
     }
-    
+
     // We calculate the AI move only after the animation finishes,
     // because if we call aiService now
     // then the animation will be paused until the javascript finishes.
@@ -230,7 +230,7 @@ module game {
     let delta = move.state.delta;
     let chatDescription = '' + (delta.row + 1) + 'x' + (delta.col + 1);
     if (!proposals) {
-      gameService.makeMove(move, null,chatDescription);
+      gameService.makeMove(move, null, chatDescription);
     } else {
       let delta = move.state.delta;
       let myProposal: IProposal = {
@@ -241,7 +241,7 @@ module game {
       if (proposals[delta.row][delta.col] < currentUpdateUI.numberOfPlayersRequiredToMove - 1) {
         move = null;
       }
-      gameService.makeMove(move, myProposal,chatDescription);
+      gameService.makeMove(move, myProposal, chatDescription);
     }
   }
   function isFirstMove() {
@@ -384,9 +384,29 @@ module game {
   }
 }
 
-angular.module('myApp', ['gameServices'])
+angular.module('myApp', ['gameServices', 'ngMaterial', 'ngRoute'])
   .run(['$rootScope', '$timeout',
     function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
       $rootScope['game'] = game;
       game.init($rootScope, $timeout);
+      
+      $rootScope.dimChanged = function () {
+        alert("value changed-->" + $rootScope.dim);
+        if ($rootScope.dim == 1) {
+          game.setDim(7, 7);
+        } else if ($rootScope.dim == 2) {
+          game.setDim(11, 11);
+        } else if ($rootScope.dim == 3) {
+          game.setDim(13, 13);
+        }
+      };
+
+      $rootScope.modeChanged = function () {
+         alert("value changed-->" + $rootScope.mode);
+        if ($rootScope.mode == 1) {
+          game.enableBomb();
+        } else if ($rootScope.mode == 2) {
+          game.disableBomb();
+        }
+      };
     }]);

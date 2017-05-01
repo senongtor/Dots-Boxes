@@ -139,6 +139,7 @@ textarea, input {
 
 .line{
   border:0px hidden;
+  border-radius: 5px;
   border-spacing: 0;
   border-collapse: collapse;
   background: #f2f2f2;

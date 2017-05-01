@@ -14,6 +14,10 @@
   <!-- To ensure CSS files are downloaded in parallel, always include external CSS before external JavaScript. -->
   <!-- build:[href] css/everything.min.css -->
   <link rel="stylesheet" type="text/css" href="css/game.css">
+  <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.css">
+  <!-- https://google.github.io/material-design-icons/ -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- /build -->
 
   <!-- build:js js/everything.min.js -->
@@ -22,24 +26,70 @@
   <script src="ts_output_readonly_do_NOT_change_manually/src/gameLogic.js"></script>
   <script src="ts_output_readonly_do_NOT_change_manually/src/game.js"></script>
   <script src="ts_output_readonly_do_NOT_change_manually/src/aiService.js"></script>
+
+  <!-- Angular Material requires Angular.js Libraries -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.js"></script>
+
+
   <script>
-   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-   ga('create', 'UA-98277153-1', 'auto');
-   ga('send', 'pageview');
-
+    ga('create', 'UA-98277153-1', 'auto');
+    ga('send', 'pageview');
   </script>
   <!-- /build -->
 </head>
 
 <body ng-cloak>
   <div id="gameArea" style="position:absolute; width:100%; height:100%">
-    <div class="menu" ng-if="!game.dimSet">
+    <div class="menu" ng-if="!game.dimSet" style="position:relative;">
       <!--TODO-->
-      <div class="left">
+      <md-toolbar>
+        <div class="md-toolbar-tools" style="background:#E0E0E0; position:absolute;">
+          <!--<img ng-src="{{user.photoURL}}" alt="Your avatar" class="avatar">-->
+          <!--<h3>Dimension </h3>-->
+          <div ng-if="game.isHumanTurn()">
+            <md-select placeholder="Size" ng-model="$parent.dim" ng-change="dimChanged()">
+              <md-option value="1">{{3}}x{{3}}</md-option>
+              <md-option value="2">{{5}}x{{5}}</md-option>
+              <md-option value="3">{{6}}x{{6}}</md-option>
+            </md-select>
+            <!--<md-icon md-svg-icon="imgs/settings.svg"></md-icon>-->
+            <!--<md-switch ng-model="data.cb1" aria-label="Mode" style="color:black">
+            Bomb: {{ data.cb1 }}
+          </md-switch>-->
+          </div>
+          <div class="text" ng-if="!game.isHumanTurn()">
+            Opponent is choosing size
+          </div>
+          <!--<h3>Mode </h3>-->
+          <div class="text" ng-if="game.isHumanTurn()">
+            <md-select placeholder="Mode" ng-model="$parent.mode" ng-change="modeChanged()">
+              <md-option value="1">With Bomb</md-option>
+              <md-option value="2">No Bomb</md-option>
+            </md-select>
+          </div>
+          <div class="text" ng-if="game.isHumanTurn()">
+            <md-button class="md-raised" ng-click="game.setDim(13,13)">
+              QuickStart!
+            </md-button>
+          </div>
+        </div>
+      </md-toolbar>
+
+      <!--<div class="left">
         <div class="dropdown">
           <button class="dropbtn">Mode</button>
           <div class="dropdown-content">
@@ -60,19 +110,9 @@
             </div>
           </div>
         </div>
-        <div class="text" ng-if="!game.isHumanTurn()">
-          Oppenent choose board size
-        </div>
-      </div>
-
-      <!--<div class="left">
-        <div class="dropdown">
-          <button type="button" ng-click="game.showInfo()" class="dropbtn">Mining Boxes!</button>        
-        </div>
       </div>-->
 
       <div class="image">
-        <!--<img src="https://store-images.s-microsoft.com/image/apps.24039.9007199266251639.add58da4-c029-4b36-b4fd-0c2bc975ade2.9ede376f-ad57-4cba-8e14-d5accfa0eb71?w=471&h=265&q=60"-->
         <img src=imgs/dotsandboxes.jpeg style="position:relative;width:100%;height:100%;display:block">
       </div>
     </div>
