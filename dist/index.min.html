@@ -28,32 +28,30 @@
           <!--<img ng-src="{{user.photoURL}}" alt="Your avatar" class="avatar">-->
           <!--<h3>Dimension </h3>-->
           <div ng-if="game.isHumanTurn()">
-            <md-select placeholder="Size" ng-model="$parent.dim" ng-change="dimChanged()">
+            <md-select placeholder="Size" ng-model="$parent.$parent.dim" ng-change="dimChanged()">
               <md-option value="1">{{3}}x{{3}}</md-option>
               <md-option value="2">{{5}}x{{5}}</md-option>
               <md-option value="3">{{6}}x{{6}}</md-option>
             </md-select>
-            <!--<md-icon md-svg-icon="imgs/settings.svg"></md-icon>-->
-            <!--<md-switch ng-model="data.cb1" aria-label="Mode" style="color:black">
-            Bomb: {{ data.cb1 }}
-          </md-switch>-->
-          </div>
-          <div class="text" ng-if="!game.isHumanTurn()">
-            Opponent is choosing size
           </div>
           <!--<h3>Mode </h3>-->
-          <div class="text" ng-if="game.isHumanTurn()">
-            <md-select placeholder="Mode" ng-model="$parent.mode" ng-change="modeChanged()">
+          <div ng-if="game.isHumanTurn()">
+            <md-select placeholder="Mode" ng-model="$parent.$parent.mode" ng-change="modeChanged()">
               <md-option value="1">With Bomb</md-option>
               <md-option value="2">No Bomb</md-option>
             </md-select>
           </div>
-          <div class="text" ng-if="game.isHumanTurn()">
+          <div ng-if="game.isHumanTurn()">
             <md-button class="md-raised" ng-click="game.setDim(13,13)">
               QuickStart!
             </md-button>
           </div>
+          <!--<md-icon md-svg-icon="imgs/settings.svg"></md-icon>-->
+          <div class="text" ng-if="!game.isHumanTurn()">
+            Oppenent choosing board size
+          </div>
         </div>
+
       </md-toolbar>
 
       <!--<div class="left">
@@ -79,7 +77,14 @@
         </div>
       </div>-->
 
+      <!--<div class="left">
+        <div class="dropdown">
+          <button type="button" ng-click="game.showInfo()" class="dropbtn">Mining Boxes!</button>        
+        </div>
+      </div>-->
+
       <div class="image">
+        <!--<img src="https://store-images.s-microsoft.com/image/apps.24039.9007199266251639.add58da4-c029-4b36-b4fd-0c2bc975ade2.9ede376f-ad57-4cba-8e14-d5accfa0eb71?w=471&h=265&q=60"-->
         <img src=imgs/dotsandboxes.jpeg style="position:relative;width:100%;height:100%;display:block">
       </div>
     </div>
