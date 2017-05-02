@@ -140,7 +140,6 @@ module.exports = function (grunt) {
       js: {
         src: [
           'lib/angular.js',
-          'lib/angular-route.js',
           'lib/angular-animate.js',
           'lib/angular-aria.js',
           'lib/angular-messages.js',
@@ -152,6 +151,14 @@ module.exports = function (grunt) {
         ],
         dest: 'dist/js/everything.js',
       },
+      css: {
+        src: [  
+          'css/game.css',
+          'css/angular-material.css',
+          'css/material-icons.css'
+        ],
+        dest: 'dist/css/everything.css',
+      }
     },
     postcss: {
       options: {
@@ -166,9 +173,7 @@ module.exports = function (grunt) {
       },
       dist: {
         src: [
-          'css/game.css',
-          'css/angular-material.css',
-          'css/material-icons.css'
+          'dist/css/everything.css'
         ],
         dest: 'dist/css/everything.min.css',
       }

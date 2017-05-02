@@ -384,7 +384,7 @@ module game {
   }
 }
 
-angular.module('myApp', ['gameServices', 'ngMaterial', 'ngRoute'])
+angular.module('myApp', ['gameServices', 'ngMaterial'])
   .run(['$rootScope', '$timeout',
     function ($rootScope: angular.IScope, $timeout: angular.ITimeoutService) {
       $rootScope['game'] = game;

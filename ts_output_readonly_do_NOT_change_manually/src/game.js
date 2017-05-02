@@ -365,7 +365,7 @@ var game;
     }
     game.getRange = getRange;
 })(game || (game = {}));
-angular.module('myApp', ['gameServices', 'ngMaterial', 'ngRoute'])
+angular.module('myApp', ['gameServices', 'ngMaterial'])
     .run(['$rootScope', '$timeout',
     function ($rootScope, $timeout) {
         $rootScope['game'] = game;
