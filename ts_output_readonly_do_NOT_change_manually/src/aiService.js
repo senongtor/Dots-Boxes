@@ -75,6 +75,7 @@ var aiService;
                                 possibleMoves.push(gameLogic.createMove(state, kx + d, ky + dd, turnIndexBeforeMove));
                             }
                             catch (e) {
+                                continue;
                                 // The cell in that position was full.
                             }
                         }
@@ -106,6 +107,7 @@ var aiService;
                             possibleMoves.push(gameLogic.createMove(state, kx + d, ky + dd, turnIndexBeforeMove));
                         }
                         catch (e) {
+                            continue;
                             // The cell in that position was full.
                         }
                     }
