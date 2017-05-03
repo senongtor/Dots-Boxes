@@ -8,7 +8,7 @@ var urlsToCache = [
   '//senongtor.github.io/Dots-Boxes/dist/js/everything.min.js',
   '//senongtor.github.io/Dots-Boxes/dist/css/everything.min.css',
 ];
-var CACHE_NAME = 'cache-v2017-05-03T02:48:54.305Z';
+var CACHE_NAME = 'cache-v2017-05-03T21:31:28.865Z';
 
 self.addEventListener('activate', function(event) {
   event.waitUntil(
